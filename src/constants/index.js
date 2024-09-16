@@ -26,23 +26,23 @@ export const hightlightsSlides = [
   },
   {
     id: 2,
-    textLists: ["Titanium.", "So strong. So light. So Pro."],
+    textLists: ["Web Development", "Responsive. Fast. Scalable."],
     video: highlightSecondVideo,
     videoDuration: 5,
   },
   {
     id: 3,
     textLists: [
-      "iPhone 15 Pro Max has the",
-      "longest optical zoom in",
-      "iPhone ever. Far out.",
+      "Mobile App Development",
+      "Native and cross-platform",
+      "solutions for your business.",
     ],
     video: highlightThirdVideo,
     videoDuration: 2,
   },
   {
     id: 4,
-    textLists: ["All-new Action button.", "What will yours do?."],
+    textLists: ["IT Consulting", "Tailored strategies for your success."],
     video: highlightFourthVideo,
     videoDuration: 3.63,
   },
@@ -63,24 +63,23 @@ export const models = [
   },
   {
     id: 3,
-    title: "Blockchain Solutions",
+    title: "Cloud Integration",
     color: ["#C9C8C2", "#ffffff", "#C9C8C2"],
     img: whiteImg,
   },
   {
     id: 4,
-    title: "Cloud Integration",
+    title: "Cybersecurity Services",
     color: ["#454749", "#3b3b3b", "#181819"],
     img: blackImg,
   },
   {
     id: 5,
-    title: "Blockchain Solutions",
+    title: "Data Analytics",
     color: ["#8F8A81", "#ffe7b9", "#6f6c64"],
     img: yellowImg2,
   },
 ];
-
 
 export const sizes = [
   { label: 'Mobile', value: "small" },

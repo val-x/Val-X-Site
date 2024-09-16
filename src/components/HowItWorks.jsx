@@ -8,9 +8,9 @@ const HowItWorks = () => {
   const videoRef = useRef();
 
   useGSAP(() => {
-    gsap.from('#chip', {
+    gsap.from('#icon', {
       scrollTrigger: {
-        trigger: '#chip',
+        trigger: '#icon',
         start: '20% bottom'
       },
       opacity: 0,
@@ -30,18 +30,18 @@ const HowItWorks = () => {
   return (
     <section className="common-padding">
       <div className="screen-max-width">
-        <div id="chip" className="flex-center w-full my-20">
-          <img src={chipImg} alt="chip" width={180} height={180} />
+        <div id="icon" className="flex-center w-full my-20">
+          <img src={chipImg} alt="innovation icon" width={180} height={180} />
         </div>
 
         <div className="flex flex-col items-center">
           <h2 className="hiw-title">
-            A17 Pro chip.
-            <br /> A monster win for gaming.
+            Innovative Solutions.
+            <br /> Transforming Businesses.
           </h2>
 
           <p className="hiw-subtitle">
-            It's here. The biggest redesign in the history of Apple GPUs.
+            Discover how our cutting-edge IT services can revolutionize your operations.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ const HowItWorks = () => {
             <div className="overflow-hidden">
               <img 
                 src={frameImg}
-                alt="frame"
+                alt="IT solutions showcase"
                 className="bg-transparent relative z-10"
               />
             </div>
@@ -60,35 +60,35 @@ const HowItWorks = () => {
                 </video>
               </div>
           </div>
-          <p className="text-gray font-semibold text-center mt-3">Honkai: Star Rail</p>
+          <p className="text-gray font-semibold text-center mt-3">Our AI-Powered Analytics Dashboard</p>
+        </div>
+
+        <div className="hiw-text-container">
+          <div className="flex flex-1 justify-center flex-col">
+            <p className="hiw-text g_fadeIn">
+              Our team of experts delivers {' '}
+              <span className="text-white">
+                tailored IT solutions
+              </span>
+              {' '}that drive efficiency and growth.
+            </p>
+
+            <p className="hiw-text g_fadeIn">
+              From AI integration to cloud services, we {' '}
+              <span className="text-white">
+                empower your business
+              </span>
+              {' '}with cutting-edge technology.
+            </p>
           </div>
-
-          <div className="hiw-text-container">
-                <div className="flex flex-1 justify-center flex-col">
-                  <p className="hiw-text g_fadeIn">
-                    A17 Pro is an entirely new class of iPhone chip that delivers our {' '}
-                    <span className="text-white">
-                      best graphic performance by far
-                    </span>.
-                  </p>
-
-                  <p className="hiw-text g_fadeIn">
-                   Mobile {' '}
-                    <span className="text-white">
-                      games will look and feel so immersive
-                    </span>,
-                     with incredibly detailed environments and characters.
-                  </p>
-                </div>
-              
-
-              <div className="flex-1 flex justify-center flex-col g_fadeIn">
-                <p className="hiw-text">New</p>
-                <p className="hiw-bigtext">Pro-class GPU</p>
-                <p className="hiw-text">with 6 cores</p>
-              </div>
-              </div>
-            </div>
+        
+          <div className="flex-1 flex justify-center flex-col g_fadeIn">
+            <p className="hiw-text">Achieve</p>
+            <p className="hiw-bigtext">Digital Transformation</p>
+            <p className="hiw-text">with our expertise</p>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
