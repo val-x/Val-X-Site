@@ -89,8 +89,8 @@ export const sizes = [
 
 export const footerLinks = [
   "Privacy Policy",
-  "Terms of Use",
-  "Sales Policy",
-  "Legal",
-  "Site Map",
+  "Terms of Service",
+  "Cookie Policy",
+  "Contact Us",
+  "Careers",
 ];
