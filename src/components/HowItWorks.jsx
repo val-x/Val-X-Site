@@ -30,9 +30,9 @@ const HowItWorks = () => {
   return (
     <section className="common-padding">
       <div className="screen-max-width">
-        <div id="icon" className="flex-center w-full my-20">
+        {/* <div id="icon" className="flex-center w-full my-20">
           <img src={chipImg} alt="innovation icon" width={180} height={180} />
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center">
           <h2 className="hiw-title">

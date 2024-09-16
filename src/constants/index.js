@@ -26,23 +26,31 @@ export const hightlightsSlides = [
   },
   {
     id: 2,
-    textLists: ["Web Development", "Responsive. Fast. Scalable."],
+    textLists: [
+      "NexusFlow",
+      "Intelligent Process Automation",
+      "Streamlining operations.",
+    ],
     video: highlightSecondVideo,
     videoDuration: 5,
   },
   {
     id: 3,
     textLists: [
-      "Mobile App Development",
-      "Native and cross-platform",
-      "solutions for your business.",
+      "DataSphere",
+      "Advanced Analytics Platform",
+      "Unlocking business insights.",
     ],
     video: highlightThirdVideo,
     videoDuration: 2,
   },
   {
     id: 4,
-    textLists: ["IT Consulting", "Tailored strategies for your success."],
+    textLists: [
+      "CloudForge",
+      "Scalable Cloud Infrastructure",
+      "Empowering digital transformation.",
+    ],
     video: highlightFourthVideo,
     videoDuration: 3.63,
   },
@@ -73,18 +81,18 @@ export const models = [
     color: ["#454749", "#3b3b3b", "#181819"],
     img: blackImg,
   },
-  {
-    id: 5,
-    title: "Data Analytics",
-    color: ["#8F8A81", "#ffe7b9", "#6f6c64"],
-    img: yellowImg2,
-  },
+  // {
+  //   id: 5,
+  //   title: "Data Analytics",
+  //   color: ["#8F8A81", "#ffe7b9", "#6f6c64"],
+  //   img: yellowImg2,
+  // },
 ];
 
 export const sizes = [
-  { label: 'Mobile', value: "small" },
-  { label: '|', value: "line" },
-  { label: 'Web', value: "large" },
+  // { label: 'Mobile', value: "small" },
+  // { label: '|', value: "line" },
+  // { label: 'Web', value: "large" },
 ];
 
 export const footerLinks = [

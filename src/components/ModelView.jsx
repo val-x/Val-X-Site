@@ -1,5 +1,4 @@
-import { Html, OrbitControls, PerspectiveCamera, View } from "@react-three/drei"
-
+import { OrbitControls, PerspectiveCamera, View } from "@react-three/drei"
 import * as THREE from 'three'
 import Lights from './Lights';
 import Loader from './Loader';
@@ -14,11 +13,8 @@ const ModelView = ({ index, groupRef, gsapType, controlRef, setRotationState, si
       id={gsapType}
       className={`w-full h-full absolute ${index === 2 ? 'right-[-100%]' : ''}`}
     >
-      {/* Ambient Light */}
       <ambientLight intensity={0.3} />
-
-      <PerspectiveCamera makeDefault position={[0, 0, 4]} />
-
+      <PerspectiveCamera makeDefault position={[0, 0, 5]} /> // Increased Z value for a wider view
       <Lights />
 
       <OrbitControls 
@@ -31,17 +27,24 @@ const ModelView = ({ index, groupRef, gsapType, controlRef, setRotationState, si
         onEnd={() => setRotationState(controlRef.current.getAzimuthalAngle())}
       /> 
 
-      <group ref={groupRef} name={`${index === 1} ? 'small' : 'large`} position={[0, 0 ,0]}>
+      <group ref={groupRef} name={`${index === 1 ? 'small' : 'large'}`} position={[0, 0 ,0]}>
         <Suspense fallback={<Loader />}>
-         { index === 1 && item.id<=4 ? <IPhone 
+         {/* { index === 1 && item.id<=4 ? <IPhone 
             scale={ [15, 15, 15] }
             item={item}
             size={size}
-          /> : <Desktop 
+          /> : 
+          <Desktop 
           scale={ [17, 17, 17] }
           item={item}
           size={size}
-        /> }
+        /> 
+        } */}
+          <IPhone 
+            scale={ [15, 15, 15] }
+            item={item}
+            size={size}
+          /> 
         </Suspense>
       </group>
     </View>

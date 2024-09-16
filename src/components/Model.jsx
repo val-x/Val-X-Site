@@ -107,13 +107,13 @@ const Model = () => {
                 ))}
               </ul>
 
-              <button className="size-btn-container">
+              {/* <button className="size-btn-container">
                 {sizes.map(({ label, value }) => (
                   <span key={label} className="size-btn ml-2 mr-2" style={{ backgroundColor: size === value ? 'white' : 'transparent', color: size === value ? 'black' : 'white'}} onClick={() => setSize(value)}>
                     {label}
                   </span>
                 ))}
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

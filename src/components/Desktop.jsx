@@ -1,43 +1,48 @@
 import * as THREE from 'three';
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
-import { log } from 'three/examples/jsm/nodes/Nodes.js';
+import { useFrame } from "@react-three/fiber";
 
 function DesktopModel(props) {
   const { nodes, materials } = useGLTF("/models/scene2.glb");
+  const groupRef = useRef();
 
   // Load the texture
   const texture = useTexture(props.item.img);
 
   useEffect(() => {
-    // Adjust texture properties if needed
+    // Texture and material setup
     texture.encoding = THREE.sRGBEncoding;
-    texture.flipY = false; // You might need to flip the texture vertically depending on your model
-
-    console.log(props);
+    texture.flipY = false;
     
     Object.entries(materials).forEach(([key, material]) => {      
       if (props.item && props.item.color) {
-
         material.color = new THREE.Color(props.item.color[0]);
       }
       
-      // Apply texture to specific materials
-      // You'll need to identify which material should receive the texture
-      if (key === "screen") { // Replace with your material name
+      if (key === "screen") {
         material.map = texture;
-
-        // Enable transparency and set opacity to 100%
-        material.transparent = true; // Allow the material to use transparency
-        material.opacity = 100;       // Set opacity to 100%
+        material.transparent = true;
+        material.opacity = 1;
       }
       
       material.needsUpdate = true;
     });
   }, [materials, props.item, texture]);
+
+  useFrame(() => {
+    if (groupRef.current) {
+      // Rotate the model to face the screen towards the camera
+      groupRef.current.rotation.y = Math.PI; // Rotate 180 degrees around Y-axis
+      groupRef.current.rotation.x = -Math.PI / 24; // Slight tilt for perspective
+      
+      // Adjust position to center the screen
+      groupRef.current.position.set(0, -0.3, 0); // Move up slightly
+    }
+  });
   
   return (
-    <group {...props} dispose={null}>
+    <group ref={groupRef} {...props} dispose={null}>
       {Object.entries(nodes).map(([key, node]) => {
         if (node.type === "Mesh") {
           return (
@@ -47,7 +52,7 @@ function DesktopModel(props) {
               receiveShadow
               geometry={node.geometry}
               material={materials[node.material.name]}
-              scale={0.015} // Adjust scale as needed
+              scale={0.013} // Slightly reduced scale for better fit
             />
           );
         }
@@ -59,4 +64,4 @@ function DesktopModel(props) {
 
 export default DesktopModel;
 
-useGLTF.preload("/models/scene2.glb");  
+useGLTF.preload("/models/scene2.glb");

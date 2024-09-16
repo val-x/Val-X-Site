@@ -7,7 +7,7 @@ import smallmv from "/assets/videos/smallHero.mp4";
 import highlightFirstmv from "/assets/videos/ddd.mp4";
 import highlightSectmv from "/assets/videos/dhd.mp4";
 import highlightThirdmv from "/assets/videos/hightlight-sec.mp4";
-import highlightFourthmv from "/assets/videos/hightlight-fourth.mp4";
+import highlightFourthmv from "/assets/videos/hightlight-f.mp4";
 import exploremv from "/assets/videos/explore.mp4";
 import framemv from "/assets/videos/frame.mp4";
 
