@@ -35,7 +35,7 @@ const Hero = () => {
           {/* <video className="pointer-events-none" autoPlay muted playsInline={true} key={videoSrc}>
             <source src={videoSrc} type="video/mp4" /> 
           </video> */}
-          <img src='../../public/assets/images/VAL-X-SB05.png' alt='VAL-X'  />
+          <img src='../../assets/images/VAL-X-SB05.png' alt='VAL-X'  />
     
         </div>
       </div>
