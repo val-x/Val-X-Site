@@ -3,6 +3,7 @@ import Hero from './components/Hero';
 import Highlights from './components/Highlights';
 import Model from './components/Model';
 import Features from './components/Features';
+import Register from './components/Register';
 import HowItWorks from './components/HowItWorks';
 import Footer from './components/Footer';
 
@@ -15,7 +16,8 @@ const App = () => {
       <Hero />
       <Highlights />
       <Model />
-      {/* <Features /> */}
+      <Features />
+      <Register />
       <HowItWorks />
       <Footer />
     </main>

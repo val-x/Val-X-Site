@@ -45,7 +45,7 @@ const Hero = () => {
         className="flex flex-col items-center opacity-0 translate-y-20"
       >
         <a href="#highlights" className="btn">Register</a>
-        <p className="font-normal text-xl">Starting from $5960.82</p>
+        {/* <p className="font-normal text-xl">Starting from $5960.82</p> */}
       </div>
     </section>
   )
