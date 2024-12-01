@@ -14,6 +14,7 @@
     "@heroicons/react": "^2.2.0",
     "@mdx-js/react": "^3.1.0",
     "@mdx-js/rollup": "^3.1.0",
+    "@react-spring/web": "^9.7.5",
     "@react-three/drei": "^9.101.0",
     "@react-three/fiber": "^8.15.19",
     "@sentry/react": "^7.106.0",

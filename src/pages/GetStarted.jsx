@@ -4,8 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useState, useEffect } from "react";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import ModelView from '../components/ModelView';
 import Register from '../components/Register';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -240,16 +240,21 @@ const GetStarted = () => {
               <p className="text-xl text-gray-300 mb-12">
                 Experience the future of digital transformation with our cutting-edge solutions
               </p>
-              {!isMobile && (
-                <div className="relative h-[85vh] w-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
-                  <ModelView />
-                  {/* Decorative elements */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-blue-500/20 blur-3xl" />
-                    <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tl from-purple-500/20 blur-3xl" />
-                  </div>
-                </div>
-              )}
+              <Link 
+                to="/projects"
+                className="inline-flex items-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+                  text-white font-medium text-lg hover:opacity-90 transition-opacity group"
+              >
+                View Our Projects
+                <svg 
+                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
               {isMobile && (
                 <div className="relative w-full h-[300px] rounded-2xl overflow-hidden bg-gradient-to-b from-blue-500/10 to-purple-500/10">
                   <div className="absolute inset-0 flex items-center justify-center">

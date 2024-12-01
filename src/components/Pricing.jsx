@@ -90,7 +90,7 @@ const Pricing = () => {
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-400 text-white text-sm rounded-full">
+                <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-400 text-white text-sm rounded-full">
                   Most Popular
                 </span>
               )}
@@ -116,11 +116,18 @@ const Pricing = () => {
               </ul>
 
               <button 
-                className={`w-full py-4 rounded-lg text-lg font-semibold transition-colors ${
-                  plan.popular
-                    ? 'bg-white text-blue-600 hover:bg-gray-100'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
+                className={`w-full py-4 rounded-xl text-lg font-semibold
+                  transition-all duration-300 transform hover:scale-[1.02]
+                  shadow-lg hover:shadow-xl
+                  ${plan.popular
+                    ? 'bg-gradient-to-r from-white to-gray-100 text-blue-600 hover:from-gray-100 hover:to-white border border-blue-200'
+                    : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-500 hover:to-blue-600'
+                  }
+                  active:scale-[0.98]
+                  backdrop-blur-xl
+                  hover:ring-2 hover:ring-blue-400/50
+                  hover:-translate-y-0.5
+                `}
               >
                 Get Started
               </button>

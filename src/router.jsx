@@ -16,6 +16,7 @@ import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
+import ModelViewPage from './pages/ModelViewPage';
 
 export const router = createBrowserRouter([
   {
@@ -93,5 +94,9 @@ export const router = createBrowserRouter([
   {
     path: "/cookies",
     element: <CookiePolicy />,
+  },
+  {
+    path: "/projects",
+    element: <ModelViewPage />,
   },
 ]); 
