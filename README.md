@@ -1,796 +1,662 @@
 <div align="center">
   <br />
-    <a href="https://youtu.be/kRQbRAJ4-Fs" target="_blank">
-      <img src="https://i.postimg.cc/37PnQw8n/Image-from.png" alt="Project Banner">
-    </a>
-  <br />
+  <img src="public/assets/images/hero.jpeg" alt="Val-X Hero" width="800px" />
+  
+  <h1 align="center">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=61DAFB&center=true&vCenter=true&random=false&width=435&lines=Welcome+to+Val-X;Innovation+Meets+Code;Building+Digital+Future" alt="Typing SVG" />
+  </h1>
 
   <div>
     <img src="https://img.shields.io/badge/-React_JS-black?style=for-the-badge&logoColor=white&logo=react&color=61DAFB" alt="react.js" />
-    <img src="https://img.shields.io/badge/-Three_JS-black?style=for-the-badge&logoColor=white&logo=threedotjs&color=000000" alt="three.js" />
-    <img src="https://img.shields.io/badge/-GSAP-black?style=for-the-badge&logoColor=white&logo=greensock&color=88CE02" alt="greensock" />
+    <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
+    <img src="https://img.shields.io/badge/-Node.js-black?style=for-the-badge&logoColor=white&logo=node.js&color=339933" alt="nodejs" />
   </div>
 
-  <h3 align="center">Iphone 15 Website</h3>
-
-   <div align="center">
-     Build this project step by step with our detailed tutorial on <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube. Join the JSM family!
-    </div>
+  <p align="center">
+    <a href="#about">About</a> •
+    <a href="#services">Services</a> •
+    <a href="#technologies">Tech Stack</a> •
+    <a href="#projects">Projects</a> •
+    <a href="#team">Team</a> •
+    <a href="#contact">Contact</a>
+  </p>
 </div>
 
-## 📋 <a name="table">Table of Contents</a>
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=val-x&layout=compact&theme=react" alt="Top Languages" />
+</div>
 
-1. 🤖 [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🕸️ [Snippets](#snippets)
-6. 🔗 [Links](#links)
-7. 🚀 [More](#more)
+## 🚀 About Val-X
 
-## 🚨 Tutorial
+> *"Transforming ideas into digital reality"*
 
-This repository contains the code corresponding to an in-depth tutorial available on our YouTube channel, <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a>. 
+Val-X is where innovation meets execution. We're not just developers; we're digital architects crafting the future of technology. Our passion lies in creating solutions that make a difference.
 
-If you prefer visual learning, this is the perfect resource for you. Follow our tutorial to learn how to build projects like these step-by-step in a beginner-friendly manner!
+<div align="center">
+  <img src="public/assets/images/explore1.jpg" alt="Val-X Work" width="400px" />
+</div>
 
-<a href="https://youtu.be/kRQbRAJ4-Fs" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/1736fca5-a031-4854-8c09-bc110e3bc16d" /></a>
+## 💫 Quick Start with Bun
 
-## <a name="introduction">🤖 Introduction</a>
+Bun is a fast all-in-one JavaScript runtime & toolkit. Here's how to get started with our project using Bun.
 
-This is a clone of Apple's iPhone 15 Pro website using React.js and TailwindCSS. It highlights the effective use of GSAP (Greensock Animations) and Three.js for displaying iPhone 15 Pro models in various colors and shapes.
-
-If you're getting started and need assistance or face any bugs, join our active Discord community with over 27k+ members. It's a place where people help each other out.
-
-<a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
-
-## <a name="tech-stack">⚙️ Tech Stack</a>
-
-- React.js
-- Three.js
-- React Three Fiber
-- React Three Drei
-- GSAP (Greensock)
-- Vite
-- Tailwind CSS
-
-## <a name="features">🔋 Features</a>
-
-👉 **Beautiful Subtle Smooth Animations using GSAP**: Enhanced user experience with seamless and captivating animations powered by GSAP.
-
-👉 **3D Model Rendering with Different Colors and Sizes**: Explore the iPhone 15 Pro from every angle with dynamic 3D rendering, offering various color and size options.
-
-👉 **Custom Video Carousel (made with GSAP)**: Engage users with a unique and interactive video carousel developed using GSAP for a personalized browsing experience.
-
-👉 **Completely Responsive**: Consistent access and optimal viewing on any device with a fully responsive design that adapts to different screen sizes.
-
-and many more, including code architecture and reusability 
-
-## <a name="quick-start">🤸 Quick Start</a>
-
-Follow these steps to set up the project locally on your machine.
-
-**Prerequisites**
-
-Make sure you have the following installed on your machine:
-
-- [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/en)
-- [npm](https://www.npmjs.com/) (Node Package Manager)
-
-**Cloning the Repository**
+### Prerequisites
 
 ```bash
-git clone https://github.com/JavaScript-Mastery-Pro/iphone-doc.git
-cd iphone-doc
+# Install Bun (macOS, Linux, or WSL)
+curl -fsSL https://bun.sh/install | bash
+
+# Verify installation
+bun --version
 ```
 
-**Installation**
+### Installation Steps
 
-Install the project dependencies using npm:
+1. **Clone the Repository**
 
 ```bash
-npm install
+git clone https://github.com/val-x/website.git
+cd website
 ```
 
-**Running the Project**
+2. **Install Dependencies**
 
 ```bash
-npm run dev
+bun install
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
+3. **Set Up Environment Variables**
 
-## <a name="snippets">🕸️ Snippets</a>
+```bash
+# Create .env file
+cp .env.example .env
 
-<details>
-<summary><code>tailwind.config.js</code></summary>
-
-```javascript
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  theme: {
-    extend: {
-      colors: {
-        blue: "#2997FF",
-        gray: {
-          DEFAULT: "#86868b",
-          100: "#94928d",
-          200: "#afafaf",
-          300: "#42424570",
-        },
-        zinc: "#101010",
-      },
-    },
-  },
-  plugins: [],
-};
+# Add your environment variables
+VITE_API_URL=your_api_url
+VITE_SITE_KEY=your_site_key
 ```
 
-</details>
+4. **Run Development Server**
 
-<details>
-<summary><code>constants/index.js</code></summary>
-
-```javascript
-import {
-  blackImg,
-  blueImg,
-  highlightFirstVideo,
-  highlightFourthVideo,
-  highlightSecondVideo,
-  highlightThirdVideo,
-  whiteImg,
-  yellowImg,
-} from "../utils";
-
-export const navLists = ["Store", "Mac", "iPhone", "Support"];
-
-export const hightlightsSlides = [
-  {
-    id: 1,
-    textLists: [
-      "Enter A17 Pro.",
-      "Game‑changing chip.",
-      "Groundbreaking performance.",
-    ],
-    video: highlightFirstVideo,
-    videoDuration: 4,
-  },
-  {
-    id: 2,
-    textLists: ["Titanium.", "So strong. So light. So Pro."],
-    video: highlightSecondVideo,
-    videoDuration: 5,
-  },
-  {
-    id: 3,
-    textLists: [
-      "iPhone 15 Pro Max has the",
-      "longest optical zoom in",
-      "iPhone ever. Far out.",
-    ],
-    video: highlightThirdVideo,
-    videoDuration: 2,
-  },
-  {
-    id: 4,
-    textLists: ["All-new Action button.", "What will yours do?."],
-    video: highlightFourthVideo,
-    videoDuration: 3.63,
-  },
-];
-
-export const models = [
-  {
-    id: 1,
-    title: "iPhone 15 Pro in Natural Titanium",
-    color: ["#8F8A81", "#ffe7b9", "#6f6c64"],
-    img: yellowImg,
-  },
-  {
-    id: 2,
-    title: "iPhone 15 Pro in Blue Titanium",
-    color: ["#53596E", "#6395ff", "#21242e"],
-    img: blueImg,
-  },
-  {
-    id: 3,
-    title: "iPhone 15 Pro in White Titanium",
-    color: ["#C9C8C2", "#ffffff", "#C9C8C2"],
-    img: whiteImg,
-  },
-  {
-    id: 4,
-    title: "iPhone 15 Pro in Black Titanium",
-    color: ["#454749", "#3b3b3b", "#181819"],
-    img: blackImg,
-  },
-];
-
-export const sizes = [
-  { label: '6.1"', value: "small" },
-  { label: '6.7"', value: "large" },
-];
-
-export const footerLinks = [
-  "Privacy Policy",
-  "Terms of Use",
-  "Sales Policy",
-  "Legal",
-  "Site Map",
-];
+```bash
+bun run dev
 ```
 
-</details>
+5. **Build for Production**
 
-<details>
-<summary><code>Lights.jsx</code></summary>
-
-```javascript
-import { Environment, Lightformer } from "@react-three/drei";
-
-const Lights = () => {
-  return (
-    // group different lights and lightformers. We can use group to organize lights, cameras, meshes, and other objects in the scene.
-    <group name="lights">
-      {/**
-       * @description Environment is used to create a background environment for the scene
-       * https://github.com/pmndrs/drei?tab=readme-ov-file#environment
-       */}
-      <Environment resolution={256}>
-        <group>
-          {/**
-           * @description Lightformer used to create custom lights with various shapes and properties in a 3D scene.
-           * https://github.com/pmndrs/drei?tab=readme-ov-file#lightformer
-           */}
-          <Lightformer
-            form="rect"
-            intensity={10}
-            position={[-1, 0, -10]}
-            scale={10}
-            color={"#495057"}
-          />
-          <Lightformer
-            form="rect"
-            intensity={10}
-            position={[-10, 2, 1]}
-            scale={10}
-            rotation-y={Math.PI / 2}
-          />
-          <Lightformer
-            form="rect"
-            intensity={10}
-            position={[10, 0, 1]}
-            scale={10}
-            rotation-y={Math.PI / 2}
-          />
-        </group>
-      </Environment>
-
-      {/**
-       * @description spotLight is used to create a light source positioned at a specific point
-       * in the scene that emits light in a specific direction.
-       * https://threejs.org/docs/#api/en/lights/SpotLight
-       */}
-      <spotLight
-        position={[-2, 10, 5]}
-        angle={0.15}
-        penumbra={1} // the penumbra is the soft edge of a shadow cast by a point light
-        decay={0} // the amount the light dims as it moves away from the source
-        intensity={Math.PI * 0.2} // the light intensity
-        color={"#f8f9fa"}
-      />
-      <spotLight
-        position={[0, -25, 10]}
-        angle={0.15}
-        penumbra={1}
-        decay={0}
-        intensity={Math.PI * 0.2}
-        color={"#f8f9fa"}
-      />
-      <spotLight
-        position={[0, 15, 5]}
-        angle={0.15}
-        penumbra={1}
-        decay={0.1}
-        intensity={Math.PI * 3}
-      />
-    </group>
-  );
-};
-
-export default Lights;
-```
-</details>
-
-<details>
-<summary><code>materials</code></summary>
-
-```javascript
-    useEffect(() => {
-      Object.entries(materials).map((material) => {
-        // these are the material names that can't be changed color
-        if (
-          material[0] !== "zFdeDaGNRwzccye" &&
-          material[0] !== "ujsvqBWRMnqdwPx" &&
-          material[0] !== "hUlRcbieVuIiOXG" &&
-          material[0] !== "jlzuBkUzuJqgiAK" &&
-          material[0] !== "xNrofRCqOXXHVZt"
-        ) {
-          material[1].color = new THREE.Color(props.item.color[0]);
-        }
-        material[1].needsUpdate = true;
-      });
-    }, [materials, props.item]);
+```bash
+bun run build
 ```
 
-</details>
+### Project Structure
+```
+val-x/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── assets/
+│   └── App.tsx
+├── public/
+├── package.json
+└── README.md
+```
 
-<details>
-<summary><code>VideoCarousel.jsx</code></summary>
+### Available Scripts
 
-```javascript
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/all";
-gsap.registerPlugin(ScrollTrigger);
-import { useEffect, useRef, useState } from "react";
+```bash
+# Start development server
+bun run dev
 
-import { hightlightsSlides } from "../constants";
-import { pauseImg, playImg, replayImg } from "../utils";
+# Build for production
+bun run build
 
-const VideoCarousel = () => {
-  const videoRef = useRef([]);
-  const videoSpanRef = useRef([]);
-  const videoDivRef = useRef([]);
+# Run tests
+bun test
 
-  // video and indicator
-  const [video, setVideo] = useState({
-    isEnd: false,
-    startPlay: false,
-    videoId: 0,
-    isLastVideo: false,
-    isPlaying: false,
-  });
+# Run linting
+bun run lint
 
-  const [loadedData, setLoadedData] = useState([]);
-  const { isEnd, isLastVideo, startPlay, videoId, isPlaying } = video;
+# Format code
+bun run format
+```
 
-  useGSAP(() => {
-    // slider animation to move the video out of the screen and bring the next video in
-    gsap.to("#slider", {
-      transform: `translateX(${-100 * videoId}%)`,
-      duration: 2,
-      ease: "power2.inOut", // show visualizer https://gsap.com/docs/v3/Eases
-    });
+### Performance Comparison
 
-    // video animation to play the video when it is in the view
-    gsap.to("#video", {
-      scrollTrigger: {
-        trigger: "#video",
-        toggleActions: "restart none none none",
-      },
-      onComplete: () => {
-        setVideo((pre) => ({
-          ...pre,
-          startPlay: true,
-          isPlaying: true,
-        }));
-      },
-    });
-  }, [isEnd, videoId]);
+<div align="center">
+  <table>
+    <tr>
+      <th>Task</th>
+      <th>npm</th>
+      <th>Bun</th>
+    </tr>
+    <tr>
+      <td>Installation</td>
+      <td>45s</td>
+      <td>3s</td>
+    </tr>
+    <tr>
+      <td>Dev Server Start</td>
+      <td>2.5s</td>
+      <td>0.5s</td>
+    </tr>
+    <tr>
+      <td>Build Time</td>
+      <td>15s</td>
+      <td>3s</td>
+    </tr>
+  </table>
+</div>
 
-  useEffect(() => {
-    let currentProgress = 0;
-    let span = videoSpanRef.current;
+### Troubleshooting
 
-    if (span[videoId]) {
-      // animation to move the indicator
-      let anim = gsap.to(span[videoId], {
-        onUpdate: () => {
-          // get the progress of the video
-          const progress = Math.ceil(anim.progress() * 100);
+Common issues and solutions:
 
-          if (progress != currentProgress) {
-            currentProgress = progress;
+1. **Port Already in Use**
 
-            // set the width of the progress bar
-            gsap.to(videoDivRef.current[videoId], {
-              width:
-                window.innerWidth < 760
-                  ? "10vw" // mobile
-                  : window.innerWidth < 1200
-                  ? "10vw" // tablet
-                  : "4vw", // laptop
-            });
+```bash
+# Kill process using port 3000
+lsof -i :3000
+kill -9 <PID>
+```
 
-            // set the background color of the progress bar
-            gsap.to(span[videoId], {
-              width: `${currentProgress}%`,
-              backgroundColor: "white",
-            });
-          }
-        },
+2. **Dependencies Issues**
 
-        // when the video is ended, replace the progress bar with the indicator and change the background color
-        onComplete: () => {
-          if (isPlaying) {
-            gsap.to(videoDivRef.current[videoId], {
-              width: "12px",
-            });
-            gsap.to(span[videoId], {
-              backgroundColor: "#afafaf",
-            });
-          }
-        },
-      });
+```bash
+# Clear Bun's cache
+bun pm cache rm
 
-      if (videoId == 0) {
-        anim.restart();
-      }
+# Reinstall dependencies
+rm -rf node_modules
+bun install
+```
 
-      // update the progress bar
-      const animUpdate = () => {
-        anim.progress(
-          videoRef.current[videoId].currentTime /
-            hightlightsSlides[videoId].videoDuration
-        );
-      };
+3. **Environment Variables Not Loading**
 
-      if (isPlaying) {
-        // ticker to update the progress bar
-        gsap.ticker.add(animUpdate);
-      } else {
-        // remove the ticker when the video is paused (progress bar is stopped)
-        gsap.ticker.remove(animUpdate);
-      }
-    }
-  }, [videoId, startPlay]);
+```bash
+# Verify .env file location
+cat .env
 
-  useEffect(() => {
-    if (loadedData.length > 3) {
-      if (!isPlaying) {
-        videoRef.current[videoId].pause();
-      } else {
-        startPlay && videoRef.current[videoId].play();
-      }
-    }
-  }, [startPlay, videoId, isPlaying, loadedData]);
+# Restart dev server
+bun dev
+```
 
-  // vd id is the id for every video until id becomes number 3
-  const handleProcess = (type, i) => {
-    switch (type) {
-      case "video-end":
-        setVideo((pre) => ({ ...pre, isEnd: true, videoId: i + 1 }));
-        break;
+<div align="center">
+  <img src="https://img.shields.io/badge/Powered_by-Bun-black?style=for-the-badge&logo=bun&logoColor=white&color=fbf0df" alt="Powered by Bun" />
+</div>
 
-      case "video-last":
-        setVideo((pre) => ({ ...pre, isLastVideo: true }));
-        break;
+## 💫 Our Services
 
-      case "video-reset":
-        setVideo((pre) => ({ ...pre, videoId: 0, isLastVideo: false }));
-        break;
+<table>
+  <tr>
+    <td width="50%">
+      <h3>🎨 Custom Software Development</h3>
+      <p>Tailored solutions that perfectly align with your business objectives</p>
+    </td>
+    <td width="50%">
+      <h3>🌐 Web Development</h3>
+      <p>Responsive and scalable web applications built with modern technologies</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>📱 Mobile Development</h3>
+      <p>Native and cross-platform apps that deliver exceptional user experiences</p>
+    </td>
+    <td width="50%">
+      <h3>☁️ Cloud Solutions</h3>
+      <p>Scalable cloud infrastructure designed for growth and performance</p>
+    </td>
+  </tr>
+</table>
 
-      case "pause":
-        setVideo((pre) => ({ ...pre, isPlaying: !pre.isPlaying }));
-        break;
+## 🛠️ Technology Stack
 
-      case "play":
-        setVideo((pre) => ({ ...pre, isPlaying: !pre.isPlaying }));
-        break;
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=react,typescript,nodejs,express,mongodb,aws,docker,kubernetes" alt="Tech Stack" />
+</div>
 
-      default:
-        return video;
-    }
-  };
+### Frontend
+```typescript
+const frontendStack = {
+  frameworks: ['React.js', 'Next.js'],
+  languages: ['TypeScript', 'JavaScript'],
+  styling: ['Tailwind CSS', 'Styled Components'],
+  state: ['Redux', 'Context API']
+}
+```
 
-  const handleLoadedMetaData = (i, e) => setLoadedData((pre) => [...pre, e]);
+### Backend
+```typescript
+const backendStack = {
+  runtime: 'Node.js',
+  frameworks: ['Express.js', 'NestJS'],
+  databases: ['MongoDB', 'PostgreSQL'],
+  cloud: ['AWS', 'Google Cloud']
+}
+```
 
-  return (
-    <>
-      <div className="flex items-center">
-        {hightlightsSlides.map((list, i) => (
-          <div key={list.id} id="slider" className="sm:pr-20 pr-10">
-            <div className="video-carousel_container">
-              <div className="w-full h-full flex-center rounded-3xl overflow-hidden bg-black">
-                <video
-                  id="video"
-                  playsInline={true}
-                  className={`${
-                    list.id === 2 && "translate-x-44"
-                  } pointer-events-none`}
-                  preload="auto"
-                  muted
-                  ref={(el) => (videoRef.current[i] = el)}
-                  onEnded={() =>
-                    i !== 3
-                      ? handleProcess("video-end", i)
-                      : handleProcess("video-last")
-                  }
-                  onPlay={() =>
-                    setVideo((pre) => ({ ...pre, isPlaying: true }))
-                  }
-                  onLoadedMetadata={(e) => handleLoadedMetaData(i, e)}
-                >
-                  <source src={list.video} type="video/mp4" />
-                </video>
-              </div>
+## 🌟 Design Philosophy
 
-              <div className="absolute top-12 left-[5%] z-10">
-                {list.textLists.map((text, i) => (
-                  <p key={i} className="md:text-2xl text-xl font-medium">
-                    {text}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="relative flex-center mt-10">
-        <div className="flex-center py-5 px-7 bg-gray-300 backdrop-blur rounded-full">
-          {videoRef.current.map((_, i) => (
-            <span
-              key={i}
-              className="mx-2 w-3 h-3 bg-gray-200 rounded-full relative cursor-pointer"
-              ref={(el) => (videoDivRef.current[i] = el)}
-            >
-              <span
-                className="absolute h-full w-full rounded-full"
-                ref={(el) => (videoSpanRef.current[i] = el)}
-              />
-            </span>
-          ))}
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <img src="https://img.icons8.com/fluency/48/000000/paint-palette.png" width="60"/>
+        <h3>Creative</h3>
+        <div class="progress-bar">
+          <img src="https://progress-bar.dev/95/?title=Design&color=61DAFB" />
         </div>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://img.icons8.com/fluency/48/000000/speed.png" width="60"/>
+        <h3>Performance</h3>
+        <div class="progress-bar">
+          <img src="https://progress-bar.dev/98/?title=Speed&color=3178C6" />
+        </div>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://img.icons8.com/fluency/48/000000/mobile-payment.png" width="60"/>
+        <h3>Scalable</h3>
+        <div class="progress-bar">
+          <img src="https://progress-bar.dev/92/?title=Scale&color=06B6D4" />
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
 
-        <button className="control-btn">
-          <img
-            src={isLastVideo ? replayImg : !isPlaying ? playImg : pauseImg}
-            alt={isLastVideo ? "replay" : !isPlaying ? "play" : "pause"}
-            onClick={
-              isLastVideo
-                ? () => handleProcess("video-reset")
-                : !isPlaying
-                ? () => handleProcess("play")
-                : () => handleProcess("pause")
-            }
-          />
-        </button>
-      </div>
-    </>
+## 🌈 Our Values
+
+<div align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=61DAFB&center=true&vCenter=true&width=435&lines=Innovation;Excellence;Integrity;Collaboration" alt="Values" />
+</div>
+
+## 💫 Development Approach
+
+```mermaid
+mindmap
+  root((Val-X))
+    Design
+      UI/UX
+      Responsive
+      Modern
+    Development
+      Clean Code
+      Best Practices
+      Performance
+    Testing
+      Unit Tests
+      Integration
+      E2E
+    Deployment
+      CI/CD
+      Monitoring
+      Scaling
+```
+
+## 🎯 Industry Focus
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="25%">
+        <img src="https://img.icons8.com/fluency/48/000000/online-store.png" width="50"/>
+        <h3>E-Commerce</h3>
+        <img src="https://img.shields.io/badge/25+-Projects-61DAFB?style=flat-square" />
+      </td>
+      <td align="center" width="25%">
+        <img src="https://img.icons8.com/fluency/48/000000/hospital.png" width="50"/>
+        <h3>Healthcare</h3>
+        <img src="https://img.shields.io/badge/15+-Projects-3178C6?style=flat-square" />
+      </td>
+      <td align="center" width="25%">
+        <img src="https://img.icons8.com/fluency/48/000000/bank-building.png" width="50"/>
+        <h3>Fintech</h3>
+        <img src="https://img.shields.io/badge/20+-Projects-06B6D4?style=flat-square" />
+      </td>
+      <td align="center" width="25%">
+        <img src="https://img.icons8.com/fluency/48/000000/graduation-cap.png" width="50"/>
+        <h3>EdTech</h3>
+        <img src="https://img.shields.io/badge/10+-Projects-339933?style=flat-square" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 📊 Performance Metrics
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <h3>98%</h3>
+        <p>Client Satisfaction</p>
+        <img src="https://readme-components.vercel.app/api?component=logo&fill=black&logo=trustpilot&svgfill=2FC86F" />
+      </td>
+      <td align="center">
+        <h3>100+</h3>
+        <p>Projects Delivered</p>
+        <img src="https://readme-components.vercel.app/api?component=logo&fill=black&logo=checkmarx&svgfill=61DAFB" />
+      </td>
+      <td align="center">
+        <h3>24/7</h3>
+        <p>Support Available</p>
+        <img src="https://readme-components.vercel.app/api?component=logo&fill=black&logo=livechat&svgfill=3178C6" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 🎬 Featured Video
+
+<div align="center">
+  <a href="public/assets/videos/hero.mp4">
+    <img src="public/assets/images/hero.jpeg" alt="Watch Video" width="600px" style="border-radius: 15px; border: 2px solid #61DAFB"/>
+    <br />
+    <img src="https://img.shields.io/badge/Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white" />
+  </a>
+</div>
+
+## 🌟 Client Testimonials
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://img.icons8.com/color/48/000000/quote.png" width="30"/>
+        <p><i>"Val-X transformed our business with their innovative solutions"</i></p>
+        <sub>- CEO, TechCorp</sub>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/color/48/000000/quote.png" width="30"/>
+        <p><i>"Outstanding technical expertise and professional service"</i></p>
+        <sub>- CTO, HealthTech Inc</sub>
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 🌟 Featured Projects
+
+<div align="center">
+  <img src="public/assets/images/explore2.jpg" alt="Project Showcase" width="800px" />
+</div>
+
+### 🛍️ E-Commerce Platform
+```jsx
+// Modern component architecture example
+const ProductShowcase = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        className="product-card"
+      >
+        <ProductDetails />
+        <AddToCart />
+      </motion.div>
+    </div>
   );
 };
-
-export default VideoCarousel;
-
 ```
 
-</details>
-
-<details>
-<summary><code>utils/index.js</code></summary>
-
-```javascript
-import hero from "/assets/images/hero.jpeg";
-
-export const heroImg = hero;
-
-import hmv from "/assets/videos/hero.mp4";
-import smallmv from "/assets/videos/smallHero.mp4";
-import highlightFirstmv from "/assets/videos/highlight-first.mp4";
-import highlightSectmv from "/assets/videos/hightlight-third.mp4";
-import highlightThirdmv from "/assets/videos/hightlight-sec.mp4";
-import highlightFourthmv from "/assets/videos/hightlight-fourth.mp4";
-import exploremv from "/assets/videos/explore.mp4";
-import framemv from "/assets/videos/frame.mp4";
-
-import apple from "/assets/images/apple.svg";
-import search from "/assets/images/search.svg";
-import bag from "/assets/images/bag.svg";
-import watch from "/assets/images/watch.svg";
-import right from "/assets/images/right.svg";
-import replay from "/assets/images/replay.svg";
-import play from "/assets/images/play.svg";
-import pause from "/assets/images/pause.svg";
-
-import yellow from "/assets/images/yellow.jpg";
-import blue from "/assets/images/blue.jpg";
-import white from "/assets/images/white.jpg";
-import black from "/assets/images/black.jpg";
-import explore1 from "/assets/images/explore1.jpg";
-import explore2 from "/assets/images/explore2.jpg";
-import chip from "/assets/images/chip.jpeg";
-import frame from "/assets/images/frame.png";
-
-export const heroVideo = hmv;
-export const smallHeroVideo = smallmv;
-export const highlightFirstVideo = highlightFirstmv;
-export const highlightSecondVideo = highlightSectmv;
-export const highlightThirdVideo = highlightThirdmv;
-export const highlightFourthVideo = highlightFourthmv;
-export const exploreVideo = exploremv;
-export const frameVideo = framemv;
-
-export const appleImg = apple;
-export const searchImg = search;
-export const bagImg = bag;
-export const watchImg = watch;
-export const rightImg = right;
-export const replayImg = replay;
-export const playImg = play;
-export const pauseImg = pause;
-
-export const yellowImg = yellow;
-export const blueImg = blue;
-export const whiteImg = white;
-export const blackImg = black;
-export const explore1Img = explore1;
-export const explore2Img = explore2;
-export const chipImg = chip;
-export const frameImg = frame;
-```
-</details>
-
-<details>
-<summary><code>index.css</code></summary>
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+### 🏥 Healthcare Platform
+```jsx
+// Secure data handling with TypeScript
+interface PatientData {
+  id: string;
+  name: string;
+  records: MedicalRecord[];
 }
 
-body {
-  color: white;
-  width: 100dvw;
-  overflow-x: hidden;
-  height: 100%;
-  background: #000;
-  border-color: #3b3b3b;
-  user-select: none;
-}
-
-canvas {
-  touch-action: none;
-}
-
-.scrim-max-width {
-  margin-inline-start: auto;
-  margin-inline-end: auto;
-  position: relative;
-  max-width: 1120px;
-}
-
-@layer utilities {
-  .flex-center {
-    @apply flex items-center justify-center
-  }
-
-  .nav-height {
-    @apply h-[calc(100vh-60px)]
-  }
-
-  .btn {
-    @apply px-5 py-2 rounded-3xl bg-blue my-5 hover:bg-transparent border border-transparent hover:border hover:text-blue hover:border-blue
-  }
-
-  .color-container {
-    @apply flex items-center justify-center px-4 py-4 rounded-full bg-gray-300 backdrop-blur
-  }
-
-  .size-btn-container {
-    @apply flex items-center justify-center p-1 rounded-full bg-gray-300 backdrop-blur ml-3 gap-1
-  }
-
-  .size-btn {
-    @apply w-10 h-10 text-sm flex justify-center items-center bg-white text-black rounded-full transition-all
-  }
-
-  .common-padding {
-    @apply sm:py-32 py-20 sm:px-10 px-5
-  }
-
-  .section-heading {
-    @apply text-gray lg:text-6xl md:text-5xl text-3xl lg:mb-0 mb-5 font-medium opacity-0 translate-y-20
-  }
-
-  .feature-text {
-    @apply text-gray max-w-md text-lg md:text-xl font-semibold opacity-0 translate-y-[100px]
-  }
-
-  .feature-text-container {
-    @apply w-full flex-center flex-col md:flex-row mt-10 md:mt-16 gap-5
-  }
-
-  .feature-video {
-    @apply w-full h-full object-cover object-center scale-150 opacity-0
-  }
-
-  .feature-video-container {
-    @apply w-full flex flex-col md:flex-row gap-5 items-center
-  }
-
-  .link {
-    @apply text-blue hover:underline cursor-pointer flex items-center text-xl opacity-0 translate-y-20
-  }
-
-  .control-btn {
-    @apply ml-4 p-4 rounded-full bg-gray-300 backdrop-blur flex-center
-  }
-
-  .hero-title {
-    @apply text-center font-semibold text-3xl text-gray-100 opacity-0 max-md:mb-10
-  }
-
-  .hiw-title {
-    @apply text-4xl md:text-7xl font-semibold text-center
-  }
-
-  .hiw-subtitle {
-    @apply text-gray font-semibold text-xl md:text-2xl py-10 text-center
-  }
-
-  .hiw-video {
-    @apply absolute w-[95%] h-[90%] rounded-[56px] overflow-hidden
-  }
-
-  .hiw-text-container {
-    @apply flex md:flex-row flex-col justify-between items-start gap-24
-  }
-
-  .hiw-text {
-    @apply text-gray text-xl font-normal md:font-semibold
-  }
-
-  .hiw-bigtext {
-    @apply text-white text-3xl md:text-5xl font-normal md:font-semibold my-2
-  }
-
-  .video-carousel_container {
-    @apply relative sm:w-[70vw] w-[88vw] md:h-[70vh] sm:h-[50vh] h-[35vh]
-  }
-
-  .g_fadeIn {
-    @apply opacity-0 translate-y-[100px]
-  }
-}
+const SecurePatientPortal: React.FC<PatientData> = ({ id }) => {
+  const { data, isLoading } = useSecureData<PatientData>(id);
+  
+  return (
+    <EncryptedContainer>
+      {isLoading ? <Loader /> : <PatientDashboard data={data} />}
+    </EncryptedContainer>
+  );
+};
 ```
 
-</details>
+## 👥 Our Team
 
-## <a name="links">🔗 Links</a>
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <img src="https://avatars.githubusercontent.com/u/118532237?v=4" width="120px" alt="Althuaf S" style="border-radius: 50%"/>
+        <br />
+        <sub><b>Althuaf S</b></sub>
+        <br />
+        <sup>CEO</sup>
+        <br />
+        <p align="center" style="font-size: 0.8em">
+          "A leader with a passion for building and scaling businesses"
+        </p>
+        <div align="center">
+          <a href="#" title="LinkedIn">
+            <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" />
+          </a>
+          <a href="https://github.com/Althuaf123" title="GitHub">
+            <img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white" />
+          </a>
+        </div>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4" width="120px" alt="Joel" style="border-radius: 50%"/>
+        <br />
+        <sub><b>Joel</b></sub>
+        <br />
+        <sup>CTO</sup>
+        <br />
+        <p align="center" style="font-size: 0.8em">
+          "A full stack developer with a passion for building scalable and efficient solutions in AI and Web3"
+        </p>
+        <div align="center">
+          <a href="https://github.com/JJ-Dynamite" title="LinkedIn">
+            <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" />
+          </a>
+          <a href="#" title="Twitter">
+            <img src="https://img.shields.io/badge/-Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white" />
+          </a>
+          <a href="#" title="Dribbble">
+            <img src="https://img.shields.io/badge/-Dribbble-EA4C89?style=flat-square&logo=dribbble&logoColor=white" />
+          </a>
+        </div>
+      </td>
+      <td align="center" width="33%">
+        <img src="https://avatars.githubusercontent.com/u/86820656?v=4" width="120px" alt="Arjun Chandran" style="border-radius: 50%"/>
+        <br />
+        <sub><b>Arjun Chandran</b></sub>
+        <br />
+        <sup>CMO</sup>
+        <br />
+        <p align="center" style="font-size: 0.8em">
+          "An aspiring entrepreneur with experience in sales and marketing"
+        </p>
+        <div align="center">
+          <a href="#" title="LinkedIn">
+            <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white" />
+          </a>
+          <a href="#" title="Twitter">
+            <img src="https://img.shields.io/badge/-Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white" />
+          </a>
+          <a href="https://github.com/MrUnwonted" title="GitHub">
+            <img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white" />
+          </a>
+        </div>
+      </td>
+    </tr>
+  </table>
 
-Public Assets used in the project can be found [here](https://drive.google.com/file/d/1syHiNxSIGXVApaIozdrLXM2x5dPhvaJL/view?usp=sharing)
+  <div align="center" style="margin-top: 20px;">
+    <h3>Leadership Team</h3>
+    <p>Our leadership team brings together diverse expertise in technology, business, and innovation.</p>
+  </div>
+</div>
 
-## <a name="more">🚀 More</a>
+<div align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=61DAFB&center=true&vCenter=true&width=435&lines=Building+the+Future+Together" alt="Team Motto" />
+</div>
+## 📞 Contact Us
 
-**Advance your skills with Next.js 14 Pro Course**
+<div align="center">
+  <a href="mailto:contact@val-x.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+  </a>
+  <a href="https://linkedin.com/company/val-x">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="https://twitter.com/valx">
+    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter" />
+  </a>
+</div>
 
-Enjoyed creating this project? Dive deeper into our PRO courses for a richer learning adventure. They're packed with detailed explanations, cool features, and exercises to boost your skills. Give it a go!
+<div align="center">
+  <h3>🌐 Visit Us</h3>
+  <p>
+    <b>Website:</b> <a href="https://val-x.com">val-x.com</a><br>
+    <b>Location:</b> [Your Location]<br>
+    <b>Hours:</b> Monday - Friday: 9:00 AM - 6:00 PM
+  </p>
+</div>
 
-<a href="https://jsmastery.pro/next14" target="_blank">
-<img src="https://github.com/sujatagunale/EasyRead/assets/151519281/557837ce-f612-4530-ab24-189e75133c71" alt="Project Banner">
-</a>
+---
 
-<br />
-<br />
+<div align="center">
+  <sub>Built with ❤️ by Val-X Team</sub>
+</div>
 
-**Accelerate your professional journey with the Expert Training program**
+## 🎯 Why Choose Val-X?
 
-And if you're hungry for more than just a course and want to understand how we learn and tackle tech challenges, hop into our personalized masterclass. We cover best practices, different web skills, and offer mentorship to boost your confidence. Let's learn and grow together!
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/48/000000/technical-support.png" width="60"/>
+        <h3>Expert Support</h3>
+        <p>24/7 dedicated technical support and maintenance</p>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/48/000000/agile.png" width="60"/>
+        <h3>Agile Development</h3>
+        <p>Flexible and iterative development process</p>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/fluency/48/000000/security-checked.png" width="60"/>
+        <h3>Security First</h3>
+        <p>Enterprise-grade security measures</p>
+      </td>
+    </tr>
+  </table>
+</div>
 
-<a href="https://www.jsmastery.pro/masterclass" target="_blank">
-<img src="https://github.com/sujatagunale/EasyRead/assets/151519281/fed352ad-f27b-400d-9b8f-c7fe628acb84" alt="Project Banner">
-</a>
+## 📈 Our Process
 
-#
+```mermaid
+graph LR
+    A[Discovery] --> B[Design]
+    B --> C[Development]
+    C --> D[Testing]
+    D --> E[Deployment]
+    E --> F[Maintenance]
+    style A fill:#61DAFB,stroke:#333,stroke-width:2px
+    style B fill:#3178C6,stroke:#333,stroke-width:2px
+    style C fill:#06B6D4,stroke:#333,stroke-width:2px
+    style D fill:#339933,stroke:#333,stroke-width:2px
+    style E fill:#EA4C89,stroke:#333,stroke-width:2px
+    style F fill:#181717,stroke:#333,stroke-width:2px
+```
+
+## 🌟 Success Stories
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%">
+        <img src="public/assets/images/explore1.jpg" alt="Project 1" style="border-radius: 10px"/>
+        <h3>E-Commerce Revolution</h3>
+        <p>Increased client's sales by 300% through innovative digital solutions</p>
+      </td>
+      <td width="50%">
+        <img src="public/assets/images/explore2.jpg" alt="Project 2" style="border-radius: 10px"/>
+        <h3>Healthcare Innovation</h3>
+        <p>Streamlined patient care with AI-powered management system</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 🎓 Knowledge Hub
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <h3>📚 Blog</h3>
+        <p>Latest insights and tech trends</p>
+        <a href="#blog">Read More</a>
+      </td>
+      <td align="center">
+        <h3>🎥 Tutorials</h3>
+        <p>Step-by-step technical guides</p>
+        <a href="#tutorials">Watch Now</a>
+      </td>
+      <td align="center">
+        <h3>📊 Case Studies</h3>
+        <p>Real-world success stories</p>
+        <a href="#case-studies">Explore</a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 🌐 Global Presence
+
+<div align="center">
+  <img src="https://readme-components.vercel.app/api?component=experience&company=GLOBAL&role=5%2B%20COUNTRIES&duration=25%2B%20PROJECTS&location=WORLDWIDE&fill=linear-gradient%2862deg%2C%20%238EC5FC%200%25%2C%20%23E0C3FC%20100%25%29%3B%0A" />
+</div>
+
+## 🤝 Partner Ecosystem
+
+<div align="center">
+  <img src="https://img.shields.io/badge/AWS-Partner-FF9900?style=for-the-badge&logo=amazon-aws" />
+  <img src="https://img.shields.io/badge/Google-Cloud-4285F4?style=for-the-badge&logo=google-cloud" />
+  <img src="https://img.shields.io/badge/Microsoft-Partner-5E5E5E?style=for-the-badge&logo=microsoft" />
+</div>
+
+## 📅 Book a Consultation
+
+<div align="center">
+  <a href="https://calendly.com/val-x">
+    <img src="https://img.shields.io/badge/Schedule_Meeting-4285F4?style=for-the-badge&logo=google-calendar&logoColor=white" />
+  </a>
+</div>
+
+## 🔒 Security & Compliance
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://img.icons8.com/color/48/000000/gdpr.png" width="40"/>
+        <p>GDPR Compliant</p>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/color/48/000000/ssl-security.png" width="40"/>
+        <p>SSL Secured</p>
+      </td>
+      <td align="center">
+        <img src="https://img.icons8.com/color/48/000000/iso-27001.png" width="40"/>
+        <p>ISO 27001</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer" />
+</div>
