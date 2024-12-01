@@ -11,47 +11,110 @@ gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
   {
-    name: "Starter Pack",
+    name: "Free Consultation",
     duration: "30 mins",
-    description: "Perfect for startups and small projects",
+    description: "Clear your doubts and explore possibilities",
     features: [
-      "Project scope analysis",
-      "Basic tech recommendations",
-      "Cost estimation",
-      "Quick action plan"
+      "Project feasibility discussion",
+      "Basic technical guidance",
+      "Cost estimation overview",
+      "Technology recommendations",
+      "Next steps planning"
     ],
     price: "Free",
-    accent: "from-emerald-400 to-teal-500"
+    accent: "from-green-400 to-emerald-500",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" 
+        />
+      </svg>
+    ),
+    // highlight: "No commitment required",
+    buttonText: "Book Free Session"
   },
   {
-    name: "Pro Solution",
+    name: "Website Development",
     duration: "1 hour",
-    description: "Ideal for growing businesses",
+    description: "Complete web development consultation",
     features: [
-      "Deep technical analysis",
-      "Custom architecture design",
-      "Security assessment",
-      "Scalability planning",
-      "Timeline roadmap"
+      "Website architecture planning",
+      "UI/UX design consultation",
+      "Technology stack recommendations",
+      "SEO & performance optimization",
+      "Scalability planning"
+    ],
+    price: "$199",
+    accent: "from-emerald-400 to-teal-500",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+    )
+  },
+  {
+    name: "Mobile App Development",
+    duration: "1 hour",
+    description: "Native & cross-platform app consultation",
+    features: [
+      "App architecture design",
+      "Platform strategy (iOS/Android)",
+      "UI/UX mobile patterns",
+      "Performance optimization",
+      "App store guidelines",
+      "Monetization strategy"
     ],
     price: "$249",
-    popular: true,
-    accent: "from-blue-400 to-indigo-500"
+    accent: "from-blue-400 to-indigo-500",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    )
   },
   {
-    name: "Enterprise",
+    name: "Full Stack Package",
     duration: "2 hours",
-    description: "For large-scale implementations",
+    description: "Complete web & mobile solution",
+    features: [
+      "Full-stack architecture",
+      "Cross-platform strategy",
+      "API design & integration",
+      "Database architecture",
+      "Security planning",
+      "Deployment strategy",
+      "Maintenance planning"
+    ],
+    price: "$399",
+    popular: true,
+    accent: "from-purple-400 to-pink-500",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+      </svg>
+    )
+  },
+  {
+    name: "Enterprise Solutions",
+    duration: "3 hours",
+    description: "Custom enterprise software consultation",
     features: [
       "Enterprise architecture",
-      "Multi-team coordination",
-      "Risk mitigation strategy",
-      "Resource optimization",
-      "Long-term support plan",
-      "Priority access"
+      "Legacy system integration",
+      "Cloud migration strategy",
+      "Security & compliance",
+      "Scalability planning",
+      "Team structure planning",
+      "Long-term roadmap",
+      "ROI analysis"
     ],
-    price: "$499",
-    accent: "from-purple-400 to-pink-500"
+    price: "$599",
+    accent: "from-amber-400 to-orange-500",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      </svg>
+    )
   }
 ];
 
@@ -59,9 +122,11 @@ const GetStarted = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     company: "",
     plan: "",
-    message: ""
+    message: "",
+    referralCode: ""
   });
 
   useGSAP(() => {
@@ -73,16 +138,41 @@ const GetStarted = () => {
       ease: "power3.out"
     });
 
-    // Animate plans
+    // Animate plans with horizontal scroll effect
     gsap.from(".plan-card", {
       scrollTrigger: {
         trigger: ".plans-section",
-        start: "top center+=100",
+        start: "top bottom-=100",
+        end: "top center",
+        toggleActions: "play none none reverse",
       },
-      y: 50,
+      x: 100,
       opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
+      stagger: {
+        amount: 0.8,
+        ease: "power2.out"
+      },
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    // Optional: Add hover effect for cards
+    const cards = document.querySelectorAll('.plan-card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          y: -8,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
     });
 
     // Animate form
@@ -117,23 +207,27 @@ const GetStarted = () => {
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="hero-content text-center max-w-3xl mx-auto">
-              <h1 className="text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mb-6">
+            <div className="hero-content text-center max-w-5xl mx-auto">
+              <h1 className="text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-6">
                 Transform Your Vision
               </h1>
               <p className="text-xl text-gray-300 mb-12">
                 Experience the future of digital transformation with our cutting-edge solutions
               </p>
-              <div className="relative h-[60vh] w-full rounded-2xl overflow-hidden">
+              <div className="relative h-[85vh] w-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
                 <ModelView />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                {/* Decorative elements */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-blue-500/20 blur-3xl" />
+                  <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tl from-purple-500/20 blur-3xl" />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Plans Section */}
-        <section className="plans-section py-20">
+        <section className="plans-section py-20 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -144,54 +238,108 @@ const GetStarted = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan, index) => (
-                <div 
-                  key={index}
-                  className={`plan-card relative p-8 rounded-3xl bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 
-                    hover:border-gray-600/50 transition-all duration-300 hover:transform hover:-translate-y-2`}
-                >
-                  {plan.popular && (
-                    <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 
-                      text-white text-sm rounded-full font-medium">
-                      Most Popular
-                    </span>
-                  )}
+            {/* Scroll Container */}
+            <div className="relative">
+              {/* Gradient Overlays */}
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none" />
 
-                  <div className={`h-2 w-20 rounded-full mb-8 bg-gradient-to-r ${plan.accent}`} />
+              {/* Scrollable Container */}
+              <div className="overflow-x-auto hide-scrollbar">
+                <div className="flex gap-8 pb-8 min-w-max">
+                  {plans.map((plan, index) => (
+                    <div 
+                      key={index}
+                      className={`plan-card flex-shrink-0 w-[300px] relative p-8 rounded-3xl bg-gray-800/30 backdrop-blur-xl 
+                        border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 
+                        hover:transform hover:-translate-y-2`}
+                    >
+                      {plan.popular && (
+                        <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 
+                          text-white text-sm rounded-full font-medium">
+                          Most Popular
+                        </span>
+                      )}
+                      
+                      {plan.highlight && (
+                        <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 
+                          text-white text-sm rounded-full font-medium">
+                          {plan.highlight}
+                        </span>
+                      )}
 
-                  <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                    <p className="text-gray-400">{plan.description}</p>
-                    <div className="mt-4 flex items-baseline gap-2">
-                      <span className="text-4xl font-bold text-white">{plan.price}</span>
-                      <span className="text-gray-400">/ {plan.duration}</span>
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${plan.accent} flex items-center justify-center`}>
+                          {plan.icon}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                          <p className="text-sm text-gray-400">{plan.duration}</p>
+                        </div>
+                      </div>
+
+                      <div className="mb-6">
+                        <p className="text-gray-400">{plan.description}</p>
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="text-4xl font-bold text-white">{plan.price}</span>
+                          <span className="text-gray-400">/ session</span>
+                        </div>
+                      </div>
+
+                      <ul className="space-y-4 mb-8">
+                        {plan.features.map((feature, i) => (
+                          <li key={i} className="flex items-start text-gray-300">
+                            <svg className="w-5 h-5 text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <button 
+                        className={`w-full py-4 rounded-xl text-lg font-semibold transition-all duration-300
+                          bg-gradient-to-r ${plan.accent} text-white hover:opacity-90 hover:shadow-lg`}
+                        onClick={() => setFormData({ ...formData, plan: plan.name })}
+                      >
+                        {plan.buttonText || "Get Started"}
+                      </button>
                     </div>
-                  </div>
-
-                  <ul className="space-y-4 mb-8">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-start text-gray-300">
-                        <svg className="w-5 h-5 text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button 
-                    className={`w-full py-4 rounded-xl text-lg font-semibold transition-all duration-300
-                      bg-gradient-to-r ${plan.accent} text-white hover:opacity-90 hover:shadow-lg`}
-                    onClick={() => setFormData({ ...formData, plan: plan.name })}
-                  >
-                    Get Started
-                  </button>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              {/* Scroll Indicators */}
+              <div className="mt-8 flex justify-center gap-2">
+                {plans.map((_, index) => (
+                  <button
+                    key={index}
+                    className="w-2 h-2 rounded-full bg-gray-600 hover:bg-blue-500 transition-colors duration-200"
+                    onClick={() => {
+                      const container = document.querySelector('.overflow-x-auto');
+                      const cardWidth = 316; // 300px card + 16px gap
+                      container.scrollTo({
+                        left: cardWidth * index,
+                        behavior: 'smooth'
+                      });
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
+
+        {/* Add this CSS to your global styles or as a style tag */}
+        <style jsx>{`
+          .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+          .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
 
         {/* Contact Form Section */}
         <section className="py-20">
@@ -233,17 +381,36 @@ const GetStarted = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-2">Company</label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                      focus:border-transparent text-white"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-2">
+                      Phone Number
+                      <span className="text-gray-500 ml-2">(Optional)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+1 (555) 000-0000"
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
+                        focus:border-transparent text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-2">Company</label>
+                    <input
+                      type="text"
+                      id="company"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
+                        focus:border-transparent text-white"
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -265,6 +432,32 @@ const GetStarted = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="referralCode" className="block text-sm font-medium text-gray-400 mb-2">
+                    Referral Code
+                    <span className="text-gray-500 ml-2">(Optional)</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="referralCode"
+                      name="referralCode"
+                      value={formData.referralCode}
+                      onChange={handleChange}
+                      placeholder="Enter referral code if you have one"
+                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
+                        focus:border-transparent text-white pr-12"
+                    />
+                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" 
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Project Details</label>
                   <textarea
                     id="message"
@@ -280,7 +473,7 @@ const GetStarted = () => {
                 <button
                   type="submit"
                   className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl text-lg font-semibold 
-                    hover:opacity-90 transition-all duration-300"
+                    hover:opacity-90 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
                 >
                   Schedule Consultation
                 </button>

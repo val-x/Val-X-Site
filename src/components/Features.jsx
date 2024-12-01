@@ -1,7 +1,7 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useRef } from 'react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -132,154 +132,178 @@ const StatCard = memo(({ stat, index }) => (
   </div>
 ));
 
-const ProjectCard = memo(({ project }) => (
-  <a 
-    href={project.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="project-card group bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden hover:bg-gray-800/70 transition-all duration-300"
-    aria-label={`Visit ${project.name} project`}
+// Update ProjectCard with modern design
+const ProjectCard = memo(({ project, isActive }) => (
+  <div 
+    className={`project-card flex-shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] 
+    bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden 
+    transition-all duration-500 transform perspective-1000 
+    ${isActive ? 'scale-100 rotate-0 translate-y-0' : 'scale-95 -rotate-2 translate-y-4 opacity-50'}
+    hover:shadow-2xl hover:shadow-blue-500/20`}
+    aria-label={`${project.name} project`}
   >
-    <div className="aspect-video overflow-hidden">
-      <img 
-        src={project.image}
-        alt={`${project.name} project screenshot`}
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-        loading="lazy"
+    <a 
+      href={project.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block"
+    >
+      <div className="relative aspect-video overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50 z-10" />
+        <img 
+          src={project.image}
+          alt={`${project.name} project screenshot`}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
+        />
+        <div className="absolute top-4 right-4 bg-blue-500/20 backdrop-blur-md px-3 py-1 rounded-full z-20">
+          <span className="text-sm text-white font-medium">View Project</span>
+        </div>
+      </div>
+      <div className="p-8">
+        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+          {project.name}
+        </h3>
+        <p className="text-gray-400 line-clamp-2">
+          {project.description}
+        </p>
+      </div>
+    </a>
+  </div>
+));
+
+// Add Progress Indicator component
+const ProgressIndicator = memo(({ total, current }) => (
+  <div className="flex justify-center gap-2 mt-8">
+    {Array.from({ length: total }).map((_, index) => (
+      <div
+        key={index}
+        className={`h-1 rounded-full transition-all duration-300 ${
+          index === current 
+            ? 'w-8 bg-blue-500' 
+            : 'w-2 bg-gray-700'
+        }`}
       />
-    </div>
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-        {project.name}
-      </h3>
-      <p className="text-gray-400">
-        {project.description}
-      </p>
-    </div>
-  </a>
+    ))}
+  </div>
 ));
 
 // Main component
 const Features = () => {
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const projectsToShow = showAllProjects ? projects : projects.slice(0, 3);
+  const sliderRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
-      // Features animation - staggered entrance with scale
+      // Features section heading animation
+      gsap.from(".features-heading", {
+        scrollTrigger: {
+          trigger: ".features-heading",
+          start: "top 85%",
+          once: true
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      });
+
+      // Features cards animation with better timing
       gsap.from(".feature-card", {
         scrollTrigger: {
           trigger: ".features-container",
-          start: "top center+=100",
-          toggleActions: "play none none reverse"
-        },
-        y: 100,
-        scale: 0.8,
-        opacity: 0,
-        duration: 1,
-        stagger: {
-          amount: 0.6,
-          ease: "power2.out"
-        },
-        ease: "elastic.out(1, 0.8)"
-      });
-
-      // Stats counter animation with floating effect
-      stats.forEach((stat, index) => {
-        const value = parseFloat(stat.value);
-        if (!isNaN(value)) {
-          // Counter animation
-          gsap.from(`.stat-value-${index}`, {
-            scrollTrigger: {
-              trigger: ".stats-container",
-              start: "top center+=100",
-              toggleActions: "play none none reverse"
-            },
-            textContent: 0,
-            duration: 2.5,
-            snap: { textContent: 1 },
-            ease: "power2.out"
-          });
-
-          // Floating animation
-          gsap.to(`.stat-item:nth-child(${index + 1})`, {
-            scrollTrigger: {
-              trigger: ".stats-container",
-              start: "top center+=100",
-              toggleActions: "play none none reverse"
-            },
-            y: -10,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "power1.inOut",
-            delay: index * 0.2
-          });
-        }
-      });
-
-      // Projects animation with 3D effect
-      gsap.from(".project-card", {
-        scrollTrigger: {
-          trigger: ".projects-container",
-          start: "top center+=100",
-          toggleActions: "play none none reverse"
+          start: "top 85%",
+          end: "bottom center",
+          toggleActions: "play none none none",
+          once: true,
+          markers: false // Set to true for debugging
         },
         opacity: 0,
-        rotationY: 45,
-        z: -100,
-        duration: 1,
+        y: 30,
+        duration: 0.6,
         stagger: {
-          amount: 0.8,
+          each: 0.2,
           from: "start"
         },
-        ease: "power3.out",
-        transformOrigin: "center center"
+        ease: "power2.out"
       });
 
-      // Continuous hover animation for project images
-      gsap.to(".project-card img", {
-        scale: 1.05,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut",
-        stagger: {
-          amount: 1,
-          from: "random"
-        }
-      });
+      // Initialize the slider
+      const slider = sliderRef.current;
+      let startX;
+      let scrollLeft;
+
+      const handleDragStart = (e) => {
+        setIsDragging(true);
+        startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+        scrollLeft = slider.scrollLeft;
+      };
+
+      const handleDragEnd = () => {
+        setIsDragging(false);
+      };
+
+      const handleDragMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+        const walk = (x - startX) * 2;
+        slider.scrollLeft = scrollLeft - walk;
+      };
+
+      slider.addEventListener('mousedown', handleDragStart);
+      slider.addEventListener('touchstart', handleDragStart);
+      slider.addEventListener('mousemove', handleDragMove);
+      slider.addEventListener('touchmove', handleDragMove);
+      slider.addEventListener('mouseup', handleDragEnd);
+      slider.addEventListener('touchend', handleDragEnd);
+      slider.addEventListener('mouseleave', handleDragEnd);
+
+      return () => {
+        slider.removeEventListener('mousedown', handleDragStart);
+        slider.removeEventListener('touchstart', handleDragStart);
+        slider.removeEventListener('mousemove', handleDragMove);
+        slider.removeEventListener('touchmove', handleDragMove);
+        slider.removeEventListener('mouseup', handleDragEnd);
+        slider.removeEventListener('touchend', handleDragEnd);
+        slider.removeEventListener('mouseleave', handleDragEnd);
+      };
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [isDragging]);
 
-  // Show More animation
-  const handleShowMore = () => {
-    setShowAllProjects(true);
-    gsap.from(".project-card:nth-child(n+4)", {
-      opacity: 0,
-      rotationY: 45,
-      z: -100,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power3.out",
-      transformOrigin: "center center",
-      clearProps: "transform" // Clean up transform after animation
-    });
+  // Add visible slides calculation
+  const getVisibleSlides = () => {
+    if (typeof window === 'undefined') return 3;
+    if (window.innerWidth < 768) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 3;
   };
 
-  // Show Less animation
-  const handleShowLess = () => {
-    gsap.to(".project-card:nth-child(n+4)", {
-      opacity: 0,
-      rotationY: -45,
-      z: -100,
-      duration: 0.5,
-      stagger: 0.1,
-      ease: "power2.in",
-      onComplete: () => setShowAllProjects(false)
+  const slideNext = () => {
+    const slider = sliderRef.current;
+    const slideWidth = slider.clientWidth;
+    const visibleSlides = getVisibleSlides();
+    gsap.to(slider, {
+      scrollLeft: `+=${slideWidth / visibleSlides}`,
+      duration: 0.7,
+      ease: 'power2.out'
     });
+    setCurrentSlide(prev => Math.min(prev + 1, projects.length - visibleSlides));
+  };
+
+  const slidePrev = () => {
+    const slider = sliderRef.current;
+    const slideWidth = slider.clientWidth;
+    const visibleSlides = getVisibleSlides();
+    gsap.to(slider, {
+      scrollLeft: `-=${slideWidth / visibleSlides}`,
+      duration: 0.7,
+      ease: 'power2.out'
+    });
+    setCurrentSlide(prev => Math.max(prev - 1, 0));
   };
 
   // Add hover animations for feature cards
@@ -322,7 +346,7 @@ const Features = () => {
     >
       <div className="max-w-7xl mx-auto px-6">
         {/* Features Section */}
-        <div className="text-center mb-16">
+        <div className="features-heading text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Why Choose Us
           </h2>
@@ -344,9 +368,9 @@ const Features = () => {
           ))}
         </div>
 
-        {/* Projects Section */}
-        <div className="projects-section">
-          <div className="text-center mb-16">
+        {/* Updated Projects Section */}
+        <div className="projects-section relative py-16">
+          <div className="projects-heading text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Our Projects
             </h2>
@@ -355,47 +379,60 @@ const Features = () => {
             </p>
           </div>
 
-          <div 
-            className="projects-container"
-            role="region"
-            aria-label="Project showcase"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projectsToShow.map((project, index) => (
-                <ProjectCard key={project.name} project={project} />
+          <div className="relative max-w-7xl mx-auto px-6">
+            {/* Gradient Overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10" />
+
+            <div 
+              ref={sliderRef}
+              className="projects-container overflow-x-scroll scrollbar-hide snap-x snap-mandatory flex gap-8 
+              cursor-grab active:cursor-grabbing py-8 px-4"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {projects.map((project, index) => (
+                <ProjectCard 
+                  key={project.name} 
+                  project={project} 
+                  isActive={index === currentSlide}
+                />
               ))}
             </div>
 
-            {/* Show More/Less Button */}
-            <div className="flex justify-center mt-12">
-              <button
-                onClick={showAllProjects ? handleShowLess : handleShowMore}
-                className="group relative px-8 py-4 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 overflow-hidden"
-                aria-expanded={showAllProjects}
-                aria-controls="projects-grid"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  {showAllProjects ? 'Show Less' : 'Show More Projects'}
-                  <svg 
-                    className={`w-5 h-5 transition-transform duration-300 ${
-                      showAllProjects ? 'rotate-180' : ''
-                    }`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </span>
-                {/* Button hover effect */}
-                <div className="absolute inset-0 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              </button>
-            </div>
+            {/* Updated Navigation Buttons */}
+            <button
+              onClick={slidePrev}
+              disabled={currentSlide === 0}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-blue-500/10 hover:bg-blue-500/20 
+              p-4 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed z-20
+              backdrop-blur-sm border border-blue-500/20 transition-all duration-300
+              hover:scale-110"
+              aria-label="Previous project"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              onClick={slideNext}
+              disabled={currentSlide === projects.length - getVisibleSlides()}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-blue-500/10 hover:bg-blue-500/20 
+              p-4 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed z-20
+              backdrop-blur-sm border border-blue-500/20 transition-all duration-300
+              hover:scale-110"
+              aria-label="Next project"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Progress Indicator */}
+            <ProgressIndicator 
+              total={projects.length - getVisibleSlides() + 1} 
+              current={currentSlide} 
+            />
           </div>
         </div>
       </div>

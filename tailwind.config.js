@@ -44,9 +44,44 @@ export default {
           },
         },
       },
+      perspective: {
+        '1000': '1000px',
+      },
+      transitionProperty: {
+        'transform': 'transform',
+      },
+      keyframes: {
+        'text-shine': {
+          '0%': {
+            'background-size': '200% 100%',
+            'background-position': '100% 50%'
+          },
+          '100%': {
+            'background-size': '200% 100%',
+            'background-position': '0% 50%'
+          }
+        }
+      },
+      animation: {
+        'text-shine': 'text-shine 3s linear infinite'
+      }
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-hide': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+        '.perspective-1000': {
+          'perspective': '1000px',
+        },
+      });
+    },
   ],
 };

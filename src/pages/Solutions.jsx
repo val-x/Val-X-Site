@@ -77,29 +77,174 @@ const services = [
   }
 ];
 
+const whyChooseUs = [
+  {
+    title: "Industry Expertise",
+    description: "Over a decade of experience delivering cutting-edge solutions across various industries",
+    icon: "🏆"
+  },
+  {
+    title: "Dedicated Support",
+    description: "24/7 technical support and maintenance to ensure your solutions run smoothly",
+    icon: "🛟"
+  },
+  {
+    title: "Innovative Approach",
+    description: "Leveraging latest technologies and best practices to deliver future-proof solutions",
+    icon: "💡"
+  },
+  {
+    title: "Proven Track Record",
+    description: "Successfully delivered 500+ projects with 95% client satisfaction rate",
+    icon: "📈"
+  }
+];
+
+const partners = [
+  {
+    name: "Amazon Web Services",
+    description: "Certified AWS partner providing scalable cloud infrastructure solutions",
+    logo: "/aws-logo.svg",
+    link: "https://aws.amazon.com"
+  },
+  {
+    name: "Appwrite",
+    description: "Leveraging Appwrite's open-source backend platform for rapid development",
+    logo: "/appwrite-logo.svg",
+    link: "https://appwrite.io"
+  },
+  {
+    name: "Supabase",
+    description: "Building with Supabase's open source Firebase alternative",
+    logo: "/supabase-logo.svg",
+    link: "https://supabase.com"
+  }
+];
+
 const Solutions = () => {
   useGSAP(() => {
-    gsap.from(".service-card", {
-      scrollTrigger: {
-        trigger: ".services-container",
-        start: "top center+=100",
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
+    // Batch all animations together for better performance
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power2.out",
+        duration: 0.5,
+      }
     });
 
-    gsap.from(".service-detail", {
-      scrollTrigger: {
-        trigger: ".details-container",
-        start: "top center+=100",
-      },
-      x: -50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
+    // Create reusable ScrollTrigger settings
+    const scrollConfig = {
+      start: "top bottom",
+      end: "bottom top",
+      toggleActions: "play none none reverse",
+    };
+
+    // Use will-change to optimize GPU acceleration
+    gsap.set([".service-overview-card", ".why-choose-item", ".service-detail"], {
+      willChange: "transform, opacity"
     });
+
+    // Batch similar animations together
+    ScrollTrigger.batch(".service-overview-card", {
+      trigger: ".services-overview",
+      start: "top 80%",
+      end: "bottom 20%",
+      onEnter: (elements) => {
+        gsap.fromTo(elements,
+          {
+            y: 20,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            delay: 0.2,
+            overwrite: true
+          }
+        );
+      },
+      onEnterBack: (elements) => {
+        gsap.fromTo(elements,
+          {
+            y: -20,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            overwrite: true
+          }
+        );
+      },
+      once: true
+    });
+
+    ScrollTrigger.batch(".why-choose-item", {
+      trigger: ".why-choose-section",
+      start: "top 80%",
+      end: "bottom 20%",
+      onEnter: (elements) => {
+        gsap.fromTo(elements, 
+          {
+            y: 20,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            delay: 0.2,
+            overwrite: true
+          }
+        );
+      },
+      onEnterBack: (elements) => {
+        gsap.fromTo(elements,
+          {
+            y: -20,
+            opacity: 0
+          },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            overwrite: true
+          }
+        );
+      },
+      once: true
+    });
+
+    ScrollTrigger.batch(".service-detail", {
+      ...scrollConfig,
+      onEnter: (elements) => {
+        gsap.from(elements, {
+          y: 30,
+          opacity: 0,
+          stagger: 0.3,
+          clearProps: "willChange"
+        });
+      },
+      onEnterBack: (elements) => {
+        gsap.from(elements, {
+          y: -30,
+          opacity: 0,
+          stagger: 0.3,
+          clearProps: "willChange"
+        });
+      }
+    });
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      tl.kill();
+    };
   }, []);
 
   return (
@@ -121,32 +266,35 @@ const Solutions = () => {
           </div>
         </section>
 
-        {/* Services Grid */}
-        <section className="py-20 bg-black">
+        
+
+        {/* Why Choose Us Section */}
+        <section className="py-20 bg-gradient-to-b from-gray-900 via-gray-900 to-black">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="services-container grid grid-cols-1 md:grid-cols-2 gap-8">
-              {services.map((service, index) => (
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-6">
+                Why Choose Us
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Partner with us for innovative solutions that drive your business forward
+              </p>
+            </div>
+            
+            <div className="why-choose-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {whyChooseUs.map((item, index) => (
                 <div 
                   key={index}
-                  className="service-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 hover:bg-gray-800/70 transition-all duration-300"
+                  className="why-choose-item group p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
                 >
-                  <div className="text-4xl mb-6">{service.icon}</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">
-                    {service.title}
+                  <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    {item.title}
                   </h3>
-                  <p className="text-gray-400 mb-6">
-                    {service.description}
+                  <p className="text-gray-400 text-sm">
+                    {item.description}
                   </p>
-                  <ul className="space-y-3">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-center text-gray-300">
-                        <svg className="w-5 h-5 text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               ))}
             </div>
@@ -205,6 +353,47 @@ const Solutions = () => {
             </div>
           </div>
         </section>
+
+        {/* Partners Section */}
+        <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-6">
+                Our Technology Partners
+              </h2>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                We collaborate with industry leaders to deliver exceptional solutions
+              </p>
+            </div>
+            
+            <div className="services-overview grid grid-cols-1 md:grid-cols-3 gap-8">
+              {partners.map((partner, index) => (
+                <a
+                  href={partner.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={index}
+                  className="service-overview-card group bg-gray-800/30 backdrop-blur-sm rounded-xl p-8 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
+                >
+                  <div className="h-16 mb-6 flex items-center justify-center">
+                    <img 
+                      src={partner.logo} 
+                      alt={`${partner.name} logo`}
+                      className="h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3 text-center">
+                    {partner.name}
+                  </h3>
+                  <p className="text-gray-400 text-sm text-center">
+                    {partner.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+        
       </main>
 
       <Footer />
