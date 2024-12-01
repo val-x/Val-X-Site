@@ -6,47 +6,37 @@ gsap.registerPlugin(ScrollTrigger);
 
 const team = [
   {
-    name: "Alex Johnson",
-    role: "Lead Developer",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    bio: "10+ years of experience in full-stack development",
+    name: "Arjun Chandran",
+    role: "CMO",
+    image: "https://avatars.githubusercontent.com/u/86820656?v=4",
+    bio: "an aspiring entrepreneur with experience in sales and marketing",
     socials: {
       linkedin: "#",
       twitter: "#",
-      github: "#"
+      github: "https://github.com/MrUnwonted"
     }
   },
   {
-    name: "Sarah Chen",
-    role: "UI/UX Designer",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    bio: "Passionate about creating beautiful user experiences",
+    name: "Joel",
+    role: "CTO",
+    image: "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
+    bio: "a full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
     socials: {
-      linkedin: "#",
+      linkedin: "https://github.com/JJ-Dynamite",
       twitter: "#",
       dribbble: "#"
     }
   },
   {
-    name: "Michael Brown",
-    role: "DevOps Engineer",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    bio: "Expert in cloud infrastructure and automation",
+    name: "Althuaf S",
+    role: "CEO",
+    image: "https://avatars.githubusercontent.com/u/118532237?v=4",
+    bio: "a leader with a passion for building and scaling businesses",
     socials: {
       linkedin: "#",
-      github: "#"
+      github: "https://github.com/Althuaf123"
     }
   },
-  {
-    name: "Emily Taylor",
-    role: "Project Manager",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    bio: "Skilled in agile methodologies and team leadership",
-    socials: {
-      linkedin: "#",
-      twitter: "#"
-    }
-  }
 ];
 
 const Team = () => {

@@ -1,54 +1,66 @@
-import { OrbitControls, PerspectiveCamera, View } from "@react-three/drei"
-import * as THREE from 'three'
-import Lights from './Lights';
-import Loader from './Loader';
+import { useRef, Suspense } from 'react';
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import * as THREE from 'three';
 import IPhone from './IPhone';
-import Desktop from './Desktop';
-import { Suspense } from "react";
+import Loader from './Loader';
+import Lights from './Lights';
 
-const ModelView = ({ index, groupRef, gsapType, controlRef, setRotationState, size, item }) => {
+gsap.registerPlugin(ScrollTrigger);
+
+const ModelView = () => {
+  const groupRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.from(containerRef.current, {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top center+=100",
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8
+    });
+  }, []);
+
   return (
-    <View
-      index={index}
-      id={gsapType}
-      className={`w-full h-full absolute ${index === 2 ? 'right-[-100%]' : ''}`}
+    <div 
+      ref={containerRef} 
+      className="w-full h-[400px] rounded-xl overflow-hidden bg-gray-800/50 backdrop-blur-sm relative"
     >
-      <ambientLight intensity={0.3} />
-      <PerspectiveCamera makeDefault position={[0, 0, 5]} /> // Increased Z value for a wider view
-      <Lights />
+      <Canvas shadows>
+        <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+        <ambientLight intensity={0.3} />
+        <Lights />
 
-      <OrbitControls 
-        makeDefault
-        ref={controlRef}
-        enableZoom={false}
-        enablePan={false}
-        rotateSpeed={0.4}
-        target={new THREE.Vector3(0, 0 ,0)}
-        onEnd={() => setRotationState(controlRef.current.getAzimuthalAngle())}
-      /> 
+        <OrbitControls 
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.4}
+          target={new THREE.Vector3(0, 0, 0)}
+        />
 
-      <group ref={groupRef} name={`${index === 1 ? 'small' : 'large'}`} position={[0, 0 ,0]}>
-        <Suspense fallback={<Loader />}>
-         {/* { index === 1 && item.id<=4 ? <IPhone 
-            scale={ [15, 15, 15] }
-            item={item}
-            size={size}
-          /> : 
-          <Desktop 
-          scale={ [17, 17, 17] }
-          item={item}
-          size={size}
-        /> 
-        } */}
-          <IPhone 
-            scale={ [15, 15, 15] }
-            item={item}
-            size={size}
-          /> 
-        </Suspense>
-      </group>
-    </View>
-  )
-}
+        <group ref={groupRef} position={[0, 0, 0]}>
+          <Suspense fallback={<Loader />}>
+            <IPhone 
+              scale={[15, 15, 15]}
+              position={[0, 0, 0]}
+              rotation={[0, Math.PI / 2, 0]}
+              item={{
+                title: "iPhone 15 Pro",
+                color: "#B8B8B8",
+                img: "/assets/images/hero.jpeg"
+              }}
+            />
+          </Suspense>
+        </group>
+      </Canvas>
+    </div>
+  );
+};
 
-export default ModelView
+export default ModelView;

@@ -1,15 +1,20 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import mdx from '@mdx-js/rollup'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), sentryVitePlugin({
-    org: "jsm-x9",
-    project: "javascript-react"
-  })],
+  plugins: [react(), mdx()],
 
   build: {
     sourcemap: true
+  },
+
+  optimizeDeps: {
+    include: ['@mdx-js/react'],
+  },
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.mdx']
   }
 })

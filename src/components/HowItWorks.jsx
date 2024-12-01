@@ -1,96 +1,114 @@
-import React, { useRef } from 'react'
-import { chipImg, frameImg, frameVideo } from '../utils'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap';
-import { animateWithGsap } from '../utils/animations';
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const features = [
+  {
+    title: "Agile Methodology",
+    description: "We follow an iterative approach with regular feedback and continuous improvement.",
+    benefits: [
+      "Faster time to market",
+      "Flexible to changes",
+      "Regular deliverables",
+      "Transparent process"
+    ],
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  },
+  {
+    title: "Quality Assurance",
+    description: "Rigorous testing and quality control at every stage of development.",
+    benefits: [
+      "Automated testing",
+      "Performance optimization",
+      "Security audits",
+      "Code reviews"
+    ],
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  },
+  {
+    title: "Continuous Support",
+    description: "Ongoing maintenance and support to ensure optimal performance.",
+    benefits: [
+      "24/7 monitoring",
+      "Regular updates",
+      "Performance tracking",
+      "Technical support"
+    ],
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  }
+];
 
 const HowItWorks = () => {
-  const videoRef = useRef();
-
   useGSAP(() => {
-    gsap.from('#icon', {
+    gsap.from(".feature-card", {
       scrollTrigger: {
-        trigger: '#icon',
-        start: '20% bottom'
+        trigger: ".features-container",
+        start: "top center+=100",
       },
+      y: 50,
       opacity: 0,
-      scale: 2,
-      duration: 2,
-      ease: 'power2.inOut'
-    })
-
-    animateWithGsap('.g_fadeIn', {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: 'power2.inOut'
-    })
+      duration: 0.8,
+      stagger: 0.3
+    });
   }, []);
 
   return (
-    <section className="common-padding">
-      <div className="screen-max-width">
-        {/* <div id="icon" className="flex-center w-full my-20">
-          <img src={chipImg} alt="innovation icon" width={180} height={180} />
-        </div> */}
-
-        <div className="flex flex-col items-center">
-          <h2 className="hiw-title">
-            Innovative Solutions.
-            <br /> Transforming Businesses.
+    <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            How We Work
           </h2>
-
-          <p className="hiw-subtitle">
-            Discover how our cutting-edge IT services can revolutionize your operations.
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            Our proven approach to delivering exceptional software solutions
           </p>
         </div>
 
-        <div className="mt-10 md:mt-20 mb-14">
-          <div className="relative h-full flex-center">
-            <div className="overflow-hidden">
-              <img 
-                src={frameImg}
-                alt="IT solutions showcase"
-                className="bg-transparent relative z-10"
-              />
-            </div>
-            <div className="hiw-video">
-                <video className="pointer-events-none" playsInline preload="none" muted autoPlay ref={videoRef}>
-                  <source src={frameVideo} type="video/mp4" />
-                </video>
+        <div className="features-container space-y-24">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className={`feature-card flex flex-col ${
+                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+              } gap-12 items-center`}
+            >
+              <div className="flex-1">
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-xl text-gray-400 mb-8">
+                  {feature.description}
+                </p>
+                <ul className="space-y-4">
+                  {feature.benefits.map((benefit, i) => (
+                    <li key={i} className="flex items-center text-gray-300">
+                      <svg className="w-6 h-6 text-blue-400 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
               </div>
-          </div>
-          <p className="text-gray font-semibold text-center mt-3">Our AI-Powered Analytics Dashboard</p>
-        </div>
 
-        <div className="hiw-text-container">
-          <div className="flex flex-1 justify-center flex-col">
-            <p className="hiw-text g_fadeIn">
-              Our team of experts delivers {' '}
-              <span className="text-white">
-                tailored IT solutions
-              </span>
-              {' '}that drive efficiency and growth.
-            </p>
-
-            <p className="hiw-text g_fadeIn">
-              From AI integration to cloud services, we {' '}
-              <span className="text-white">
-                empower your business
-              </span>
-              {' '}with cutting-edge technology.
-            </p>
-          </div>
-        
-          <div className="flex-1 flex justify-center flex-col g_fadeIn">
-            <p className="hiw-text">Achieve</p>
-            <p className="hiw-bigtext">Digital Transformation</p>
-            <p className="hiw-text">with our expertise</p>
-          </div>
+              <div className="flex-1">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-blue-500/20 rounded-xl blur-xl"></div>
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title}
+                    className="relative rounded-xl w-full h-[400px] object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HowItWorks
+export default HowItWorks;
