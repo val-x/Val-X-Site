@@ -154,39 +154,49 @@ const GetStarted = () => {
       ease: "power3.out"
     });
 
-    // Animate plans with horizontal scroll effect
-    gsap.from(".plan-card", {
-      scrollTrigger: {
-        trigger: ".plans-section",
-        start: "top bottom-=100",
-        end: "top center",
-        toggleActions: "play none none reverse",
+    // Fix plans animation
+    const planCards = gsap.utils.toArray(".plan-card");
+    gsap.set(planCards, { opacity: 0, y: 40 }); // Set initial state
+    
+    ScrollTrigger.batch(planCards, {
+      start: "top bottom-=100",
+      onEnter: (elements) => {
+        gsap.to(elements, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power2.out"
+        });
       },
-      x: 100,
-      opacity: 0,
-      stagger: {
-        amount: 0.8,
-        ease: "power2.out"
-      },
-      duration: 1,
-      ease: "power3.out"
+      once: true
     });
 
-    // Optional: Add hover effect for cards
-    const cards = document.querySelectorAll('.plan-card');
-    cards.forEach(card => {
+    // Keep hover animations
+    planCards.forEach(card => {
       card.addEventListener('mouseenter', () => {
         gsap.to(card, {
-          y: -8,
+          y: -12,
+          scale: 1.02,
           duration: 0.3,
           ease: "power2.out"
         });
+        gsap.to(card, {
+          boxShadow: '0 8px 32px rgba(31, 149, 255, 0.2)',
+          duration: 0.3
+        });
       });
+      
       card.addEventListener('mouseleave', () => {
         gsap.to(card, {
           y: 0,
+          scale: 1,
           duration: 0.3,
           ease: "power2.out"
+        });
+        gsap.to(card, {
+          boxShadow: 'none',
+          duration: 0.3
         });
       });
     });
@@ -254,108 +264,96 @@ const GetStarted = () => {
         </section>
 
         {/* Plans Section */}
-        <section className="plans-section py-12 md:py-20 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="text-center mb-8 md:mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
-                Choose Your Journey
+        <section className="plans-section py-20 relative">
+          {/* Background elements */}
+          <div className="absolute inset-0">
+            <div className="absolute -top-[40%] -left-[20%] w-[70%] h-[70%] rounded-full bg-blue-500/5 blur-[120px]" />
+            <div className="absolute -bottom-[40%] -right-[20%] w-[70%] h-[70%] rounded-full bg-purple-500/5 blur-[120px]" />
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+            {/* Header content */}
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+                  Choose Your Journey
+                </span>
               </h2>
-              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-                Select the perfect consultation package that aligns with your goals
-              </p>
+              <div className="max-w-3xl mx-auto space-y-4">
+                <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
+                  Select the perfect consultation package that aligns with your goals
+                </p>
+                <p className="text-base md:text-lg text-gray-400">
+                  All packages include a personalized roadmap and actionable recommendations
+                </p>
+              </div>
             </div>
 
-            {/* Scroll Container */}
-            <div className="relative">
-              {/* Gradient Overlays - Only show on desktop */}
-              <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none" />
-              <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none" />
-
-              {/* Scrollable Container */}
-              <div className="overflow-x-auto hide-scrollbar">
-                <div className="flex gap-4 md:gap-8 pb-8 min-w-max px-4 md:px-0">
-                  {plans.map((plan, index) => (
-                    <div 
-                      key={index}
-                      className={`plan-card flex-shrink-0 w-[280px] md:w-[300px] relative p-6 md:p-8 rounded-2xl md:rounded-3xl 
-                        bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 hover:border-gray-600/50 
-                        transition-all duration-300 hover:transform hover:-translate-y-2`}
-                    >
-                      {plan.popular && (
-                        <span className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 px-4 md:px-6 py-1 md:py-2 
-                          bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs md:text-sm rounded-full font-medium">
-                          Most Popular
-                        </span>
-                      )}
-                      
-                      {plan.highlight && (
-                        <span className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 px-4 md:px-6 py-1 md:py-2 
-                          bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs md:text-sm rounded-full font-medium">
-                          {plan.highlight}
-                        </span>
-                      )}
-
-                      <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-r ${plan.accent} 
-                          flex items-center justify-center`}>
-                          {plan.icon}
-                        </div>
-                        <div>
-                          <h3 className="text-lg md:text-xl font-bold text-white">{plan.name}</h3>
-                          <p className="text-xs md:text-sm text-gray-400">{plan.duration}</p>
-                        </div>
-                      </div>
-
-                      <div className="mb-4 md:mb-6">
-                        <p className="text-sm md:text-base text-gray-400">{plan.description}</p>
-                        <div className="mt-3 md:mt-4 flex items-baseline gap-2">
-                          <span className="text-3xl md:text-4xl font-bold text-white">{plan.price}</span>
-                          <span className="text-sm md:text-base text-gray-400">/ session</span>
-                        </div>
-                      </div>
-
-                      <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                        {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start text-sm md:text-base text-gray-300">
-                            <svg className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2 md:mr-3 mt-1 flex-shrink-0" 
-                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <button 
-                        className={`w-full py-3 md:py-4 rounded-xl text-base md:text-lg font-semibold 
-                          transition-all duration-300 bg-gradient-to-r ${plan.accent} text-white 
-                          hover:opacity-90 hover:shadow-lg active:scale-[0.98]`}
-                        onClick={() => setFormData({ ...formData, plan: plan.name })}
-                      >
-                        {plan.buttonText || "Get Started"}
-                      </button>
+            {/* Update the grid container */}
+            <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {plans.map((plan, index) => (
+                <div 
+                  key={index}
+                  className={`plan-card relative p-6 rounded-2xl 
+                    bg-gray-800/90 backdrop-blur-xl
+                    border border-gray-700 hover:border-blue-500/50
+                    shadow-lg shadow-black/20
+                    transition-all duration-300
+                    flex flex-col`}
+                >
+                  {/* Add popular badge if exists */}
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 
+                      bg-gradient-to-r from-blue-500 to-purple-500 
+                      text-white text-sm rounded-full font-medium">
+                      Most Popular
                     </div>
-                  ))}
-                </div>
-              </div>
+                  )}
 
-              {/* Scroll Indicators - Show on mobile only */}
-              <div className="mt-6 flex justify-center gap-2 md:hidden">
-                {plans.map((_, index) => (
-                  <button
-                    key={index}
-                    className="w-2 h-2 rounded-full bg-gray-600 hover:bg-blue-500 transition-colors duration-200"
-                    onClick={() => {
-                      const container = document.querySelector('.overflow-x-auto');
-                      const cardWidth = window.innerWidth < 768 ? 296 : 316; // 280/300px card + 16px gap
-                      container.scrollTo({
-                        left: cardWidth * index,
-                        behavior: 'smooth'
-                      });
-                    }}
-                  />
-                ))}
-              </div>
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${plan.accent} 
+                    flex items-center justify-center mb-6`}>
+                    {plan.icon}
+                  </div>
+                  
+                  {/* Plan details */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{plan.description}</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                        {plan.price}
+                      </span>
+                      <span className="text-gray-400">/ session</span>
+                    </div>
+                    <p className="text-sm text-gray-400 mt-2">{plan.duration}</p>
+                  </div>
+
+                  {/* Features list */}
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start text-sm text-gray-100">
+                        <svg className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" 
+                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Button */}
+                  <button 
+                    className={`w-full py-3 rounded-xl text-base font-semibold 
+                      bg-gradient-to-r ${plan.accent} text-white 
+                      hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/20 
+                      active:scale-[0.98] transition-all duration-300`}
+                    onClick={() => setFormData({ ...formData, plan: plan.name })}
+                  >
+                    {plan.buttonText || "Get Started"}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </section>
