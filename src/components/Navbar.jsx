@@ -12,6 +12,7 @@ const Navbar = () => {
     { label: 'Solutions', path: '/solutions' },
     { label: 'Case Studies', path: '/case-studies' },
     { label: 'Blog', path: '/blog' },
+    { label: 'Learn With Us', path: '/learn-with-us' },
     { label: 'Careers', path: '/careers' }
   ];
 
@@ -34,54 +35,56 @@ const Navbar = () => {
     <motion.header 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 50, damping: 20 }}
+      transition={{ type: "spring", stiffness: 50 }}
       className={`fixed w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-gradient-to-r from-black/95 via-black/90 to-black/95 backdrop-blur-md py-3 shadow-lg shadow-blue-500/10' 
+          ? 'bg-black/50 backdrop-blur-xl border-b border-white/10 py-3' 
           : 'bg-transparent py-6'
       }`}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-50" />
-      
       <nav className="relative flex justify-between items-center px-6 max-w-7xl mx-auto">
-        <Link to="/" className="text-2xl font-bold flex items-center group perspective-1000">
-          <motion.span 
-            className="inline-block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text
-              group-hover:bg-[length:400%] bg-[length:100%] animate-text-shine font-black"
-            whileHover={{ 
-              rotateX: [0, 15, -15, 0],
-              transition: { duration: 0.5 }
-            }}
+        {/* Logo */}
+        <Link to="/" className="text-3xl font-bold group perspective">
+          <motion.div 
+            className="relative inline-block"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            VAL-X
-          </motion.span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 
+              font-black tracking-tight">
+              VAL-X
+            </span>
+            <motion.div
+              className="absolute -inset-1 rounded-lg bg-gradient-to-r from-cyan-400/20 via-violet-400/20 to-fuchsia-400/20 
+                blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            />
+          </motion.div>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-1">
           {navItems.map((item, i) => (
             <motion.div
               key={item.label}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="relative group"
             >
               <Link 
                 to={item.path}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(item.path) ? 'text-white' : 'text-gray-300'
-                }`}
+                className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
+                  hover:text-white group ${isActive(item.path) ? 'text-white' : 'text-gray-400'}`}
               >
                 <span className="relative z-10">{item.label}</span>
-                <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
-                  transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                {isActive(item.path) && (
-                  <motion.span 
-                    layoutId="activeTab"
-                    className="absolute inset-0 -z-10 rounded-lg bg-white/10 backdrop-blur-sm"
+                {isActive(item.path) ? (
+                  <motion.div
+                    layoutId="navBackground"
+                    className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
+                      rounded-full backdrop-blur-sm"
                     transition={{ type: "spring", bounce: 0.2 }}
                   />
+                ) : (
+                  <div className="absolute inset-0 bg-white/0 rounded-full hover:bg-white/5 transition-colors duration-300" />
                 )}
               </Link>
             </motion.div>
@@ -89,47 +92,38 @@ const Navbar = () => {
           <motion.div 
             whileHover={{ scale: 1.05 }} 
             whileTap={{ scale: 0.95 }}
-            className="relative group"
           >
             <Link 
               to="/get-started"
-              className="relative px-6 py-2.5 rounded-full overflow-hidden"
+              className="relative ml-4 px-6 py-2.5 rounded-full overflow-hidden group"
             >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 opacity-100 
+                group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 opacity-0 
+                group-hover:opacity-100 blur-xl transition-opacity" />
               <span className="relative z-10 text-sm font-medium text-white">Get Started</span>
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
-                animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
           </motion.div>
         </div>
 
         {/* Mobile Menu Button */}
         <motion.button 
-          className="md:hidden relative z-10 p-2 rounded-lg"
+          className="md:hidden relative z-10 p-2"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           whileTap={{ scale: 0.9 }}
         >
-          <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
+          <div className="w-6 h-5 flex flex-col justify-between">
             <motion.span
-              animate={isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white transform origin-center transition-transform"
+              animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+              className="block h-0.5 w-6 bg-gradient-to-r from-cyan-400 to-violet-400 rounded-full"
             />
             <motion.span
               animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block h-0.5 w-6 bg-white"
+              className="block h-0.5 w-6 bg-gradient-to-r from-violet-400 to-fuchsia-400 rounded-full"
             />
             <motion.span
-              animate={isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white transform origin-center transition-transform"
+              animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+              className="block h-0.5 w-6 bg-gradient-to-r from-fuchsia-400 to-cyan-400 rounded-full"
             />
           </div>
         </motion.button>
@@ -138,31 +132,30 @@ const Navbar = () => {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
-              initial={{ opacity: 0, clipPath: "circle(0% at top right)" }}
-              animate={{ opacity: 1, clipPath: "circle(150% at top right)" }}
-              exit={{ opacity: 0, clipPath: "circle(0% at top right)" }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="absolute top-full right-0 w-full bg-gradient-to-b from-black/95 to-black/90 backdrop-blur-lg md:hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute top-full left-0 w-full bg-black/90 backdrop-blur-xl border-t border-white/10 md:hidden"
             >
-              <div className="flex flex-col items-center py-8 space-y-6">
+              <div className="flex flex-col p-6 space-y-4">
                 {navItems.map((item, i) => (
                   <motion.div
                     key={item.label}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="w-full px-6"
                   >
                     <Link 
                       to={item.path}
-                      className="block text-gray-300 hover:text-white transition-colors relative group py-2"
+                      className={`block px-4 py-2 rounded-lg text-base font-medium transition-colors
+                        ${isActive(item.path) 
+                          ? 'bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 text-white' 
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        }`}
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <span className="relative z-10 font-medium">{item.label}</span>
-                      <motion.div
-                        whileHover={{ scaleX: 1, opacity: 1 }}
-                        className="absolute inset-0 bg-white/5 rounded-lg scale-x-0 opacity-0 transition-all duration-300"
-                      />
+                      {item.label}
                     </Link>
                   </motion.div>
                 ))}
@@ -170,13 +163,11 @@ const Navbar = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="w-full px-6"
                 >
                   <Link 
                     to="/get-started"
-                    className="block w-full text-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
-                      text-white px-8 py-3 rounded-full font-medium shadow-lg shadow-blue-500/25 
-                      hover:shadow-purple-500/25 transition-shadow"
+                    className="block w-full text-center bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 
+                      text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started

@@ -7,6 +7,8 @@ import GetStarted from './pages/GetStarted';
 import CaseStudies from './pages/CaseStudies';
 import BlogLayout from './components/BlogLayout';
 import BlogError from './components/BlogError';
+import LearnWithUs from './pages/LearnWithUs';
+import ProgramMaterials from './pages/ProgramMaterials';
 
 export const router = createBrowserRouter([
   {
@@ -48,5 +50,13 @@ export const router = createBrowserRouter([
   {
     path: "/case-studies",
     element: <CaseStudies />,
+  },
+  {
+    path: "/learn-with-us",
+    element: <LearnWithUs />,
+  },
+  {
+    path: "/program-materials/:programId",
+    element: <ProgramMaterials />,
   },
 ]); 
