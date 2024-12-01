@@ -1,438 +1,320 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const features = [
   {
     title: "Innovative Technology",
-    description: "Leveraging cutting-edge technologies and frameworks to build future-proof solutions.",
-    icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-      </svg>
-    )
+    description: "Pioneering cutting-edge solutions that shape the future of digital transformation.",
+    icon: "💡",
+    color: "from-[#FF3CAC] via-[#784BA0] to-[#2B86C5]"
   },
   {
     title: "Agile Development",
-    description: "Iterative approach with continuous feedback and rapid delivery of business value.",
-    icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
-    )
+    description: "Swift, iterative development cycles that adapt to your evolving needs.",
+    icon: "⚡️",
+    color: "from-[#FA8BFF] via-[#2BD2FF] to-[#2BFF88]"
   },
   {
     title: "Scalable Solutions",
-    description: "Building robust systems that grow seamlessly with your business needs.",
-    icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-      </svg>
-    )
+    description: "Future-proof architecture that grows seamlessly with your business.",
+    icon: "🚀",
+    color: "from-[#21D4FD] via-[#2152FF] to-[#B721FF]"
   },
   {
     title: "Security First",
-    description: "Implementing industry-leading security practices to protect your data and users.",
-    icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    )
+    description: "Enterprise-grade security protecting your valuable digital assets.",
+    icon: "🛡️",
+    color: "from-[#08AEEA] via-[#2AF598] to-[#FF6B6B]"
   }
-];
-
-const stats = [
-  { value: "99.9%", label: "Uptime" },
-  { value: "45%", label: "Faster Development" },
-  { value: "80%", label: "Cost Reduction" },
-  { value: "24/7", label: "Support" }
 ];
 
 const projects = [
   {
     name: "IHS Ray",
+    category: "E-Commerce",
     url: "https://www.ihsray.com/",
     image: "https://m.media-amazon.com/images/I/818ff7KhYIL._AC_UY1100_.jpg",
-    description: "IHS Ray is an eCommerce platform offering a wide range of family wear for men, women, and kids, focusing on quality and style."
+    stats: { users: "50K+", growth: "125%", rating: "4.9" }
   },
   {
     name: "Kera Cabs",
+    category: "Transportation",
     url: "https://keracabs.com/",
     image: "https://keracabs.com/home/img/bg/2.webp",
-    description: "Kera Cabs provides reliable and efficient transportation services, ensuring a comfortable travel experience for all customers."
+    stats: { users: "25K+", growth: "85%", rating: "4.7" }
   },
   {
     name: "AAP Construction",
+    category: "Construction",
     url: "https://aapconstruction.in/",
     image: "https://as2.ftcdn.net/v2/jpg/02/01/96/59/1000_F_201965916_Sywvqm6bcX9Mv9lo10gHlBlaBpkLti1B.jpg",
-    description: "AAP Construction specializes in high-quality construction services, focusing on residential and commercial projects with a commitment to excellence."
+    stats: { users: "10K+", growth: "95%", rating: "4.8" }
   },
   {
     name: "Bonder Connect",
+    category: "Business",
     url: "https://bonderconnect.com/",
     image: "https://bonderconnect.com/assets/images/11.png",
-    description: "Bonder Connect is a platform that connects businesses with reliable bonding solutions, enhancing operational efficiency and trust."
+    stats: { users: "15K+", growth: "110%", rating: "4.6" }
   },
   {
     name: "Amaze Tech Global",
+    category: "Technology",
     url: "https://amazetechglobal.com/",
     image: "https://ionexchangeglobal.com/app/uploads/2021/11/deminiralizer.jpg",
-    description: "Amaze Tech Global is a pioneer in water treatment solutions in India, boasting a strong international presence and commitment to sustainability."
+    stats: { users: "30K+", growth: "75%", rating: "4.8" }
   },
   {
     name: "Brew Box",
+    category: "Food & Beverage",
     url: "https://www.brewbox.co/",
     image: "https://www.brewbox.co/cdn/shop/files/AdventExternal_300x300_crop_center.png?v=1730739794",
-    description: "Brew Box is a subscription service that delivers premium coffee and brewing equipment, catering to coffee enthusiasts everywhere."
+    stats: { users: "20K+", growth: "150%", rating: "4.9" }
   }
 ];
 
-// Memoized components for better performance
-const FeatureCard = memo(({ feature }) => (
-  <div 
-    className="feature-card group bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 hover:bg-gray-800/70 transition-all duration-300"
-    role="article"
-  >
-    <div className="flex items-center gap-6">
-      <div 
-        className="flex-shrink-0 w-16 h-16 bg-blue-500/10 rounded-lg flex items-center justify-center group-hover:bg-blue-500/20 transition-colors"
-        aria-hidden="true"
-      >
-        {feature.icon}
-      </div>
-      <div>
-        <h3 className="text-2xl font-bold text-white mb-2">
-          {feature.title}
-        </h3>
-        <p className="text-gray-400">
-          {feature.description}
-        </p>
-      </div>
-    </div>
-  </div>
-));
+const FeatureCard = memo(({ feature, index }) => {
+  const cardRef = useRef(null);
 
-const StatCard = memo(({ stat, index }) => (
-  <div 
-    className="stat-item text-center p-6 bg-blue-600/10 rounded-xl backdrop-blur-sm hover:bg-blue-600/20 transition-colors"
-    role="article"
-  >
+  useEffect(() => {
+    const card = cardRef.current;
+    const icon = card.querySelector('.feature-icon');
+    const content = card.querySelector('.feature-content');
+
+    // Mouse move animation
+    const handleMouseMove = (e) => {
+      const { left, top, width, height } = card.getBoundingClientRect();
+      const x = (e.clientX - left) / width;
+      const y = (e.clientY - top) / height;
+
+      gsap.to(card, {
+        '--x': `${x * 100}%`,
+        '--y': `${y * 100}%`,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+
+      // Tilt effect
+      const rotateX = (y - 0.5) * 10;
+      const rotateY = (x - 0.5) * 10;
+
+      gsap.to(card, {
+        transform: `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`,
+        duration: 0.3,
+      });
+
+      // Icon float effect
+      gsap.to(icon, {
+        x: (x - 0.5) * 15,
+        y: (y - 0.5) * 15,
+        duration: 0.3,
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        '--x': '50%',
+        '--y': '50%',
+        transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)',
+        duration: 0.5,
+      });
+      gsap.to(icon, {
+        x: 0,
+        y: 0,
+        duration: 0.5,
+      });
+    };
+
+    card.addEventListener('mousemove', handleMouseMove);
+    card.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      card.removeEventListener('mousemove', handleMouseMove);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
+  return (
     <div 
-      className={`stat-value-${index} text-3xl md:text-4xl font-bold text-blue-400 mb-2`}
-      aria-label={`${stat.value} ${stat.label}`}
+      ref={cardRef}
+      className={`feature-card relative overflow-hidden rounded-2xl p-8 h-full
+      border border-white/10 group transition-all duration-300
+      hover:shadow-2xl hover:shadow-blue-500/20
+      before:absolute before:inset-0 before:opacity-0 before:transition-opacity
+      before:duration-300 group-hover:before:opacity-100
+      cursor-pointer backdrop-blur-sm`}
+      style={{
+        background: `
+          linear-gradient(to bottom right, ${feature.color}),
+          radial-gradient(
+            circle at var(--x, 50%) var(--y, 50%),
+            rgba(255,255,255,0.1) 0%,
+            rgba(255,255,255,0) 50%
+          )
+        `,
+      }}
     >
-      {stat.value}
-    </div>
-    <div className="text-gray-400">
-      {stat.label}
-    </div>
-  </div>
-));
-
-// Update ProjectCard with modern design
-const ProjectCard = memo(({ project, isActive }) => (
-  <div 
-    className={`project-card flex-shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] 
-    bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden 
-    transition-all duration-500 transform perspective-1000 
-    ${isActive ? 'scale-100 rotate-0 translate-y-0' : 'scale-95 -rotate-2 translate-y-4 opacity-50'}
-    hover:shadow-2xl hover:shadow-blue-500/20`}
-    aria-label={`${project.name} project`}
-  >
-    <a 
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block"
-    >
-      <div className="relative aspect-video overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50 z-10" />
-        <img 
-          src={project.image}
-          alt={`${project.name} project screenshot`}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          loading="lazy"
-        />
-        <div className="absolute top-4 right-4 bg-blue-500/20 backdrop-blur-md px-3 py-1 rounded-full z-20">
-          <span className="text-sm text-white font-medium">View Project</span>
+      {/* Animated background blur effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10">
+        {/* Floating icon with glow effect */}
+        <div className="feature-icon relative inline-block mb-6">
+          <span className="text-5xl block transform transition-all duration-300 group-hover:scale-125 relative z-10">
+            {feature.icon}
+          </span>
+          <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full scale-150 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+        
+        {/* Content with slide-up animation */}
+        <div className="feature-content transform transition-all duration-500">
+          <h3 className="text-2xl font-bold text-white mb-4 tracking-tight group-hover:text-transparent group-hover:bg-clip-text"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${feature.color})`,
+              }}>
+            {feature.title}
+          </h3>
+          
+          <p className="text-gray-100 leading-relaxed transform transition-all duration-500 group-hover:translate-y-0">
+            {feature.description}
+          </p>
         </div>
       </div>
-      <div className="p-8">
-        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-          {project.name}
-        </h3>
-        <p className="text-gray-400 line-clamp-2">
-          {project.description}
-        </p>
+
+      {/* Interactive particle effect on hover */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="absolute top-0 left-0 w-2 h-2 bg-white rounded-full blur-sm animate-float-1" />
+          <div className="absolute top-1/4 right-0 w-2 h-2 bg-white rounded-full blur-sm animate-float-2" />
+          <div className="absolute bottom-0 left-1/4 w-2 h-2 bg-white rounded-full blur-sm animate-float-3" />
+        </div>
       </div>
-    </a>
-  </div>
-));
+    </div>
+  );
+});
 
-// Add Progress Indicator component
-const ProgressIndicator = memo(({ total, current }) => (
-  <div className="flex justify-center gap-2 mt-8">
-    {Array.from({ length: total }).map((_, index) => (
-      <div
-        key={index}
-        className={`h-1 rounded-full transition-all duration-300 ${
-          index === current 
-            ? 'w-8 bg-blue-500' 
-            : 'w-2 bg-gray-700'
-        }`}
+const ProjectCard = memo(({ project }) => (
+  <div className="project-card relative group">
+    <div className="relative overflow-hidden rounded-xl aspect-video">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10" />
+      <img 
+        src={project.image}
+        alt={project.name}
+        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
       />
-    ))}
+      <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+        {project.category && (
+          <div className="flex items-center gap-2 mb-2">
+            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm">
+              {project.category}
+            </span>
+          </div>
+        )}
+        <h3 className="text-xl font-bold text-white mb-2">{project.name}</h3>
+        {project.stats && (
+          <div className="flex gap-4 text-sm text-gray-100">
+            {project.stats.users && <span>{project.stats.users} Users</span>}
+            {project.stats.growth && <span>{project.stats.growth} Growth</span>}
+            {project.stats.rating && <span>⭐️ {project.stats.rating}</span>}
+          </div>
+        )}
+      </div>
+    </div>
   </div>
 ));
 
-// Main component
 const Features = () => {
-  const sliderRef = useRef(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [activeSection, setActiveSection] = useState('features');
+  const containerRef = useRef(null);
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
-      // Features section heading animation
-      gsap.from(".features-heading", {
+      // Set initial state for feature cards
+      gsap.set(".feature-card", {
+        opacity: 0,
+        y: 30
+      });
+
+      // Fade in animation for section header
+      gsap.from(".features-header", {
         scrollTrigger: {
-          trigger: ".features-heading",
-          start: "top 85%",
+          trigger: ".features-header",
+          start: "top 80%",
           once: true
         },
         y: 30,
         opacity: 0,
-        duration: 0.8,
+        duration: 1,
         ease: "power3.out"
       });
 
-      // Features cards animation with better timing
-      gsap.from(".feature-card", {
+      // Stagger animation for feature cards
+      gsap.to(".feature-card", {
         scrollTrigger: {
-          trigger: ".features-container",
-          start: "top 85%",
-          end: "bottom center",
-          toggleActions: "play none none none",
+          trigger: ".features-grid",
+          start: "top 80%",
           once: true,
-          markers: false // Set to true for debugging
         },
-        opacity: 0,
-        y: 30,
-        duration: 0.6,
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
         stagger: {
-          each: 0.2,
+          amount: 0.6,
           from: "start"
         },
-        ease: "power2.out"
+        ease: "power3.out"
       });
-
-      // Initialize the slider
-      const slider = sliderRef.current;
-      let startX;
-      let scrollLeft;
-
-      const handleDragStart = (e) => {
-        setIsDragging(true);
-        startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
-        scrollLeft = slider.scrollLeft;
-      };
-
-      const handleDragEnd = () => {
-        setIsDragging(false);
-      };
-
-      const handleDragMove = (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
-        const walk = (x - startX) * 2;
-        slider.scrollLeft = scrollLeft - walk;
-      };
-
-      slider.addEventListener('mousedown', handleDragStart);
-      slider.addEventListener('touchstart', handleDragStart);
-      slider.addEventListener('mousemove', handleDragMove);
-      slider.addEventListener('touchmove', handleDragMove);
-      slider.addEventListener('mouseup', handleDragEnd);
-      slider.addEventListener('touchend', handleDragEnd);
-      slider.addEventListener('mouseleave', handleDragEnd);
-
-      return () => {
-        slider.removeEventListener('mousedown', handleDragStart);
-        slider.removeEventListener('touchstart', handleDragStart);
-        slider.removeEventListener('mousemove', handleDragMove);
-        slider.removeEventListener('touchmove', handleDragMove);
-        slider.removeEventListener('mouseup', handleDragEnd);
-        slider.removeEventListener('touchend', handleDragEnd);
-        slider.removeEventListener('mouseleave', handleDragEnd);
-      };
-    });
+    }, containerRef);
 
     return () => ctx.revert();
-  }, [isDragging]);
-
-  // Add visible slides calculation
-  const getVisibleSlides = () => {
-    if (typeof window === 'undefined') return 3;
-    if (window.innerWidth < 768) return 1;
-    if (window.innerWidth < 1024) return 2;
-    return 3;
-  };
-
-  const slideNext = () => {
-    const slider = sliderRef.current;
-    const slideWidth = slider.clientWidth;
-    const visibleSlides = getVisibleSlides();
-    gsap.to(slider, {
-      scrollLeft: `+=${slideWidth / visibleSlides}`,
-      duration: 0.7,
-      ease: 'power2.out'
-    });
-    setCurrentSlide(prev => Math.min(prev + 1, projects.length - visibleSlides));
-  };
-
-  const slidePrev = () => {
-    const slider = sliderRef.current;
-    const slideWidth = slider.clientWidth;
-    const visibleSlides = getVisibleSlides();
-    gsap.to(slider, {
-      scrollLeft: `-=${slideWidth / visibleSlides}`,
-      duration: 0.7,
-      ease: 'power2.out'
-    });
-    setCurrentSlide(prev => Math.max(prev - 1, 0));
-  };
-
-  // Add hover animations for feature cards
-  useEffect(() => {
-    const featureCards = document.querySelectorAll('.feature-card');
-    
-    featureCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        gsap.to(card, {
-          scale: 1.05,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-        gsap.to(card.querySelector('svg'), {
-          rotate: 360,
-          duration: 0.5,
-          ease: "power2.out"
-        });
-      });
-
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, {
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-        gsap.to(card.querySelector('svg'), {
-          rotate: 0,
-          duration: 0.5,
-          ease: "power2.out"
-        });
-      });
-    });
   }, []);
 
   return (
     <section 
-      className="py-20 bg-gradient-to-b from-black to-gray-900"
-      aria-label="Features and Projects"
+      ref={containerRef}
+      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Features Section */}
-        <div className="features-heading text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Why Choose Us
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-conic from-blue-500/40 via-purple-500/40 to-blue-500/40 blur-[100px] opacity-30" />
+        <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-conic from-cyan-500/40 via-emerald-500/40 to-cyan-500/40 blur-[100px] opacity-30" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="features-header text-center mb-20">
+          <h2 className="text-5xl font-bold text-white mb-6 tracking-tight">
+            Elevate Your Digital Presence
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            We combine technical expertise with business acumen to deliver exceptional results
+            Transform your ideas into reality with our cutting-edge solutions and expert team
           </p>
         </div>
 
-        <div className="features-container grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+        {/* Features Grid */}
+        <div className="features-grid grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
           {features.map((feature, index) => (
-            <FeatureCard key={index} feature={feature} />
-          ))}
-        </div>
-
-        {/* Stats Section */}
-        <div className="stats-container grid grid-cols-2 md:grid-cols-4 gap-8 mb-32">
-          {stats.map((stat, index) => (
-            <StatCard key={index} stat={stat} index={index} />
-          ))}
-        </div>
-
-        {/* Updated Projects Section */}
-        <div className="projects-section relative py-16">
-          <div className="projects-heading text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Our Projects
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Explore our portfolio of successful client projects
-            </p>
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-6">
-            {/* Gradient Overlays */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10" />
-
-            <div 
-              ref={sliderRef}
-              className="projects-container overflow-x-scroll scrollbar-hide snap-x snap-mandatory flex gap-8 
-              cursor-grab active:cursor-grabbing py-8 px-4"
-              style={{ scrollBehavior: 'smooth' }}
-            >
-              {projects.map((project, index) => (
-                <ProjectCard 
-                  key={project.name} 
-                  project={project} 
-                  isActive={index === currentSlide}
-                />
-              ))}
-            </div>
-
-            {/* Updated Navigation Buttons */}
-            <button
-              onClick={slidePrev}
-              disabled={currentSlide === 0}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-blue-500/10 hover:bg-blue-500/20 
-              p-4 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed z-20
-              backdrop-blur-sm border border-blue-500/20 transition-all duration-300
-              hover:scale-110"
-              aria-label="Previous project"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            <button
-              onClick={slideNext}
-              disabled={currentSlide === projects.length - getVisibleSlides()}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-blue-500/10 hover:bg-blue-500/20 
-              p-4 rounded-full text-white disabled:opacity-30 disabled:cursor-not-allowed z-20
-              backdrop-blur-sm border border-blue-500/20 transition-all duration-300
-              hover:scale-110"
-              aria-label="Next project"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-
-            {/* Progress Indicator */}
-            <ProgressIndicator 
-              total={projects.length - getVisibleSlides() + 1} 
-              current={currentSlide} 
+            <FeatureCard 
+              key={index} 
+              feature={feature} 
+              index={index}
             />
+          ))}
+        </div>
+
+        {/* Projects Showcase */}
+        <div className="projects-showcase">
+          <h3 className="text-3xl font-bold text-white mb-12 text-center">
+            Featured Projects
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <ProjectCard key={index} project={project} />
+            ))}
           </div>
         </div>
       </div>
@@ -440,4 +322,4 @@ const Features = () => {
   );
 };
 
-export default memo(Features)
+export default memo(Features);

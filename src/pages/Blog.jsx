@@ -28,7 +28,7 @@ const BlogPost = ({ post }) => {
           className="w-8 h-8 rounded-full"
         />
         <div>
-          <div className="text-sm text-gray-300">{post.author.name}</div>
+          <div className="text-sm text-gray-100">{post.author.name}</div>
           <div className="text-xs text-gray-500">{post.date}</div>
         </div>
       </div>
@@ -77,13 +77,13 @@ const Blog = () => {
           {/* Left Sidebar */}
           <aside className="hidden lg:block w-64 space-y-6">
             <nav className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
+              <a href="#" className="block text-gray-100 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
                 🏠 Home
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
+              <a href="#" className="block text-gray-100 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
                 📚 Reading List
               </a>
-              <a href="#" className="block text-gray-300 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
+              <a href="#" className="block text-gray-100 hover:text-white hover:bg-gray-800/50 px-4 py-2 rounded-lg">
                 🏷️ Tags
               </a>
             </nav>
@@ -114,11 +114,11 @@ const Blog = () => {
               <button className={`px-4 py-2 rounded-lg ${
                 selectedTag === 'all' 
                   ? 'bg-blue-600 text-white' 
-                  : 'bg-gray-800/30 text-gray-300 hover:bg-gray-800/50'
+                  : 'bg-gray-800/30 text-gray-100 hover:bg-gray-800/50'
               }`}>
                 Latest
               </button>
-              <button className="px-4 py-2 rounded-lg bg-gray-800/30 text-gray-300 hover:bg-gray-800/50">
+              <button className="px-4 py-2 rounded-lg bg-gray-800/30 text-gray-100 hover:bg-gray-800/50">
                 Top
               </button>
             </div>

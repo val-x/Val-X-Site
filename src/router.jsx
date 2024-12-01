@@ -9,6 +9,8 @@ import BlogLayout from './components/BlogLayout';
 import BlogError from './components/BlogError';
 import LearnWithUs from './pages/LearnWithUs';
 import ProgramMaterials from './pages/ProgramMaterials';
+import Support from './pages/Support';
+import Docs from './pages/Docs';
 
 export const router = createBrowserRouter([
   {
@@ -58,5 +60,13 @@ export const router = createBrowserRouter([
   {
     path: "/program-materials/:programId",
     element: <ProgramMaterials />,
+  },
+  {
+    path: "/support",
+    element: <Support />,
+  },
+  {
+    path: "/docs",
+    element: <Docs />,
   },
 ]); 

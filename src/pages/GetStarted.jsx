@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ModelView from '../components/ModelView';
@@ -128,6 +128,22 @@ const GetStarted = () => {
     message: "",
     referralCode: ""
   });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is typical mobile breakpoint
+    };
+
+    // Check initially
+    checkMobile();
+
+    // Add event listener
+    window.addEventListener('resize', checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useGSAP(() => {
     // Animate hero section
@@ -214,82 +230,95 @@ const GetStarted = () => {
               <p className="text-xl text-gray-300 mb-12">
                 Experience the future of digital transformation with our cutting-edge solutions
               </p>
-              <div className="relative h-[85vh] w-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
-                <ModelView />
-                {/* Decorative elements */}
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-blue-500/20 blur-3xl" />
-                  <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tl from-purple-500/20 blur-3xl" />
+              {!isMobile && (
+                <div className="relative h-[85vh] w-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10">
+                  <ModelView />
+                  {/* Decorative elements */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-blue-500/20 blur-3xl" />
+                    <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tl from-purple-500/20 blur-3xl" />
+                  </div>
                 </div>
-              </div>
+              )}
+              {isMobile && (
+                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden bg-gradient-to-b from-blue-500/10 to-purple-500/10">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <p className="text-gray-400 text-lg">
+                      Please view on desktop for 3D experience
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
 
         {/* Plans Section */}
-        <section className="plans-section py-20 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+        <section className="plans-section py-12 md:py-20 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="text-center mb-8 md:mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
                 Choose Your Journey
               </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
                 Select the perfect consultation package that aligns with your goals
               </p>
             </div>
 
             {/* Scroll Container */}
             <div className="relative">
-              {/* Gradient Overlays */}
-              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none" />
+              {/* Gradient Overlays - Only show on desktop */}
+              <div className="hidden md:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none" />
+              <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none" />
 
               {/* Scrollable Container */}
               <div className="overflow-x-auto hide-scrollbar">
-                <div className="flex gap-8 pb-8 min-w-max">
+                <div className="flex gap-4 md:gap-8 pb-8 min-w-max px-4 md:px-0">
                   {plans.map((plan, index) => (
                     <div 
                       key={index}
-                      className={`plan-card flex-shrink-0 w-[300px] relative p-8 rounded-3xl bg-gray-800/30 backdrop-blur-xl 
-                        border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 
-                        hover:transform hover:-translate-y-2`}
+                      className={`plan-card flex-shrink-0 w-[280px] md:w-[300px] relative p-6 md:p-8 rounded-2xl md:rounded-3xl 
+                        bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 hover:border-gray-600/50 
+                        transition-all duration-300 hover:transform hover:-translate-y-2`}
                     >
                       {plan.popular && (
-                        <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 
-                          text-white text-sm rounded-full font-medium">
+                        <span className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 px-4 md:px-6 py-1 md:py-2 
+                          bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs md:text-sm rounded-full font-medium">
                           Most Popular
                         </span>
                       )}
                       
                       {plan.highlight && (
-                        <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 
-                          text-white text-sm rounded-full font-medium">
+                        <span className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 px-4 md:px-6 py-1 md:py-2 
+                          bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs md:text-sm rounded-full font-medium">
                           {plan.highlight}
                         </span>
                       )}
 
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${plan.accent} flex items-center justify-center`}>
+                      <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-r ${plan.accent} 
+                          flex items-center justify-center`}>
                           {plan.icon}
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-                          <p className="text-sm text-gray-400">{plan.duration}</p>
+                          <h3 className="text-lg md:text-xl font-bold text-white">{plan.name}</h3>
+                          <p className="text-xs md:text-sm text-gray-400">{plan.duration}</p>
                         </div>
                       </div>
 
-                      <div className="mb-6">
-                        <p className="text-gray-400">{plan.description}</p>
-                        <div className="mt-4 flex items-baseline gap-2">
-                          <span className="text-4xl font-bold text-white">{plan.price}</span>
-                          <span className="text-gray-400">/ session</span>
+                      <div className="mb-4 md:mb-6">
+                        <p className="text-sm md:text-base text-gray-400">{plan.description}</p>
+                        <div className="mt-3 md:mt-4 flex items-baseline gap-2">
+                          <span className="text-3xl md:text-4xl font-bold text-white">{plan.price}</span>
+                          <span className="text-sm md:text-base text-gray-400">/ session</span>
                         </div>
                       </div>
 
-                      <ul className="space-y-4 mb-8">
+                      <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                         {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start text-gray-300">
-                            <svg className="w-5 h-5 text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <li key={i} className="flex items-start text-sm md:text-base text-gray-300">
+                            <svg className="w-4 h-4 md:w-5 md:h-5 text-blue-400 mr-2 md:mr-3 mt-1 flex-shrink-0" 
+                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                             <span>{feature}</span>
@@ -298,8 +327,9 @@ const GetStarted = () => {
                       </ul>
 
                       <button 
-                        className={`w-full py-4 rounded-xl text-lg font-semibold transition-all duration-300
-                          bg-gradient-to-r ${plan.accent} text-white hover:opacity-90 hover:shadow-lg`}
+                        className={`w-full py-3 md:py-4 rounded-xl text-base md:text-lg font-semibold 
+                          transition-all duration-300 bg-gradient-to-r ${plan.accent} text-white 
+                          hover:opacity-90 hover:shadow-lg active:scale-[0.98]`}
                         onClick={() => setFormData({ ...formData, plan: plan.name })}
                       >
                         {plan.buttonText || "Get Started"}
@@ -309,15 +339,15 @@ const GetStarted = () => {
                 </div>
               </div>
 
-              {/* Scroll Indicators */}
-              <div className="mt-8 flex justify-center gap-2">
+              {/* Scroll Indicators - Show on mobile only */}
+              <div className="mt-6 flex justify-center gap-2 md:hidden">
                 {plans.map((_, index) => (
                   <button
                     key={index}
                     className="w-2 h-2 rounded-full bg-gray-600 hover:bg-blue-500 transition-colors duration-200"
                     onClick={() => {
                       const container = document.querySelector('.overflow-x-auto');
-                      const cardWidth = 316; // 300px card + 16px gap
+                      const cardWidth = window.innerWidth < 768 ? 296 : 316; // 280/300px card + 16px gap
                       container.scrollTo({
                         left: cardWidth * index,
                         behavior: 'smooth'

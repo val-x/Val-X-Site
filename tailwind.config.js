@@ -60,11 +60,29 @@ export default {
             'background-size': '200% 100%',
             'background-position': '0% 50%'
           }
-        }
+        },
+        'float-1': {
+          '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+          '50%': { transform: 'translate(10px, -10px) rotate(45deg)' },
+        },
+        'float-2': {
+          '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+          '50%': { transform: 'translate(-15px, 10px) rotate(-45deg)' },
+        },
+        'float-3': {
+          '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+          '50%': { transform: 'translate(15px, 15px) rotate(90deg)' },
+        },
       },
       animation: {
-        'text-shine': 'text-shine 3s linear infinite'
-      }
+        'text-shine': 'text-shine 3s linear infinite',
+        'float-1': 'float-1 4s ease-in-out infinite',
+        'float-2': 'float-2 6s ease-in-out infinite',
+        'float-3': 'float-3 5s ease-in-out infinite',
+      },
+      backgroundImage: {
+        'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
+      },
     },
   },
   plugins: [
@@ -83,5 +101,6 @@ export default {
         },
       });
     },
+    require('@tailwindcss/aspect-ratio'),
   ],
 };

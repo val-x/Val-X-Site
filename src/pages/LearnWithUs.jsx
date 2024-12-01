@@ -155,15 +155,15 @@ const LearnWithUs = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-purple-400">Level:</span>
-                    <span className="text-sm text-gray-300">{program.level}</span>
+                    <span className="text-sm text-gray-100">{program.level}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-purple-400">Duration:</span>
-                    <span className="text-sm text-gray-300">{program.duration}</span>
+                    <span className="text-sm text-gray-100">{program.duration}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-purple-400">Next Start:</span>
-                    <span className="text-sm text-gray-300">{program.nextStart}</span>
+                    <span className="text-sm text-gray-100">{program.nextStart}</span>
                   </div>
                 </div>
 
@@ -171,7 +171,7 @@ const LearnWithUs = () => {
                   <h4 className="text-sm font-medium text-purple-400 mb-2">What you'll learn:</h4>
                   <ul className="grid grid-cols-2 gap-2">
                     {program.topics.map((topic) => (
-                      <li key={topic} className="text-sm text-gray-300 flex items-center gap-1">
+                      <li key={topic} className="text-sm text-gray-100 flex items-center gap-1">
                         <span className="w-1 h-1 bg-purple-400 rounded-full"></span>
                         {topic}
                       </li>
