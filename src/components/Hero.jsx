@@ -1,52 +1,84 @@
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { heroVideo, smallHeroVideo } from '../utils';
-import { useEffect, useState } from 'react';
+import gsap from 'gsap';
 
 const Hero = () => {
-  const [videoSrc, setVideoSrc] = useState(window.innerWidth < 760 ? smallHeroVideo : heroVideo)
-
-  const handleVideoSrcSet = () => {
-    if(window.innerWidth < 760) {
-      setVideoSrc(smallHeroVideo)
-    } else {
-      setVideoSrc(heroVideo)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleVideoSrcSet);
-
-    return () => {
-      window.removeEventListener('reisze', handleVideoSrcSet)
-    }
-  }, [])
-
   useGSAP(() => {
-    gsap.to('#hero', { opacity: 1, delay: 2 })
-    gsap.to('#cta', { opacity: 1, y: -50, delay: 2 })
-  }, [])
+    gsap.from('#hero-title', { 
+      opacity: 0, 
+      y: 100,
+      duration: 1,
+      delay: 0.5
+    });
+    gsap.from('#hero-subtitle', { 
+      opacity: 0, 
+      y: 50,
+      duration: 1,
+      delay: 0.8
+    });
+    gsap.from('#hero-cta', { 
+      opacity: 0, 
+      y: 30,
+      duration: 1,
+      delay: 1.2
+    });
+  }, []);
 
   return (
-    <section className="w-full nav-height bg-black relative">
-      <div className="h-6/6 w-full flex-center flex-col">
-        {/* <p id="hero" className="hero-title">VAL-X</p> */}
-        <div className="md:w-7/12 w-9/12">
-          {/* <video className="pointer-events-none" autoPlay muted playsInline={true} key={videoSrc}>
-            <source src={videoSrc} type="video/mp4" /> 
-          </video> */}
-          <img src='../../assets/images/VAL-X-SB05.png' alt='VAL-X'  />
-    
+    <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-900">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="relative w-full h-full">
+          <div className="absolute w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent animate-pulse"></div>
         </div>
       </div>
 
-      <div
-        id="cta"
-        className="flex flex-col items-center opacity-0 translate-y-20"
-      >
-        <a href="#register" className="btn">Register</a>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <h1 
+          id="hero-title"
+          className="text-5xl md:text-7xl font-bold text-white mb-6"
+        >
+          Transforming Ideas Into
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+            {' '}Digital Reality
+          </span>
+        </h1>
         
-        {/* <p className="font-normal text-xl">Starting from $5960.82</p> */}
+        <p 
+          id="hero-subtitle"
+          className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
+        >
+          We craft innovative software solutions that empower businesses 
+          to thrive in the digital age
+        </p>
+
+        <div 
+          id="hero-cta"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <button className="px-8 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors text-lg">
+            Start Project
+          </button>
+          <button className="px-8 py-3 border border-white text-white rounded-full hover:bg-white/10 transition-colors text-lg">
+            View Our Work
+          </button>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg 
+          className="w-6 h-6 text-white"
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          />
+        </svg>
       </div>
     </section>
   )

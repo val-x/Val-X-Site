@@ -3,7 +3,43 @@ import React, { useRef } from 'react'
 import { animateWithGsap } from '../utils/animations';
 import { explore1Img, explore2Img, exploreVideo } from '../utils';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // import { Link } from 'react-router-dom';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const services = [
+  {
+    icon: "💻",
+    title: "Custom Software Development",
+    description: "Tailored solutions built to address your unique business challenges and opportunities."
+  },
+  {
+    icon: "🌐",
+    title: "Web Development",
+    description: "Responsive and dynamic web applications that deliver exceptional user experiences."
+  },
+  {
+    icon: "📱",
+    title: "Mobile Development",
+    description: "Native and cross-platform mobile apps that engage users and drive results."
+  },
+  {
+    icon: "🤖",
+    title: "AI & Machine Learning",
+    description: "Intelligent solutions that automate processes and unlock valuable insights."
+  },
+  {
+    icon: "☁️",
+    title: "Cloud Solutions",
+    description: "Scalable cloud infrastructure and services that power your digital transformation."
+  },
+  {
+    icon: "🔒",
+    title: "Cybersecurity",
+    description: "Comprehensive security solutions to protect your digital assets and data."
+  }
+];
 
 const Features = () => {
   const videoRef = useRef();
@@ -30,6 +66,16 @@ const Features = () => {
       '.g_text',
       {y:0, opacity: 1,ease: 'power2.inOut',duration: 1}
     )
+    gsap.from('.service-card', {
+      scrollTrigger: {
+        trigger: '.services-grid',
+        start: 'top center+=100',
+      },
+      y: 100,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2
+    });
   }, []);
 
   return (
