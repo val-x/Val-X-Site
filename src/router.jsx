@@ -11,6 +11,11 @@ import LearnWithUs from './pages/LearnWithUs';
 import ProgramMaterials from './pages/ProgramMaterials';
 import Support from './pages/Support';
 import Docs from './pages/Docs';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import CookiePolicy from './pages/CookiePolicy';
 
 export const router = createBrowserRouter([
   {
@@ -68,5 +73,25 @@ export const router = createBrowserRouter([
   {
     path: "/docs",
     element: <Docs />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: "/terms",
+    element: <TermsOfService />,
+  },
+  {
+    path: "/cookies",
+    element: <CookiePolicy />,
   },
 ]); 

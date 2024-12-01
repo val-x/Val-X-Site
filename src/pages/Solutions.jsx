@@ -3,6 +3,35 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { 
+  ComputerDesktopIcon,
+  DevicePhoneMobileIcon,
+  CloudIcon,
+  CpuChipIcon,
+  ShieldCheckIcon,
+  CircleStackIcon,
+  GlobeAltIcon,
+  BoltIcon,
+  SwatchIcon,
+  ChartBarIcon,
+  PresentationChartLineIcon,
+  ShoppingBagIcon,
+  TrophyIcon,
+  LifebuoyIcon,
+  LightBulbIcon,
+  ChartBarSquareIcon
+} from '@heroicons/react/24/outline';
+
+import { 
+  FaAws,
+  FaMicrosoft,
+  FaGoogle
+} from 'react-icons/fa';
+
+import {
+  SiAppwrite,
+  SiSupabase
+} from 'react-icons/si';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +45,7 @@ const services = [
       "Agile Development",
       "Regular Updates"
     ],
-    icon: "💻",
+    icon: ComputerDesktopIcon,
     details: [
       "Enterprise Applications",
       "Web Applications",
@@ -33,7 +62,7 @@ const services = [
       "UI/UX Design",
       "App Store Support"
     ],
-    icon: "📱",
+    icon: DevicePhoneMobileIcon,
     details: [
       "Native iOS Development",
       "Native Android Development",
@@ -50,7 +79,7 @@ const services = [
       "24/7 Monitoring",
       "Security"
     ],
-    icon: "☁️",
+    icon: CloudIcon,
     details: [
       "AWS Solutions",
       "Azure Integration",
@@ -67,7 +96,7 @@ const services = [
       "Process Automation",
       "Custom AI Solutions"
     ],
-    icon: "🤖",
+    icon: CpuChipIcon,
     details: [
       "Machine Learning Models",
       "Natural Language Processing",
@@ -84,7 +113,7 @@ const services = [
       "Compliance Management",
       "Incident Response"
     ],
-    icon: "🔒",
+    icon: ShieldCheckIcon,
     details: [
       "Penetration Testing",
       "Security Architecture",
@@ -101,7 +130,7 @@ const services = [
       "NFT Platforms",
       "Private Chains"
     ],
-    icon: "⛓️",
+    icon: CircleStackIcon,
     details: [
       "Ethereum Development",
       "Solana Integration",
@@ -118,7 +147,7 @@ const services = [
       "Edge Computing",
       "IoT Security"
     ],
-    icon: "🌐",
+    icon: GlobeAltIcon,
     details: [
       "Sensor Integration",
       "IoT Platform Development",
@@ -135,7 +164,7 @@ const services = [
       "Business Intelligence",
       "Integration Services"
     ],
-    icon: "⚡",
+    icon: BoltIcon,
     details: [
       "RPA Implementation",
       "Process Optimization",
@@ -152,7 +181,7 @@ const services = [
       "Prototyping",
       "Usability Testing"
     ],
-    icon: "🎨",
+    icon: SwatchIcon,
     details: [
       "Interface Design",
       "Design Systems",
@@ -169,7 +198,7 @@ const services = [
       "Analytics",
       "Performance Tracking"
     ],
-    icon: "📈",
+    icon: ChartBarIcon,
     details: [
       "Technical SEO",
       "Content Marketing",
@@ -186,7 +215,7 @@ const services = [
       "Predictive Analytics",
       "Real-time Analytics"
     ],
-    icon: "📊",
+    icon: PresentationChartLineIcon,
     details: [
       "Data Warehousing",
       "Business Intelligence",
@@ -203,7 +232,7 @@ const services = [
       "Inventory Management",
       "Mobile Commerce"
     ],
-    icon: "🛍️",
+    icon: ShoppingBagIcon,
     details: [
       "Custom E-commerce",
       "Marketplace Solutions",
@@ -217,22 +246,22 @@ const whyChooseUs = [
   {
     title: "Industry Expertise",
     description: "Over a decade of experience delivering cutting-edge solutions across various industries",
-    icon: "🏆"
+    icon: TrophyIcon
   },
   {
     title: "Dedicated Support",
     description: "24/7 technical support and maintenance to ensure your solutions run smoothly",
-    icon: "🛟"
+    icon: LifebuoyIcon
   },
   {
     title: "Innovative Approach",
     description: "Leveraging latest technologies and best practices to deliver future-proof solutions",
-    icon: "💡"
+    icon: LightBulbIcon
   },
   {
     title: "Proven Track Record",
     description: "Successfully delivered 500+ projects with 95% client satisfaction rate",
-    icon: "📈"
+    icon: ChartBarSquareIcon
   }
 ];
 
@@ -240,34 +269,38 @@ const partners = [
   {
     name: "Amazon Web Services",
     description: "Certified AWS partner providing scalable cloud infrastructure solutions",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+    icon: FaAws,
     link: "https://aws.amazon.com"
   },
   {
     name: "Appwrite",
     description: "Leveraging Appwrite's open-source backend platform for rapid development",
-    logo: "https://appwrite.io/images/appwrite.svg",
+    icon: SiAppwrite,
     link: "https://appwrite.io"
   },
   {
     name: "Supabase",
     description: "Building with Supabase's open source Firebase alternative",
-    logo: "https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo.svg",
+    icon: SiSupabase,
     link: "https://supabase.com"
   },
   {
     name: "Microsoft Azure",
     description: "Certified Microsoft partner for enterprise cloud solutions",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg",
+    icon: FaMicrosoft,
     link: "https://azure.microsoft.com"
   },
   {
     name: "Google Cloud",
     description: "Partner for advanced cloud and AI solutions",
-    logo: "https://www.vectorlogo.zone/logos/google_cloud/google_cloud-ar21.svg",
+    icon: FaGoogle,
     link: "https://cloud.google.com"
   }
 ];
+
+const ServiceIcon = ({ icon: Icon }) => (
+  <Icon className="w-12 h-12 text-blue-400" />
+);
 
 const Solutions = () => {
   useGSAP(() => {
@@ -435,7 +468,7 @@ const Solutions = () => {
                   className="why-choose-item group p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
                 >
                   <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                    {item.icon}
+                    <item.icon className="w-12 h-12 text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
                     {item.title}
@@ -461,7 +494,9 @@ const Solutions = () => {
                   } gap-12 items-center`}
                 >
                   <div className="flex-1">
-                    <div className="text-3xl mb-4">{service.icon}</div>
+                    <div className="text-3xl mb-4">
+                      <ServiceIcon icon={service.icon} />
+                    </div>
                     <h3 className="text-3xl font-bold text-white mb-4">
                       {service.title}
                     </h3>
@@ -524,11 +559,7 @@ const Solutions = () => {
                   className="service-overview-card group bg-gray-800/30 backdrop-blur-sm rounded-xl p-8 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
                 >
                   <div className="h-16 mb-6 flex items-center justify-center">
-                    <img 
-                      src={partner.logo} 
-                      alt={`${partner.name} logo`}
-                      className="h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                    />
+                    <partner.icon className="w-12 h-12 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3 text-center">
                     {partner.name}

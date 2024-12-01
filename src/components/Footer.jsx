@@ -79,15 +79,15 @@ const Footer = () => {
               © 2024 VAL-X. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">
                 Terms of Service
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link to="/cookies" className="text-gray-400 hover:text-white transition-colors">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>

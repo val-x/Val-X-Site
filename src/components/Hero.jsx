@@ -120,7 +120,7 @@ const Hero = () => {
               {slides[currentSlide].subtitle}
             </span>
           </h1>
-          <p id="hero-description" className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+          <p id="hero-description" className="text-xl md:text-2xl text-gray-100 mb-12 max-w-3xl mx-auto">
             {slides[currentSlide].description}
           </p>
           <div id="hero-cta" className="flex flex-col sm:flex-row items-center justify-center gap-4">
