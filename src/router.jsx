@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import Blog from './pages/Blog';
+import BlogPost from './components/BlogPost';
 import Solutions from './pages/Solutions';
 import Careers from './pages/Careers';
 import GetStarted from './pages/GetStarted';
 import CaseStudies from './pages/CaseStudies';
-import BlogLayout from './components/BlogLayout';
 import BlogError from './components/BlogError';
 import LearnWithUs from './pages/LearnWithUs';
 import ProgramMaterials from './pages/ProgramMaterials';
@@ -17,6 +17,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import ModelViewPage from './pages/ModelViewPage';
+import NewBlog from './pages/NewBlog';
 
 export const router = createBrowserRouter([
   {
@@ -28,19 +29,12 @@ export const router = createBrowserRouter([
     element: <Blog />,
   },
   {
+    path: "/blog/new",
+    element: <NewBlog />,
+  },
+  {
     path: "/blog/:slug",
-    element: <BlogLayout />,
-    loader: async ({ params }) => {
-      try {
-        const post = await import(`./templates/${params.slug}.mdx`);
-        return { post: post.default };
-      } catch (error) {
-        throw new Response("Not Found", { 
-          status: 404,
-          statusText: "Blog post not found" 
-        });
-      }
-    },
+    element: <BlogPost />,
     errorElement: <BlogError />
   },
   {

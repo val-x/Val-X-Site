@@ -122,3 +122,24 @@ canvas {
     @apply opacity-0 translate-y-[100px]
   }
 }
+
+@keyframes float-heart {
+  0% {
+    transform: translate(-50%, 0) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100px) scale(2);
+    opacity: 0;
+  }
+}
+
+.floating-heart {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  pointer-events: none;
+  animation: float-heart 1s ease-out forwards;
+}

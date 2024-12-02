@@ -16,7 +16,7 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            color: '#fff',
+            color: '#9ca3af',
             h1: {
               color: '#fff',
             },
@@ -30,9 +30,9 @@ export default {
               color: '#fff',
             },
             a: {
-              color: '#3b82f6',
+              color: '#60a5fa',
               '&:hover': {
-                color: '#60a5fa',
+                color: '#3b82f6',
               },
             },
             code: {
@@ -73,12 +73,23 @@ export default {
           '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
           '50%': { transform: 'translate(15px, 15px) rotate(90deg)' },
         },
+        'gradient-shift': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'shimmer': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         'text-shine': 'text-shine 3s linear infinite',
         'float-1': 'float-1 4s ease-in-out infinite',
         'float-2': 'float-2 6s ease-in-out infinite',
         'float-3': 'float-3 5s ease-in-out infinite',
+        'gradient-shift': 'gradient-shift 3s ease infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       backgroundImage: {
         'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
