@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { tabContent } from '../data/programs';
@@ -7,8 +7,12 @@ import ProgressBar from '../components/learning/ProgressBar';
 import BackgroundEffects from '../components/learning/BackgroundEffects';
 import LessonContent from '../components/learning/LessonContent';
 import Navbar from '../components/Navbar';
-import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload, FiTarget, FiBook } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
+import ProgressStats from '../components/learning/tracker/ProgressStats';
+import PomodoroTimer from '../components/learning/tracker/PomodoroTimer';
+
+
 
 const ProgramMaterials = () => {
   const { programId } = useParams();
@@ -23,6 +27,12 @@ const ProgramMaterials = () => {
   const [notes, setNotes] = useState({});
   const [showNotes, setShowNotes] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(false);
+  const [videoProgress, setVideoProgress] = useState({});
+  const [lastWatchedVideo, setLastWatchedVideo] = useState(null);
+  const [readArticles, setReadArticles] = useState([]);
+  const [activeResource, setActiveResource] = useState(null);
+  const [isLoadingContent, setIsLoadingContent] = useState(true);
+  const [contentError, setContentError] = useState(null);
 
   // Find program data
   const program = Object.values(tabContent)
@@ -77,6 +87,146 @@ const ProgramMaterials = () => {
       setNotes(savedNotes);
     }
   }, [programId, program]);
+
+  useEffect(() => {
+    const loadResourceProgress = async () => {
+      try {
+        // Load video progress from localStorage
+        const savedVideoProgress = JSON.parse(
+          localStorage.getItem(`videoProgress_${programId}`) || '{}'
+        );
+        setVideoProgress(savedVideoProgress);
+
+        // Load last watched video
+        const lastWatched = localStorage.getItem(`lastWatched_${programId}`);
+        setLastWatchedVideo(lastWatched);
+
+        // Load read articles
+        const readArticlesList = JSON.parse(
+          localStorage.getItem(`readArticles_${programId}`) || '[]'
+        );
+        setReadArticles(readArticlesList);
+
+        setIsLoadingContent(false);
+      } catch (err) {
+        console.error('Error loading resource progress:', err);
+        setContentError('Failed to load your learning progress');
+        setIsLoadingContent(false);
+      }
+    };
+
+    loadResourceProgress();
+  }, [programId]);
+
+  const handleVideoProgress = (videoId, progress) => {
+    const newProgress = {
+      ...videoProgress,
+      [videoId]: progress
+    };
+    setVideoProgress(newProgress);
+    localStorage.setItem(`videoProgress_${programId}`, JSON.stringify(newProgress));
+
+    // Update last watched video
+    setLastWatchedVideo(videoId);
+    localStorage.setItem(`lastWatched_${programId}`, videoId);
+
+    // Check if video is complete (progress > 90%) and update lesson progress
+    if (progress > 90) {
+      handleLessonProgress();
+    }
+  };
+
+  const handleArticleComplete = (articleId) => {
+    const newReadArticles = [...readArticles, articleId];
+    setReadArticles(newReadArticles);
+    localStorage.setItem(`readArticles_${programId}`, JSON.stringify(newReadArticles));
+    handleLessonProgress();
+  };
+
+  const handleLessonProgress = () => {
+    try {
+      if (!progress || !program.curriculum || !currentTopics) return;
+
+      const newProgress = {
+        ...progress,
+        weekProgress: progress.weekProgress.map((week, weekIndex) => {
+          if (weekIndex !== activeWeek) return week;
+          return {
+            ...week,
+            days: week.days.map((day, dayIndex) => {
+              if (currentWeek.days && dayIndex !== activeDay) return day;
+              
+              // Calculate completion based on resources and content
+              const totalResources = currentDay?.resources?.length || 0;
+              const completedResources = currentDay?.resources?.filter(resource => {
+                if (resource.type === 'video') {
+                  return videoProgress[resource.id] > 90;
+                }
+                if (resource.type === 'article') {
+                  return readArticles.includes(resource.id);
+                }
+                return false;
+              }).length || 0;
+
+              const newCompleted = Math.min(
+                day.completed + 1, 
+                Math.ceil((completedResources / totalResources) * day.total)
+              );
+
+              return {
+                ...day,
+                completed: newCompleted
+              };
+            })
+          };
+        })
+      };
+
+      updateUserProgress(programId, newProgress);
+      setProgress(newProgress);
+    } catch (err) {
+      console.error('Error updating lesson progress:', err);
+      setError('Failed to update progress');
+    }
+  };
+
+  const renderLessonContent = () => {
+    if (isLoadingContent) {
+      return (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
+        </div>
+      );
+    }
+
+    if (contentError) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-red-400 mb-4">{contentError}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+
+    return currentTopic ? (
+      <LessonContent
+        lesson={{
+          ...currentLesson,
+          onVideoProgress: handleVideoProgress,
+          onArticleComplete: handleArticleComplete,
+          videoProgress: videoProgress,
+          readArticles: readArticles,
+          lastWatchedVideo: lastWatchedVideo
+        }}
+        onComplete={handleLessonComplete}
+      />
+    ) : null;
+  };
 
   if (error) {
     return (
@@ -172,13 +322,73 @@ const ProgramMaterials = () => {
     }
   };
 
+  // Add new helper function to get current resource details
+  const getCurrentResourceDetails = () => {
+    if (!currentDay?.resources) {
+      return {
+        allResources: [],
+        videoResources: [],
+        articleResources: [],
+        totalResources: 0,
+        completedResources: 0
+      };
+    }
+    
+    const allResources = currentDay.resources;
+    const videoResources = allResources.filter(r => r.type === 'video');
+    const articleResources = allResources.filter(r => r.type === 'article');
+    
+    return {
+      allResources,
+      videoResources,
+      articleResources,
+      totalResources: allResources.length,
+      completedResources: allResources.filter(resource => {
+        if (resource.type === 'video' && resource.id) {
+          return videoProgress[resource.id] > 90;
+        }
+        if (resource.type === 'article' && resource.id) {
+          return readArticles.includes(resource.id);
+        }
+        return false;
+      }).length
+    };
+  };
+
+  // Add function to check if a day is accessible
+  const isDayAccessible = (weekIndex, dayIndex) => {
+    if (weekIndex === 0 && dayIndex === 0) return true;
+    
+    const prevWeekProgress = progress?.weekProgress?.[weekIndex - 1];
+    const prevDayProgress = progress?.weekProgress?.[weekIndex]?.days?.[dayIndex - 1];
+    
+    // First day of a week - check if previous week is completed
+    if (dayIndex === 0) {
+      return prevWeekProgress?.days?.every(day => 
+        day.completed === day.total
+      );
+    }
+    
+    // Check if previous day is completed
+    return prevDayProgress?.completed === prevDayProgress?.total;
+  };
+
+  // Update handleLessonComplete to be more comprehensive
   const handleLessonComplete = () => {
     try {
       if (!progress || !program.curriculum || !currentTopics) return;
 
+      const resourceDetails = getCurrentResourceDetails();
+      const isResourceComplete = resourceDetails?.completedResources === resourceDetails?.totalResources;
+      
+      if (!isResourceComplete) {
+        toast.error('Please complete all resources before proceeding');
+        return;
+      }
+
       const newProgress = {
         ...progress,
-        completed: Math.min(progress.completed + 1, progress.total),
+        completed: progress.completed + 1,
         weekProgress: progress.weekProgress.map((week, weekIndex) => {
           if (weekIndex !== activeWeek) return week;
           return {
@@ -187,14 +397,28 @@ const ProgramMaterials = () => {
               if (currentWeek.days && dayIndex !== activeDay) return day;
               
               const newCompleted = Math.min(day.completed + 1, day.total);
-              const isFullyCompleted = newCompleted === day.total;
               
-              if (isFullyCompleted) {
-                toast.success(`Completed: Day ${day.day} - ${day.title}`);
-                if (weekIndex === program.curriculum.length - 1 && 
-                    dayIndex === currentWeek.days.length - 1) {
-                  setShowCongrats(true);
-                  setIsCompleted(true);
+              // Check if day is completed
+              if (newCompleted === day.total) {
+                toast.success(`Completed: ${currentDay.title}`);
+                
+                // Check if week is completed
+                const isWeekCompleted = week.days.every((d, idx) => 
+                  idx === dayIndex ? newCompleted === d.total : d.completed === d.total
+                );
+                
+                if (isWeekCompleted) {
+                  toast.success(`Completed: Week ${week.weekNum}`);
+                  
+                  // Check if course is completed
+                  const isCourseCompleted = progress.weekProgress.every((w, idx) =>
+                    idx === weekIndex ? isWeekCompleted : w.days.every(d => d.completed === d.total)
+                  );
+                  
+                  if (isCourseCompleted) {
+                    setShowCongrats(true);
+                    setIsCompleted(true);
+                  }
                 }
               }
               
@@ -228,35 +452,51 @@ const ProgramMaterials = () => {
     }
   };
 
+  // Add function to get next available lesson
+  const getNextAvailableLesson = () => {
+    for (let w = 0; w < program.curriculum.length; w++) {
+      const week = program.curriculum[w];
+      if (!week.days) continue;
+      
+      for (let d = 0; d < week.days.length; d++) {
+        const day = week.days[d];
+        if (!day) continue;
+        
+        const dayProgress = progress?.weekProgress?.[w]?.days?.[d];
+        if (!dayProgress) continue;
+        
+        if (dayProgress.completed < dayProgress.total && isDayAccessible(w, d)) {
+          return { weekIndex: w, dayIndex: d, topicIndex: 0 };
+        }
+      }
+    }
+    return null;
+  };
+
+  // Add function to handle resume learning
+  const handleResumeLearning = () => {
+    const nextLesson = getNextAvailableLesson();
+    if (nextLesson) {
+      setActiveWeek(nextLesson.weekIndex);
+      setActiveDay(nextLesson.dayIndex);
+      setActiveTopic(nextLesson.topicIndex);
+    }
+  };
+
+  // Update currentLesson object to include more details
   const currentLesson = currentTopic ? {
     title: currentTopic,
     content: `# ${currentTopic}\n\n## Overview\n\nThis lesson covers ${currentTopic}.\n\n## Learning Objectives\n\n- Understand the fundamentals of ${currentTopic}\n- Learn best practices for implementation\n- Gain practical experience through exercises\n\n## Content\n\nDetailed content for ${currentTopic} will be covered in this section...\n`,
     duration: currentDay?.duration || "60 mins",
-    resources: [
-      {
-        type: 'video',
-        url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        title: `${currentTopic} - Video Tutorial`,
-        duration: 596
-      },
-      {
-        type: 'article',
-        url: '#',
-        title: `Deep Dive into ${currentTopic}`
-      }
-    ],
-    quiz: [
-      {
-        question: `What is the main purpose of ${currentTopic}?`,
-        options: [
-          "Option A - Example answer",
-          "Option B - Example answer",
-          "Option C - Example answer",
-          "Option D - Example answer"
-        ],
-        correctAnswer: 0
-      }
-    ]
+    resources: currentDay?.resources || [],
+    resourceProgress: getCurrentResourceDetails(),
+    quiz: currentDay?.quiz || [],
+    isAccessible: isDayAccessible(activeWeek, activeDay),
+    onVideoProgress: handleVideoProgress,
+    onArticleComplete: handleArticleComplete,
+    videoProgress: videoProgress,
+    readArticles: readArticles,
+    lastWatchedVideo: lastWatchedVideo
   } : null;
 
   const toggleBookmark = (weekIndex, dayIndex, topicIndex) => {
@@ -311,185 +551,254 @@ const ProgramMaterials = () => {
     }
   };
 
+  // Add totalResources calculation
+  const totalResources = useMemo(() => {
+    if (!currentDay?.resources) return 0;
+    return currentDay.resources.length;
+  }, [currentDay]);
+
+  // Add resourceDetails calculation
+  const resourceDetails = useMemo(() => {
+    return getCurrentResourceDetails();
+  }, [currentDay, videoProgress, readArticles]);
+
+  const handleTimerComplete = () => {
+    toast.success('Focus session completed!');
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 relative">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-800">
       <Navbar />
       <BackgroundEffects variant="minimal" />
+      
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full 
+          bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 rotate-45 transform-gpu" />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
-        {/* Header */}
-        <div className="mb-12">
-          <Link 
-            to="/learn"
-            className="inline-flex items-center text-slate-400 hover:text-white transition-colors mb-6"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Programs
-          </Link>
+      <div className="relative">
+        {/* Header Section */}
+        <div className="bg-gradient-to-b from-slate-950 to-transparent pt-24 pb-12 mb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              {/* Left Side */}
+              <div className="flex-1">
+                <Link 
+                  to="/learn"
+                  className="inline-flex items-center text-slate-400 hover:text-white transition-all
+                    hover:translate-x-0.5 transform-gpu mb-4"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to Programs
+                </Link>
 
-          <h1 className="text-4xl font-bold text-white mb-4">{program.title}</h1>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              {program.level}
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-              {program.duration}
-            </span>
+                <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent 
+                  bg-gradient-to-r from-white via-blue-100 to-white mb-4">
+                  {program.title}
+                </h1>
+                
+                <div className="flex flex-wrap items-center gap-4 text-slate-400">
+                  <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 
+                    border border-slate-700/50">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    {program.level}
+                  </span>
+                  <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 
+                    border border-slate-700/50">
+                    <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                    {program.duration}
+                  </span>
+                  {isCompleted && (
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 
+                      border border-green-500/20 text-green-400">
+                      <FiCheckCircle className="w-4 h-4" />
+                      Completed
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Side */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleResumeLearning}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+                    rounded-xl font-medium hover:shadow-lg hover:shadow-purple-500/20 
+                    transition-all duration-300 flex items-center justify-center gap-2 
+                    hover:scale-105 transform-gpu"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  </svg>
+                  Resume Learning
+                </button>
+                
+                <button
+                  onClick={downloadMaterials}
+                  disabled={downloadProgress}
+                  className="px-6 py-3 bg-slate-800/50 text-white rounded-xl font-medium 
+                    hover:bg-slate-800 transition-all duration-300 flex items-center 
+                    justify-center gap-2 border border-slate-700/50"
+                >
+                  <FiDownload className={`w-5 h-5 ${downloadProgress ? 'animate-bounce' : ''}`} />
+                  Course Materials
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Progress Bar */}
+        {/* Progress Stats */}
         {progress && (
-          <div className="mb-12 max-w-xl">
-            <ProgressBar
-              progress={progress.completed}
-              total={progress.total}
-              label="Course Progress"
-              variant={progress.completed === progress.total ? 'success' : 'default'}
-            />
-          </div>
+          <ProgressStats
+            progress={progress}
+            videoProgress={videoProgress}
+            resourceDetails={resourceDetails}
+          />
         )}
 
-        {/* Course Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Modules Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-slate-900/50 rounded-xl p-4 sticky top-24">
-              <h3 className="text-lg font-semibold text-white mb-4">Course Modules</h3>
-              <nav className="space-y-2">
-                {program.curriculum?.map((week, weekIndex) => {
-                  if (!week) return null;
-                  
-                  const weekProgress = calculateProgress(weekIndex, 0);
-                  
-                  return (
-                    <div key={weekIndex} className="space-y-2">
-                      <button
-                        onClick={() => {
-                          setActiveWeek(weekIndex);
-                          setActiveDay(0);
-                          setActiveTopic(0);
-                        }}
-                        className={`relative w-full text-left px-4 py-2 rounded-lg transition-all duration-300 ${
-                          weekIndex === activeWeek
-                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white'
-                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span>Week {week.week}: {week.title}</span>
-                          {weekProgress === 100 && (
-                            <FiCheckCircle className="text-green-400" />
-                          )}
-                        </div>
-                        <div className="mt-1 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
-                            style={{ width: `${weekProgress}%` }}
-                          />
-                        </div>
-                      </button>
+        {/* Main Content Area */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Modules Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-slate-900/50 rounded-xl p-4 sticky top-24">
+                <h3 className="text-lg font-semibold text-white mb-4">Course Modules</h3>
+                <nav className="space-y-2">
+                  {program.curriculum?.map((week, weekIndex) => {
+                    if (!week) return null;
+                    
+                    const weekProgress = calculateProgress(weekIndex, 0);
+                    
+                    return (
+                      <div key={weekIndex} className="space-y-2">
+                        <button
+                          onClick={() => {
+                            setActiveWeek(weekIndex);
+                            setActiveDay(0);
+                            setActiveTopic(0);
+                          }}
+                          className={`relative w-full text-left px-4 py-2 rounded-lg transition-all duration-300 ${
+                            weekIndex === activeWeek
+                              ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white'
+                              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span>Week {week.week}: {week.title}</span>
+                            {weekProgress === 100 && (
+                              <FiCheckCircle className="text-green-400" />
+                            )}
+                          </div>
+                          <div className="mt-1 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
+                              style={{ width: `${weekProgress}%` }}
+                            />
+                          </div>
+                        </button>
 
-                      {weekIndex === activeWeek && week.days && (
-                        <div className="pl-4 space-y-1">
-                          {week.days.map((day, dayIndex) => {
-                            if (!day) return null;
-                            
-                            const dayProgress = calculateProgress(weekIndex, dayIndex);
-                            const locked = isLessonLocked(weekIndex, dayIndex);
-                            
-                            return (
-                              <div key={dayIndex}>
-                                <button
-                                  onClick={() => {
-                                    if (!locked) {
-                                      setActiveDay(dayIndex);
-                                      setActiveTopic(0);
-                                    } else {
-                                      toast.error('Complete previous lessons first');
-                                    }
-                                  }}
-                                  className={`relative w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
-                                    locked
-                                      ? 'text-slate-500 cursor-not-allowed'
-                                      : dayIndex === activeDay
-                                      ? 'text-blue-400 bg-blue-500/10'
-                                      : 'text-slate-400 hover:text-white'
-                                  }`}
-                                >
-                                  <div className="flex items-center justify-between">
-                                    <span>Day {day.day}: {day.title}</span>
-                                    <div className="flex items-center gap-2">
-                                      <FiClock className="text-slate-500" />
-                                      <span className="text-xs text-slate-500">{day.duration}</span>
-                                      {locked ? (
-                                        <FiLock className="text-slate-500" />
-                                      ) : dayProgress === 100 ? (
-                                        <FiCheckCircle className="text-green-400" />
-                                      ) : null}
+                        {weekIndex === activeWeek && week.days && (
+                          <div className="pl-4 space-y-1">
+                            {week.days.map((day, dayIndex) => {
+                              if (!day) return null;
+                              
+                              const dayProgress = calculateProgress(weekIndex, dayIndex);
+                              const locked = isLessonLocked(weekIndex, dayIndex);
+                              
+                              return (
+                                <div key={dayIndex}>
+                                  <button
+                                    onClick={() => {
+                                      if (!locked) {
+                                        setActiveDay(dayIndex);
+                                        setActiveTopic(0);
+                                      } else {
+                                        toast.error('Complete previous lessons first');
+                                      }
+                                    }}
+                                    className={`relative w-full text-left px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
+                                      locked
+                                        ? 'text-slate-500 cursor-not-allowed'
+                                        : dayIndex === activeDay
+                                        ? 'text-blue-400 bg-blue-500/10'
+                                        : 'text-slate-400 hover:text-white'
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span>Day {day.day}: {day.title}</span>
+                                      <div className="flex items-center gap-2">
+                                        <FiClock className="text-slate-500" />
+                                        <span className="text-xs text-slate-500">{day.duration}</span>
+                                        {locked ? (
+                                          <FiLock className="text-slate-500" />
+                                        ) : dayProgress === 100 ? (
+                                          <FiCheckCircle className="text-green-400" />
+                                        ) : null}
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="mt-1 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                                    <div 
-                                      className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
-                                      style={{ width: `${dayProgress}%` }}
-                                    />
-                                  </div>
-                                </button>
+                                    <div className="mt-1 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                                      <div 
+                                        className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
+                                        style={{ width: `${dayProgress}%` }}
+                                      />
+                                    </div>
+                                  </button>
 
-                                {dayIndex === activeDay && day.topics && (
-                                  <div className="pl-4 space-y-1 mt-1">
-                                    {day.topics.map((topic, topicIndex) => {
-                                      if (!topic) return null;
-                                      
-                                      return (
-                                        <button
-                                          key={topicIndex}
-                                          onClick={() => setActiveTopic(topicIndex)}
-                                          className={`w-full text-left px-4 py-2 rounded-lg text-xs transition-all duration-300 ${
-                                            topicIndex === activeTopic
-                                              ? 'text-blue-400 bg-blue-500/10'
-                                              : 'text-slate-400 hover:text-white'
-                                          }`}
-                                        >
-                                          {topic}
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </nav>
+                                  {dayIndex === activeDay && day.topics && (
+                                    <div className="pl-4 space-y-1 mt-1">
+                                      {day.topics.map((topic, topicIndex) => {
+                                        if (!topic) return null;
+                                        
+                                        return (
+                                          <button
+                                            key={topicIndex}
+                                            onClick={() => setActiveTopic(topicIndex)}
+                                            className={`w-full text-left px-4 py-2 rounded-lg text-xs transition-all duration-300 ${
+                                              topicIndex === activeTopic
+                                                ? 'text-blue-400 bg-blue-500/10'
+                                                : 'text-slate-400 hover:text-white'
+                                            }`}
+                                          >
+                                            {topic}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </nav>
+              </div>
             </div>
-          </div>
 
-          {/* Lesson Content */}
-          <div className="lg:col-span-3">
-            <motion.div
-              key={`${activeWeek}-${activeDay}-${activeTopic}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-slate-900/50 rounded-xl p-8"
-            >
-              {currentLesson && (
-                <LessonContent 
-                  lesson={currentLesson}
-                  onComplete={handleLessonComplete}
-                />
-              )}
-            </motion.div>
+            {/* Lesson Content and Timer */}
+            <div className="lg:col-span-3 space-y-8">
+              {/* Lesson Content */}
+              <motion.div
+                key={`${activeWeek}-${activeDay}-${activeTopic}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="bg-slate-900/50 rounded-xl p-8"
+              >
+                {renderLessonContent()}
+              </motion.div>
+
+              
+            </div>
           </div>
         </div>
       </div>
@@ -528,16 +837,24 @@ const ProgramMaterials = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setShowNotes(!showNotes)}
-          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg hover:shadow-purple-500/25"
+          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+            shadow-lg hover:shadow-purple-500/25 relative"
         >
           <FiBookmark className="w-6 h-6" />
+          {bookmarks.length > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs 
+              flex items-center justify-center">
+              {bookmarks.length}
+            </span>
+          )}
         </motion.button>
         
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={shareProgress}
-          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg hover:shadow-purple-500/25"
+          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+            shadow-lg hover:shadow-purple-500/25"
         >
           <FiShare2 className="w-6 h-6" />
         </motion.button>
@@ -547,40 +864,124 @@ const ProgramMaterials = () => {
           whileTap={{ scale: 0.9 }}
           onClick={downloadMaterials}
           disabled={downloadProgress}
-          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg hover:shadow-purple-500/25 disabled:opacity-50"
+          className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+            shadow-lg hover:shadow-purple-500/25 disabled:opacity-50"
         >
           <FiDownload className={`w-6 h-6 ${downloadProgress ? 'animate-bounce' : ''}`} />
         </motion.button>
       </div>
 
+      {/* Notes Panel */}
       {showNotes && (
         <motion.div
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 300 }}
-          className="fixed right-0 top-0 h-full w-96 bg-slate-900/95 backdrop-blur-xl border-l border-slate-700/50 p-6 overflow-y-auto"
+          className="fixed right-0 top-0 h-full w-96 bg-slate-900/95 backdrop-blur-xl border-l 
+            border-slate-700/50 p-6 overflow-y-auto z-50"
         >
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-white">Notes</h3>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 
+              bg-clip-text text-transparent">
+              Notes & Bookmarks
+            </h3>
             <button
               onClick={() => setShowNotes(false)}
-              className="text-slate-400 hover:text-white"
+              className="text-slate-400 hover:text-white transition-colors"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          
-          <textarea
-            value={notes[`${activeWeek}-${activeDay}-${activeTopic}`] || ''}
-            onChange={(e) => saveNote(e.target.value)}
-            placeholder="Add your notes here..."
-            className="w-full h-64 bg-slate-800/50 rounded-xl p-4 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-          />
 
-          <div className="mt-4 text-sm text-slate-400">
-            Notes are automatically saved as you type.
+          {/* Bookmarked Lessons */}
+          {bookmarks.length > 0 && (
+            <div className="mb-8">
+              <h4 className="text-sm font-medium text-slate-400 mb-3">Bookmarked Lessons</h4>
+              <div className="space-y-2">
+                {bookmarks.map(bookmark => {
+                  const [weekIndex, dayIndex, topicIndex] = bookmark.split('-').map(Number);
+                  const week = program.curriculum[weekIndex];
+                  const day = week?.days?.[dayIndex];
+                  const topic = day?.topics?.[topicIndex];
+
+                  if (!topic) return null;
+
+                  return (
+                    <button
+                      key={bookmark}
+                      onClick={() => {
+                        setActiveWeek(weekIndex);
+                        setActiveDay(dayIndex);
+                        setActiveTopic(topicIndex);
+                        setShowNotes(false);
+                      }}
+                      className="w-full text-left p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800 
+                        transition-colors group"
+                    >
+                      <div className="text-sm font-medium text-white group-hover:text-blue-400 
+                        transition-colors">
+                        {topic}
+                      </div>
+                      <div className="text-xs text-slate-400 mt-1">
+                        Week {week.week}, Day {day.day}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Notes Editor */}
+          <div>
+            <h4 className="text-sm font-medium text-slate-400 mb-3">Current Lesson Notes</h4>
+            <textarea
+              value={notes[`${activeWeek}-${activeDay}-${activeTopic}`] || ''}
+              onChange={(e) => saveNote(e.target.value)}
+              placeholder="Add your notes here..."
+              className="w-full h-64 bg-slate-800/50 rounded-xl p-4 text-white placeholder-slate-500 
+                resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            />
+            <p className="text-xs text-slate-400 mt-2">
+              Notes are automatically saved as you type
+            </p>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="mt-8">
+            <h4 className="text-sm font-medium text-slate-400 mb-3">Quick Navigation</h4>
+            <div className="space-y-2">
+              <button
+                onClick={handleResumeLearning}
+                className="w-full p-3 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 
+                  hover:from-blue-500/30 hover:to-purple-500/30 transition-colors text-white 
+                  font-medium flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                </svg>
+                Resume Learning
+              </button>
+              <button
+                onClick={() => {
+                  setActiveWeek(0);
+                  setActiveDay(0);
+                  setActiveTopic(0);
+                  setShowNotes(false);
+                }}
+                className="w-full p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800 transition-colors 
+                  text-white font-medium flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Start from Beginning
+              </button>
+            </div>
           </div>
         </motion.div>
       )}

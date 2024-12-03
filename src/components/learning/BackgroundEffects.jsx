@@ -1,42 +1,47 @@
+import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 
 const BackgroundEffects = ({ variant = 'default' }) => {
   const variants = {
     default: {
-      wrapper: "absolute inset-0 overflow-hidden pointer-events-none opacity-50",
-      gradients: [
-        "absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 blur-[100px] animate-float",
-        "absolute bottom-20 right-20 w-[800px] h-[800px] rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-[120px] animate-float-delayed",
-        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 blur-[100px] animate-pulse-slow"
+      elements: [
+        { color: 'bg-blue-500/5', position: 'top-0 left-1/4' },
+        { color: 'bg-purple-500/5', position: 'bottom-0 right-1/4' }
+      ]
+    },
+    learning: {
+      elements: [
+        { color: 'bg-blue-500/5', position: 'top-0 left-0' },
+        { color: 'bg-purple-500/5', position: 'bottom-0 right-0' },
+        { color: 'bg-pink-500/5', position: 'top-1/2 left-1/2' }
       ]
     },
     minimal: {
-      wrapper: "absolute inset-0 overflow-hidden pointer-events-none opacity-30",
-      gradients: [
-        "absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-blue-500/5 to-transparent blur-[100px]",
-        "absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-purple-500/5 to-transparent blur-[100px]"
+      elements: [
+        { color: 'bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5', position: 'top-0 left-0 right-0' }
       ]
     }
   };
 
-  const currentVariant = variants[variant];
+  const currentVariant = variants[variant] || variants.default;
 
   return (
-    <>
-      <div className={currentVariant.wrapper}>
-        {currentVariant.gradients.map((gradient, index) => (
-          <div key={index} className={gradient} />
-        ))}
-      </div>
-      
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black,transparent)] opacity-25"></div>
-    </>
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {currentVariant.elements.map((element, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: index * 0.2 }}
+          className={`absolute w-[40rem] h-[40rem] ${element.color} rounded-full blur-3xl ${element.position}`}
+        />
+      ))}
+    </div>
   );
 };
 
 BackgroundEffects.propTypes = {
-  variant: PropTypes.oneOf(['default', 'minimal'])
+  variant: PropTypes.oneOf(['default', 'learning', 'minimal'])
 };
 
 export default BackgroundEffects; 
