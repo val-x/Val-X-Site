@@ -16,76 +16,42 @@ const VideoAnalytics = ({
 }) => {
   return (
     <>
-      {/* Chapter Markers */}
-      <div className="absolute bottom-20 left-0 right-0 px-6">
-        <div className="relative h-1 bg-slate-700/50 rounded-full">
-          {chapters.map((chapter) => (
-            <motion.button
-              key={chapter.id}
-              className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full 
-                ${currentChapter?.id === chapter.id ? 'bg-violet-400' : 'bg-slate-400'}`}
-              style={{ left: `${(chapter.time / duration) * 100}%` }}
-              whileHover={{ scale: 1.5 }}
-              onClick={() => onChapterClick(chapter)}
-            >
-              <motion.div
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 
-                  group-hover:opacity-100 pointer-events-none whitespace-nowrap"
-                initial={{ opacity: 0, y: -10 }}
-                whileHover={{ opacity: 1, y: 0 }}
-              >
-                <div className="bg-slate-900/90 backdrop-blur-sm rounded-lg px-2 py-1 
-                  border border-violet-500/20">
-                  <div className="text-xs font-medium text-white">
-                    {chapter.title}
-                  </div>
-                  <div className="text-[10px] text-slate-400">
-                    {formatTime(chapter.time)}
-                  </div>
-                </div>
-              </motion.div>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      {/* Analytics Panel */}
       {showSettings && (
-        <div className="absolute top-20 right-4 bg-slate-900/90 backdrop-blur-sm rounded-lg 
-          border border-violet-500/20 p-4 space-y-2 text-sm w-72">
-          <div className="flex items-center justify-between">
-            <h4 className={`font-medium ${gradientClasses.text}`}>Analytics</h4>
-            <div className="text-xs text-slate-400">
-              Session: {formatTime((Date.now() - analytics.startTime) / 1000)}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            {/* Playback Stats */}
-            <StatsSection title="Playback">
-              <StatItem label="Play Count" value={analytics.playCount} />
-              <StatItem label="Pause Count" value={analytics.pauseCount} />
-              <StatItem 
-                label="Watch Time" 
-                value={formatTime(analytics.totalPlayTime)} 
-              />
-              <StatItem 
-                label="Average Speed" 
-                value={`${analytics.averagePlaybackSpeed.toFixed(2)}x`} 
-              />
-            </StatsSection>
-
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="absolute bottom-24 right-4 p-4 bg-slate-900/90 backdrop-blur-sm
+            rounded-2xl border border-violet-500/20 shadow-xl shadow-violet-500/20
+            w-80 max-h-[calc(100vh-200px)] overflow-y-auto"
+        >
+          <div className="space-y-6">
             {/* Network Stats */}
             <StatsSection title="Network">
               <StatItem 
                 label="Connection" 
-                value={networkStats.effectiveType.toUpperCase()} 
+                value={networkStats.effectiveType?.toUpperCase() || 'Unknown'} 
               />
               <StatItem 
                 label="Bandwidth" 
-                value={`${networkStats.downlink.toFixed(1)} Mbps`} 
+                value={`${networkStats.downlink?.toFixed(1) || 0} Mbps`} 
               />
-              <StatItem label="Latency" value={`${networkStats.rtt}ms`} />
+              <StatItem 
+                label="Latency" 
+                value={`${networkStats.rtt || 0}ms`} 
+              />
+            </StatsSection>
+
+            {/* Playback Stats */}
+            <StatsSection title="Playback">
+              <StatItem 
+                label="Total Time" 
+                value={formatTime(analytics.totalPlayTime)} 
+              />
+              <StatItem 
+                label="Avg Speed" 
+                value={`${analytics.averagePlaybackSpeed.toFixed(1)}x`} 
+              />
             </StatsSection>
 
             {/* Buffer Stats */}
@@ -118,7 +84,7 @@ const VideoAnalytics = ({
               </StatsSection>
             )}
           </div>
-        </div>
+        </motion.div>
       )}
     </>
   );
