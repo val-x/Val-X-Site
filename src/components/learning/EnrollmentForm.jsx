@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { enrollUser } from '../utils/enrollment';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { enrollUser } from '../../utils/enrollment';
 
 const EnrollmentForm = ({ program, onClose }) => {
   const navigate = useNavigate();
@@ -54,10 +55,10 @@ const EnrollmentForm = ({ program, onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-gray-900 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        exit={{ scale: 0.95, opacity: 0 }}
+        className="bg-gradient-to-b from-slate-900/90 to-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-start mb-6">
@@ -68,7 +69,7 @@ const EnrollmentForm = ({ program, onClose }) => {
               Limited Time Free Access
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -78,7 +79,7 @@ const EnrollmentForm = ({ program, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">First Name</label>
+              <label className="block text-sm font-medium text-gray-100 mb-2">First Name</label>
               <input
                 type="text"
                 name="firstName"
@@ -89,7 +90,7 @@ const EnrollmentForm = ({ program, onClose }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
+              <label className="block text-sm font-medium text-gray-100 mb-2">Last Name</label>
               <input
                 type="text"
                 name="lastName"
@@ -102,7 +103,7 @@ const EnrollmentForm = ({ program, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-gray-100 mb-2">Email</label>
             <input
               type="email"
               name="email"
@@ -114,7 +115,7 @@ const EnrollmentForm = ({ program, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+            <label className="block text-sm font-medium text-gray-100 mb-2">Phone Number</label>
             <input
               type="tel"
               name="phone"
@@ -126,7 +127,7 @@ const EnrollmentForm = ({ program, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Company/Organization</label>
+            <label className="block text-sm font-medium text-gray-100 mb-2">Company/Organization</label>
             <input
               type="text"
               name="company"
@@ -137,7 +138,7 @@ const EnrollmentForm = ({ program, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Years of Experience</label>
+            <label className="block text-sm font-medium text-gray-100 mb-2">Years of Experience</label>
             <select
               name="experience"
               value={formData.experience}
@@ -161,7 +162,7 @@ const EnrollmentForm = ({ program, onClose }) => {
               className="w-4 h-4 rounded border-gray-300 text-purple-500 focus:ring-purple-500"
               required
             />
-            <label className="text-sm text-gray-300">
+            <label className="text-sm text-gray-100">
               I agree to the terms and conditions and privacy policy
             </label>
           </div>
@@ -185,6 +186,14 @@ const EnrollmentForm = ({ program, onClose }) => {
       </motion.div>
     </motion.div>
   );
+};
+
+EnrollmentForm.propTypes = {
+  program: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default EnrollmentForm; 

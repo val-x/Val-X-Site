@@ -8,6 +8,19 @@ import { formatTime } from '../utils/dateUtils';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import NewsItem from '../components/NewsItem';
 import PopularTags from '../components/PopularTags';
+import { 
+  HomeIcon, 
+  BookmarkIcon, 
+  PlusIcon, 
+  GridIcon, 
+  ListIcon, 
+  DraftIcon, 
+  ArticleIcon, 
+  NewsIcon, 
+  ArrowIcon,
+  HeartIcon,
+  CommentIcon 
+} from '../components/Icons';
 
 const BlogPost = memo(({ post, onTagSelect }) => {
   const navigate = useNavigate();
@@ -118,6 +131,8 @@ const Blog = () => {
   const [hasMoreNews, setHasMoreNews] = useState(true);
   const [newsFilter, setNewsFilter] = useState('all');
   const [newsSort, setNewsSort] = useState('score');
+  const [newsView, setNewsView] = useState('list');
+  const [searchTerm, setSearchTerm] = useState('');
   
   const ITEMS_PER_PAGE = 10;
   const NEWS_PER_PAGE = 5;
@@ -161,6 +176,22 @@ const Blog = () => {
       }
     });
   }, [newsItems, newsFilter, newsSort]);
+
+  const filteredNews = useMemo(() => {
+    let filtered = [...sortedAndFilteredNews];
+    
+    if (searchTerm.trim()) {
+      const terms = searchTerm.toLowerCase().split(' ');
+      filtered = filtered.filter(item => 
+        terms.every(term => 
+          item.title?.toLowerCase().includes(term) ||
+          item.by?.toLowerCase().includes(term)
+        )
+      );
+    }
+    
+    return filtered;
+  }, [sortedAndFilteredNews, searchTerm]);
 
   // Define loadMorePosts before using it in useInfiniteScroll
   const loadMorePosts = useCallback(async () => {
@@ -291,14 +322,6 @@ const Blog = () => {
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-white">Latest Blog Posts</h2>
-                <button
-                  onClick={() => window.location.href = '/blog/new'}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 
-                  text-white hover:bg-blue-600 transition-colors"
-                >
-                  <PlusIcon className="w-5 h-5" />
-                  New Post
-                </button>
               </div>
               <div className={`grid gap-6 ${
                 view === 'grid' 
@@ -330,14 +353,6 @@ const Blog = () => {
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-white">Latest Tech News</h2>
-                <a
-                  href="https://news.ycombinator.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
-                >
-                  View on Hacker News →
-                </a>
               </div>
               <div className="grid gap-6 grid-cols-1">
                 {newsItems.map(item => (
@@ -435,14 +450,40 @@ const Blog = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">Tech News</h2>
-              <a
-                href="https://news.ycombinator.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
-              >
-                View on Hacker News →
-              </a>
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search news..."
+                    className="w-64 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg 
+                    text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setNewsView('grid')}
+                    className={`p-2 rounded-lg transition-colors ${
+                      newsView === 'grid' 
+                        ? 'text-blue-400 bg-blue-500/10' 
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    <GridIcon className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => setNewsView('list')}
+                    className={`p-2 rounded-lg transition-colors ${
+                      newsView === 'list' 
+                        ? 'text-blue-400 bg-blue-500/10' 
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    <ListIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Filter and Sort Controls */}
@@ -486,26 +527,33 @@ const Blog = () => {
             </div>
 
             {/* News Items Grid */}
-            <div className="grid gap-6 grid-cols-1">
-              {sortedAndFilteredNews.map(item => (
+            <div className={`grid gap-6 ${
+              newsView === 'grid' 
+                ? 'grid-cols-1 md:grid-cols-2' 
+                : 'grid-cols-1'
+            }`}>
+              {filteredNews.map(item => (
                 <NewsItem 
                   key={item.id} 
                   item={item}
+                  view={newsView}
                   isInReadingList={readingList.some(i => i.id === item.id)}
                   onToggleReadingList={toggleReadingList}
                 />
               ))}
               {isFetchingNews && (
-                <div className="flex justify-center py-4">
+                <div className="col-span-full flex justify-center py-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
               )}
             </div>
 
             {/* No Results Message */}
-            {sortedAndFilteredNews.length === 0 && !isFetchingNews && (
+            {filteredNews.length === 0 && !isFetchingNews && (
               <div className="text-center py-20">
-                <p className="text-gray-400">No stories found</p>
+                <p className="text-gray-400">
+                  {searchTerm ? 'No stories found matching your search' : 'No stories found'}
+                </p>
               </div>
             )}
           </div>
@@ -528,7 +576,9 @@ const Blog = () => {
     isFetchingNews,
     newsFilter,
     newsSort,
-    sortedAndFilteredNews
+    sortedAndFilteredNews,
+    newsView,
+    searchTerm
   ]);
 
   // Reset pagination when tab or tag changes
@@ -709,86 +759,5 @@ const Blog = () => {
     </div>
   );
 };
-
-// Icons components
-const ArrowIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-  </svg>
-);
-
-const GridIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-  </svg>
-);
-
-const ListIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-    d="M4 6h16M4 12h16M4 18h16" />
-  </svg>
-);
-
-// Simple icon components
-const HeartIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-  </svg>
-);
-
-const CommentIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-  </svg>
-);
-
-// Add these icon components at the bottom with the other icons
-const HomeIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" 
-    />
-  </svg>
-);
-
-const BookmarkIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" 
-    />
-  </svg>
-);
-
-const PlusIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-  </svg>
-);
-
-const DraftIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
-    />
-  </svg>
-);
-
-const ArticleIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" 
-    />
-  </svg>
-);
-
-const NewsIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" 
-    />
-  </svg>
-);
 
 export default Blog; 

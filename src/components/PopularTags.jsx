@@ -4,8 +4,8 @@ const PopularTags = memo(({ selectedTag, onTagSelect, tags }) => {
   const [showAllTags, setShowAllTags] = useState(false);
   const [showAllStats, setShowAllStats] = useState(false);
 
-  const visibleTags = showAllTags ? tags.filter(tag => tag !== 'all') : tags.filter(tag => tag !== 'all').slice(0, 4);
-  const visibleStats = showAllStats ? tags.filter(tag => tag !== 'all') : tags.filter(tag => tag !== 'all').slice(0, 3);
+  const visibleTags = showAllTags ? tags.filter(tag => tag !== 'all') : tags.filter(tag => tag !== 'all').slice(0, 6);
+  const visibleStats = showAllStats ? tags.filter(tag => tag !== 'all') : tags.filter(tag => tag !== 'all').slice(0, 4);
 
   const handleShowMoreTags = useCallback(() => {
     setShowAllTags(prev => !prev);
@@ -16,24 +16,26 @@ const PopularTags = memo(({ selectedTag, onTagSelect, tags }) => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-gray-800/50 rounded-xl border 
-    border-gray-800/50 flex flex-col max-h-[400px]">
+    <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800/50 flex flex-col max-h-[450px]">
       {/* Header */}
-      <div className="p-4 border-b border-gray-800/50">
-        <h3 className="font-bold text-white text-sm">Popular Tags</h3>
+      <div className="p-5 border-b border-gray-800/50">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-5 bg-blue-500 rounded-full" />
+          <h3 className="font-semibold text-white">Discover Topics</h3>
+        </div>
       </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
-        {/* Tags Section */}
-        <div className="space-y-2">
-          <div className="flex flex-wrap gap-1.5">
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-6">
+        {/* Tags Grid */}
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => onTagSelect('all')}
-              className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
-                selectedTag === 'all' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50'
+              className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 truncate ${
+                selectedTag === 'all'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/20'
+                  : 'bg-gray-800/50 text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}
             >
               All Posts
@@ -42,61 +44,73 @@ const PopularTags = memo(({ selectedTag, onTagSelect, tags }) => {
               <button
                 key={tag}
                 onClick={() => onTagSelect(tag)}
-                className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
-                  selectedTag === tag 
-                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
-                    : 'bg-gray-800/50 text-gray-400 border border-gray-700/50 hover:text-white hover:border-gray-600/50'
+                className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 truncate ${
+                  selectedTag === tag
+                    ? 'bg-blue-500/10 text-blue-400 border-2 border-blue-500/20'
+                    : 'bg-gray-800/50 text-gray-400 border border-gray-700/50 hover:bg-gray-800 hover:text-white'
                 }`}
+                title={`#${tag.toLowerCase()}`}
               >
                 #{tag.toLowerCase()}
               </button>
             ))}
           </div>
           
-          {tags.length > 5 && (
+          {tags.length > 7 && (
             <button
               onClick={handleShowMoreTags}
-              className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              className="w-full text-sm text-gray-400 hover:text-white transition-colors py-2 rounded-xl
+              border border-gray-800 hover:border-gray-700"
             >
-              {showAllTags ? 'Show Less' : `+${tags.length - 5} more`}
+              {showAllTags ? '← Show Less' : `Show More (${tags.length - 7})`}
             </button>
           )}
         </div>
 
-        {/* Tag Stats */}
-        <div className="pt-4 border-t border-gray-800/50">
-          <div className="flex items-center justify-between mb-2">
-            <h4 className="text-xs font-medium text-gray-400">Trending</h4>
-            {tags.length > 3 && (
+        {/* Trending Stats */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500 text-lg">🔥</span>
+              <h4 className="font-medium text-white">Trending Now</h4>
+            </div>
+            {tags.length > 4 && (
               <button
                 onClick={handleShowMoreStats}
-                className="text-[10px] text-blue-400 hover:text-blue-300 transition-colors"
+                className="text-xs text-gray-400 hover:text-white transition-colors"
               >
-                {showAllStats ? 'Less' : 'More'}
+                {showAllStats ? 'Show Less' : 'View All'}
               </button>
             )}
           </div>
-          <div className="space-y-2">
+          
+          <div className="space-y-3">
             {visibleStats.map(tag => (
-              <div key={tag} className="flex items-center justify-between group">
-                <button 
-                  onClick={() => onTagSelect(tag)}
-                  className="text-xs text-gray-400 hover:text-blue-400 transition-colors"
-                >
-                  #{tag.toLowerCase()}
-                </button>
-                <div className="flex items-center gap-1.5">
-                  <div className="h-1 w-16 bg-gray-800 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-blue-500/50 rounded-full group-hover:bg-blue-500/70 transition-colors"
-                      style={{ width: `${Math.random() * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-gray-500 group-hover:text-gray-400 transition-colors">
-                    {Math.floor(Math.random() * 100)}%
+              <button
+                key={tag}
+                onClick={() => onTagSelect(tag)}
+                className="w-full group"
+                title={`#${tag.toLowerCase()}`}
+              >
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-800/30
+                hover:bg-gray-800/50 transition-all duration-200">
+                  <span className="text-sm text-gray-400 group-hover:text-white transition-colors truncate max-w-[150px]">
+                    #{tag.toLowerCase()}
                   </span>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <div className="h-1.5 w-20 bg-gray-800 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full
+                        group-hover:from-blue-500 group-hover:to-blue-300 transition-colors"
+                        style={{ width: `${Math.random() * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-medium text-gray-500 group-hover:text-gray-300">
+                      {Math.floor(Math.random() * 100)}%
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -111,7 +125,7 @@ export default PopularTags;
 const style = document.createElement('style');
 style.textContent = `
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -119,17 +133,17 @@ style.textContent = `
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(31, 41, 55, 0.5);
-    border-radius: 2px;
+    background-color: rgba(55, 65, 81, 0.3);
+    border-radius: 20px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(55, 65, 81, 0.7);
+    background-color: rgba(55, 65, 81, 0.5);
   }
 
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: rgba(31, 41, 55, 0.5) transparent;
+    scrollbar-color: rgba(55, 65, 81, 0.3) transparent;
   }
 `;
 document.head.appendChild(style); 
