@@ -5,7 +5,6 @@ import BlogPost from './components/BlogPost';
 import Solutions from './pages/Solutions';
 import Careers from './pages/Careers';
 import GetStarted from './pages/GetStarted';
-import CaseStudies from './pages/CaseStudies';
 import BlogError from './components/BlogError';
 import LearnWithUs from './pages/LearnWithUs';
 import ProgramMaterials from './pages/ProgramMaterials';
@@ -16,9 +15,9 @@ import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
-import ModelViewPage from './pages/ModelViewPage';
 import NewBlog from './pages/NewBlog';
 import Culture from './pages/Culture';
+import Showcase from './pages/Showcase';
 
 export const router = createBrowserRouter([
   {
@@ -50,10 +49,15 @@ export const router = createBrowserRouter([
     path: "/careers",
     element: <Careers />,
   },
+  // {
+  //   path: "/case-studies",
+  //   element: <CaseStudies />,
+  // },
   {
-    path: "/case-studies",
-    element: <CaseStudies />,
+    path: "/showcase",
+    element: <Showcase />,
   },
+
   {
     path: "/learn-with-us",
     element: <LearnWithUs />,
@@ -90,10 +94,10 @@ export const router = createBrowserRouter([
     path: "/cookies",
     element: <CookiePolicy />,
   },
-  {
-    path: "/projects",
-    element: <ModelViewPage />,
-  },
+  // {
+  //   path: "/projects",
+  //   element: <ModelViewPage />,
+  // },
   {
     path: "/culture",
     element: <Culture />,
