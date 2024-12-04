@@ -4,6 +4,7 @@ import {
   FaUserFriends,
   FaCertificate
 } from 'react-icons/fa';
+import { FiBook, FiVideo } from 'react-icons/fi';
 
 export const programs = [
     {
@@ -1217,4 +1218,155 @@ export const testimonials = [
     image: "https://randomuser.me/api/portraits/women/3.jpg",
     quote: "The practical approach and real-world projects helped me secure my dream role as a tech lead. Highly recommended!"
   }
+];
+
+// Sample flash cards data
+export const sampleFlashCards = [
+  {
+    id: 1,
+    question: "What is React?",
+    answer: "A JavaScript library for building user interfaces, developed by Facebook.",
+    category: "React Basics"
+  },
+  {
+    id: 2,
+    question: "What is JSX?",
+    answer: "A syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.",
+    category: "React Basics"
+  },
+  {
+    id: 3,
+    question: "What is a React Component?",
+    answer: "A reusable piece of UI that can contain its own logic and styling. Components can be either function-based or class-based.",
+    category: "Components"
+  },
+  {
+    id: 4,
+    question: "What are React Hooks?",
+    answer: "Functions that allow you to use state and other React features in functional components. Examples include useState and useEffect.",
+    category: "Hooks"
+  },
+  {
+    id: 5,
+    question: "What is the Virtual DOM?",
+    answer: "A lightweight copy of the actual DOM that React uses to optimize rendering performance by minimizing direct DOM manipulation.",
+    category: "React Concepts"
+  }
+];
+
+// Sample live session data
+export const sampleLiveSession = {
+  title: "Week 4 Live Session",
+  description: "Interactive session covering advanced concepts and Q&A",
+  date: "2024-02-20",
+  time: "2:00 PM PST",
+  participants: 24,
+  topics: [
+    "Review of Week 4 Materials",
+    "Live Coding Demonstration",
+    "Q&A Session",
+    "Next Week Preview"
+  ]
+};
+
+// Sample mentor data
+export const sampleMentor = {
+  name: "Sarah Johnson",
+  role: "Senior Software Engineer",
+  experience: "10+ years in Full Stack Development",
+  avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+  expertise: ["React", "Node.js", "System Design", "Cloud Architecture"],
+  bio: "Passionate about helping others learn and grow in their tech journey. Specialized in web development and cloud architecture."
+};
+
+// Sample week data
+export const sampleWeekData = {
+  completed: 75,
+  progress: 15,
+  focusAreas: 3,
+  achievements: [
+    "Completed all video lessons",
+    "Submitted 2 assignments",
+    "Participated in group discussion",
+    "Achieved 90% quiz score"
+  ],
+  improvements: [
+    "Practice more with hands-on exercises",
+    "Review cloud deployment concepts",
+    "Participate more in live sessions"
+  ]
+};
+
+// Sample feedback data
+export const sampleFeedback = [
+  {
+    mentor: {
+      name: "Sarah Johnson",
+      avatar: "https://randomuser.me/api/portraits/women/1.jpg"
+    },
+    date: "2024-02-19",
+    comment: "Great progress this week! Your project implementation shows strong understanding of the concepts. Focus on optimizing the database queries next."
+  },
+  {
+    mentor: {
+      name: "Michael Chen",
+      avatar: "https://randomuser.me/api/portraits/men/2.jpg"
+    },
+    date: "2024-02-18",
+    comment: "Excellent participation in the live session. Your questions helped clarify important points for everyone."
+  }
+];
+
+// Sample discussions data
+export const sampleDiscussions = [
+  {
+    author: {
+      name: "Alex Thompson",
+      avatar: "https://randomuser.me/api/portraits/men/3.jpg"
+    },
+    date: "2024-02-19",
+    category: "Question",
+    title: "Best practices for state management",
+    content: "What are your thoughts on using Redux vs. Context API for a medium-sized application?",
+    replies: 8,
+    participants: 12
+  },
+  {
+    author: {
+      name: "Emily Rodriguez",
+      avatar: "https://randomuser.me/api/portraits/women/4.jpg"
+    },
+    date: "2024-02-18",
+    category: "Discussion",
+    title: "Project Architecture Review",
+    content: "Looking for feedback on my microservices architecture design...",
+    replies: 15,
+    participants: 7
+  }
+];
+
+// Sample announcements data
+export const sampleAnnouncements = [
+  {
+    title: "New Course Materials",
+    content: "Week 5 materials are now available. Don't forget to check out the new hands-on exercises!",
+    date: "2024-02-19",
+    icon: FiBook,
+    color: "blue"
+  },
+  {
+    title: "Upcoming Live Session",
+    content: "Join us this Friday for an extended Q&A and project review session.",
+    date: "2024-02-18",
+    icon: FiVideo,
+    color: "purple"
+  }
+];
+
+// Available time slots
+export const availableSlots = [
+  "10:00 AM PST",
+  "2:00 PM PST",
+  "4:00 PM PST",
+  "6:00 PM PST"
 ];

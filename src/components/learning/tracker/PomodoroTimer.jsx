@@ -5,32 +5,35 @@ import PropTypes from 'prop-types';
 import FlashCardStack from './FlashCardStack';
 
 const TIMER_TYPES = {
-  FOCUS: 'focus',
-  SHORT_BREAK: 'shortBreak',
-  LONG_BREAK: 'longBreak'
+  FOCUS: 'FOCUS',
+  SHORT_BREAK: 'SHORT_BREAK',
+  LONG_BREAK: 'LONG_BREAK'
 };
 
 const DEFAULT_TIMES = {
-  [TIMER_TYPES.FOCUS]: 25,
-  [TIMER_TYPES.SHORT_BREAK]: 5,
-  [TIMER_TYPES.LONG_BREAK]: 15
+  focus: 25,
+  shortBreak: 5,
+  longBreak: 15
 };
 
 const PomodoroTimer = ({ onTimerComplete, flashCards = [] }) => {
   const [minutes, setMinutes] = useState(DEFAULT_TIMES.focus);
   const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const [timerType, setTimerType] = useState(TIMER_TYPES.FOCUS);
-  const [intervals, setIntervals] = useState(0);
-  const [customTimes, setCustomTimes] = useState(DEFAULT_TIMES);
+  const [showSettings, setShowSettings] = useState(false);
+  const [focusTime, setFocusTime] = useState(DEFAULT_TIMES.focus);
+  const [shortBreakTime, setShortBreakTime] = useState(DEFAULT_TIMES.shortBreak);
+  const [longBreakTime, setLongBreakTime] = useState(DEFAULT_TIMES.longBreak);
+  const [completedIntervals, setCompletedIntervals] = useState(0);
 
   useEffect(() => {
     let interval = null;
-    if (isActive) {
+    if (isRunning) {
       interval = setInterval(() => {
         if (seconds === 0) {
           if (minutes === 0) {
+            clearInterval(interval);
             handleTimerComplete();
           } else {
             setMinutes(minutes - 1);
@@ -42,56 +45,68 @@ const PomodoroTimer = ({ onTimerComplete, flashCards = [] }) => {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isActive, minutes, seconds]);
+  }, [isRunning, minutes, seconds]);
 
   const handleTimerComplete = () => {
-    setIsActive(false);
-    onTimerComplete?.();
-
-    // Handle intervals and breaks
     if (timerType === TIMER_TYPES.FOCUS) {
-      const newIntervals = intervals + 1;
-      setIntervals(newIntervals);
+      const newIntervals = completedIntervals + 1;
+      setCompletedIntervals(newIntervals);
       
-      // After 4 focus sessions, take a long break
       if (newIntervals % 4 === 0) {
         setTimerType(TIMER_TYPES.LONG_BREAK);
-        setMinutes(customTimes[TIMER_TYPES.LONG_BREAK]);
+        setMinutes(longBreakTime);
       } else {
         setTimerType(TIMER_TYPES.SHORT_BREAK);
-        setMinutes(customTimes[TIMER_TYPES.SHORT_BREAK]);
+        setMinutes(shortBreakTime);
       }
     } else {
-      // After break, go back to focus mode
       setTimerType(TIMER_TYPES.FOCUS);
-      setMinutes(customTimes[TIMER_TYPES.FOCUS]);
+      setMinutes(focusTime);
     }
+    
     setSeconds(0);
-  };
-
-  const toggleTimer = () => {
-    setIsActive(!isActive);
-  };
-
-  const resetTimer = () => {
-    setIsActive(false);
-    setMinutes(customTimes[timerType]);
-    setSeconds(0);
+    setIsRunning(false);
+    onTimerComplete?.();
   };
 
   const handleTypeChange = (type) => {
     setTimerType(type);
-    setMinutes(customTimes[type]);
+    switch (type) {
+      case TIMER_TYPES.FOCUS:
+        setMinutes(focusTime);
+        break;
+      case TIMER_TYPES.SHORT_BREAK:
+        setMinutes(shortBreakTime);
+        break;
+      case TIMER_TYPES.LONG_BREAK:
+        setMinutes(longBreakTime);
+        break;
+    }
     setSeconds(0);
-    setIsActive(false);
+    setIsRunning(false);
   };
 
-  const handleSettingsSubmit = (e) => {
-    e.preventDefault();
-    setShowSettings(false);
+  const handleReset = () => {
+    switch (timerType) {
+      case TIMER_TYPES.FOCUS:
+        setMinutes(focusTime);
+        break;
+      case TIMER_TYPES.SHORT_BREAK:
+        setMinutes(shortBreakTime);
+        break;
+      case TIMER_TYPES.LONG_BREAK:
+        setMinutes(longBreakTime);
+        break;
+    }
+    setSeconds(0);
+    setIsRunning(false);
   };
 
-  const progress = ((customTimes[timerType] * 60 - (minutes * 60 + seconds)) / (customTimes[timerType] * 60)) * 100;
+  const toggleTimer = () => {
+    setIsRunning(!isRunning);
+  };
+
+  const progress = ((focusTime * 60 - (minutes * 60 + seconds)) / (focusTime * 60)) * 100;
 
   return (
     <div className="flex gap-8">
@@ -116,42 +131,35 @@ const PomodoroTimer = ({ onTimerComplete, flashCards = [] }) => {
         </div>
 
         {/* Timer Display */}
-        <div className="relative w-32 h-32 mx-auto">
+        <div className="relative w-48 h-48 mx-auto">
           <svg className="w-full h-full transform -rotate-90">
             <circle
-              cx="64"
-              cy="64"
-              r="60"
+              cx="96"
+              cy="96"
+              r="88"
+              className="stroke-current text-slate-700"
+              strokeWidth="12"
               fill="none"
-              stroke="currentColor"
-              strokeWidth="8"
-              className="text-slate-700"
             />
             <circle
-              cx="64"
-              cy="64"
-              r="60"
+              cx="96"
+              cy="96"
+              r="88"
+              className="stroke-current text-blue-500"
+              strokeWidth="12"
               fill="none"
-              stroke="currentColor"
-              strokeWidth="8"
-              strokeDasharray={`${2 * Math.PI * 60}`}
-              strokeDashoffset={`${2 * Math.PI * 60 * (1 - progress / 100)}`}
-              className={`transition-all duration-300 ${
-                timerType === TIMER_TYPES.FOCUS 
-                  ? 'text-blue-500' 
-                  : timerType === TIMER_TYPES.SHORT_BREAK
-                  ? 'text-green-500'
-                  : 'text-purple-500'
-              }`}
+              strokeDasharray={553}
+              strokeDashoffset={553 - (553 * progress) / 100}
+              strokeLinecap="round"
             />
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-bold text-white">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <div className="text-4xl font-bold text-white">
               {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-            </span>
-            <span className="text-xs text-slate-400 mt-1">
-              {intervals} intervals
-            </span>
+            </div>
+            <div className="text-sm text-slate-400 mt-1">
+              {timerType === TIMER_TYPES.FOCUS ? 'Focus Time' : timerType === TIMER_TYPES.SHORT_BREAK ? 'Short Break' : 'Long Break'}
+            </div>
           </div>
         </div>
 
@@ -161,88 +169,90 @@ const PomodoroTimer = ({ onTimerComplete, flashCards = [] }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleTimer}
-            className="p-2 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 
-              text-white hover:from-blue-500/30 hover:to-purple-500/30 transition-colors"
+            className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white"
           >
-            {isActive ? <FiPause className="w-5 h-5" /> : <FiPlay className="w-5 h-5" />}
+            {isRunning ? <FiPause className="w-6 h-6" /> : <FiPlay className="w-6 h-6" />}
           </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={resetTimer}
-            className="p-2 rounded-lg bg-slate-800/50 text-white hover:bg-slate-800 transition-colors"
+            onClick={handleReset}
+            className="p-3 rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors"
           >
-            <FiRefreshCw className="w-5 h-5" />
+            <FiRefreshCw className="w-6 h-6" />
           </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setShowSettings(!showSettings)}
-            className="p-2 rounded-lg bg-slate-800/50 text-white hover:bg-slate-800 transition-colors"
+            className="p-3 rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors"
           >
-            <FiSettings className="w-5 h-5" />
+            <FiSettings className="w-6 h-6" />
           </motion.button>
         </div>
 
         {/* Settings Form */}
         <AnimatePresence>
           {showSettings && (
-            <motion.form
-              initial={{ opacity: 0, y: -20 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              onSubmit={handleSettingsSubmit}
-              className="mt-6 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50"
+              exit={{ opacity: 0, y: 20 }}
+              className="absolute top-full left-0 right-0 mt-4 bg-slate-800 rounded-xl p-6 shadow-lg"
             >
+              <h3 className="text-lg font-semibold text-white mb-4">Timer Settings</h3>
               <div className="space-y-4">
-                {Object.entries(customTimes).map(([type, time]) => (
-                  <div key={type} className="flex items-center gap-4">
-                    <label className="text-sm text-slate-400 min-w-[100px]">
-                      {type === TIMER_TYPES.FOCUS 
-                        ? 'Focus Time' 
-                        : type === TIMER_TYPES.SHORT_BREAK 
-                        ? 'Short Break' 
-                        : 'Long Break'}:
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="60"
-                      value={time}
-                      onChange={(e) => setCustomTimes(prev => ({
-                        ...prev,
-                        [type]: parseInt(e.target.value)
-                      }))}
-                      className="w-20 px-2 py-1 rounded-lg bg-slate-700 border border-slate-600 
-                        text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <span className="text-sm text-slate-400">minutes</span>
-                  </div>
-                ))}
+                <div>
+                  <label className="text-sm text-slate-400">Focus Time (minutes)</label>
+                  <input
+                    type="number"
+                    value={focusTime}
+                    onChange={(e) => setFocusTime(parseInt(e.target.value))}
+                    className="w-full mt-1 px-3 py-2 bg-slate-700 rounded-lg text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-slate-400">Short Break (minutes)</label>
+                  <input
+                    type="number"
+                    value={shortBreakTime}
+                    onChange={(e) => setShortBreakTime(parseInt(e.target.value))}
+                    className="w-full mt-1 px-3 py-2 bg-slate-700 rounded-lg text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-slate-400">Long Break (minutes)</label>
+                  <input
+                    type="number"
+                    value={longBreakTime}
+                    onChange={(e) => setLongBreakTime(parseInt(e.target.value))}
+                    className="w-full mt-1 px-3 py-2 bg-slate-700 rounded-lg text-white"
+                  />
+                </div>
               </div>
-              <div className="mt-4 flex justify-end">
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-500 text-white text-sm hover:bg-blue-600 
-                    transition-colors"
-                >
-                  Save Settings
-                </button>
-              </div>
-            </motion.form>
+            </motion.div>
           )}
         </AnimatePresence>
 
         {/* Interval Status */}
         <div className="mt-4 text-center">
-          <span className="text-sm text-slate-400">
-            {timerType === TIMER_TYPES.FOCUS 
-              ? 'Focus Session' 
-              : timerType === TIMER_TYPES.SHORT_BREAK
-              ? 'Short Break'
-              : 'Long Break'} 
-            {timerType === TIMER_TYPES.FOCUS && ` (${intervals + 1}/4)`}
-          </span>
+          <div className="text-sm text-slate-400">
+            Completed Intervals: {completedIntervals}
+          </div>
+          <div className="flex justify-center gap-2 mt-2">
+            {[...Array(4)].map((_, index) => (
+              <div
+                key={index}
+                className={`w-3 h-3 rounded-full ${
+                  index < (completedIntervals % 4)
+                    ? 'bg-blue-500'
+                    : 'bg-slate-700'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

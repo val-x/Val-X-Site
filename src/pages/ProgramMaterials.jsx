@@ -1,18 +1,30 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { tabContent } from '../data/programs';
+import { 
+  tabContent, 
+  sampleFlashCards,
+  sampleLiveSession,
+  sampleMentor,
+  sampleWeekData,
+  sampleFeedback,
+  sampleDiscussions,
+  sampleAnnouncements,
+  availableSlots
+} from '../data/programs';
 import { getUserProgress, updateUserProgress } from '../utils/enrollment';
 import ProgressBar from '../components/learning/ProgressBar';
 import BackgroundEffects from '../components/learning/BackgroundEffects';
 import LessonContent from '../components/learning/LessonContent';
 import Navbar from '../components/Navbar';
-import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload, FiTarget, FiBook } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload, FiTarget, FiBook, FiVideo } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
 import ProgressStats from '../components/learning/tracker/ProgressStats';
 import PomodoroTimer from '../components/learning/tracker/PomodoroTimer';
-
-
+import LiveSession from '../components/learning/LiveSession';
+import MentoringSection from '../components/learning/MentoringSection';
+import WeeklyReview from '../components/learning/WeeklyReview';
+import CommunicationHub from '../components/learning/CommunicationHub';
 
 const ProgramMaterials = () => {
   const { programId } = useParams();
@@ -33,6 +45,7 @@ const ProgramMaterials = () => {
   const [activeResource, setActiveResource] = useState(null);
   const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [contentError, setContentError] = useState(null);
+  const [activeTab, setActiveTab] = useState('lesson');
 
   // Find program data
   const program = Object.values(tabContent)
@@ -784,20 +797,104 @@ const ProgramMaterials = () => {
               </div>
             </div>
 
-            {/* Lesson Content and Timer */}
+            {/* Main Content Column */}
             <div className="lg:col-span-3 space-y-8">
-              {/* Lesson Content */}
+              {/* Tab Navigation */}
+              <div className="bg-slate-900/50 rounded-xl p-4">
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setActiveTab('lesson')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === 'lesson'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Lesson Content
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('live')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === 'live'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Live Sessions
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('mentoring')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === 'mentoring'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Mentoring
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('review')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === 'review'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Weekly Review
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('community')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeTab === 'community'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    Community
+                  </button>
+                </div>
+              </div>
+
+              {/* Tab Content */}
               <motion.div
-                key={`${activeWeek}-${activeDay}-${activeTopic}`}
+                key={activeTab}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="bg-slate-900/50 rounded-xl p-8"
               >
-                {renderLessonContent()}
-              </motion.div>
+                {activeTab === 'lesson' && (
+                  <div className="space-y-8">
+                    <div className="bg-slate-900/50 rounded-xl p-8">
+                      {renderLessonContent()}
+                    </div>
+                  </div>
+                )}
 
-              
+                {activeTab === 'live' && (
+                  <LiveSession session={sampleLiveSession} />
+                )}
+
+                {activeTab === 'mentoring' && (
+                  <MentoringSection 
+                    mentor={sampleMentor}
+                    availableSlots={availableSlots}
+                  />
+                )}
+
+                {activeTab === 'review' && (
+                  <WeeklyReview 
+                    weekData={sampleWeekData}
+                    feedback={sampleFeedback}
+                  />
+                )}
+
+                {activeTab === 'community' && (
+                  <CommunicationHub 
+                    discussions={sampleDiscussions}
+                    announcements={sampleAnnouncements}
+                  />
+                )}
+              </motion.div>
             </div>
           </div>
         </div>
