@@ -4,7 +4,7 @@ import {
   FaUserFriends,
   FaCertificate
 } from 'react-icons/fa';
-import { FiBook, FiVideo } from 'react-icons/fi';
+import { FiBook, FiVideo, FiCode, FiTarget, FiUsers, FiAward, FiTrendingUp, FiGlobe, FiLayers, FiBriefcase, FiCpu } from 'react-icons/fi';
 
 export const programs = [
     {
@@ -1140,59 +1140,79 @@ export const tabContent = {
 
 export const learningPathSteps = [
   {
-    title: "Master the Code",
-    description: "Build a strong foundation in programming and system design",
-    topics: ["System Design Fundamentals", "Advanced Microservices", "High-Scale Systems"],
-    bgColor: "bg-blue-500",
-    dotColor: "bg-blue-400"
+    title: "Foundation Building",
+    description: "Master the core concepts and fundamentals",
+    topics: [
+      "Basic Programming Concepts",
+      "Development Environment Setup",
+      "Version Control with Git"
+    ],
+    bgColor: "bg-gradient-to-br from-blue-500/20 to-purple-500/20",
+    dotColor: "bg-blue-400",
+    IconComponent: FiLayers
   },
   {
-    title: "Enhance Communication",
-    description: "Develop essential communication and leadership skills",
-    topics: ["Technical Writing", "Presentation Skills", "Leadership Communication"],
-    bgColor: "bg-purple-500",
-    dotColor: "bg-purple-400"
+    title: "Skill Development",
+    description: "Develop practical skills through hands-on projects",
+    topics: [
+      "Project-Based Learning",
+      "Real-World Applications",
+      "Code Reviews & Best Practices"
+    ],
+    bgColor: "bg-gradient-to-br from-purple-500/20 to-pink-500/20",
+    dotColor: "bg-purple-400",
+    IconComponent: FiCode
   },
   {
-    title: "Master Marketing",
-    description: "Learn to market and grow tech products effectively",
-    topics: ["Digital Marketing", "Growth Strategy", "Product Marketing"],
-    bgColor: "bg-pink-500",
-    dotColor: "bg-pink-400"
+    title: "Advanced Concepts",
+    description: "Deep dive into advanced topics and specializations",
+    topics: [
+      "System Architecture",
+      "Performance Optimization",
+      "Security Best Practices"
+    ],
+    bgColor: "bg-gradient-to-br from-pink-500/20 to-red-500/20",
+    dotColor: "bg-pink-400",
+    IconComponent: FiCpu
   },
   {
-    title: "Launch Your Startup",
-    description: "Build and scale your own successful startup",
-    topics: ["Startup Fundamentals", "Product Development", "Scaling Strategies"],
-    bgColor: "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500",
-    dotColor: "bg-purple-400"
+    title: "Professional Growth",
+    description: "Prepare for professional success and career advancement",
+    topics: [
+      "Career Development",
+      "Industry Networking",
+      "Leadership Skills"
+    ],
+    bgColor: "bg-gradient-to-br from-red-500/20 to-orange-500/20",
+    dotColor: "bg-red-400",
+    IconComponent: FiBriefcase
   }
 ];
 
 export const stats = [
-  { 
-    number: "10K+", 
+  {
+    number: "10K+",
     label: "Active Learners",
-    icon: "🎓",
-    change: "+25"
+    icon: FiUsers,
+    color: "from-blue-500 to-purple-500"
   },
-  { 
-    number: "95%", 
+  {
+    number: "95%",
     label: "Success Rate",
-    icon: "🎯",
-    change: "+5"
+    icon: FiTrendingUp,
+    color: "from-purple-500 to-pink-500"
   },
-  { 
-    number: "200+", 
-    label: "Expert Mentors",
-    icon: "👨‍🏫",
-    change: "+15"
-  },
-  { 
-    number: "50+", 
+  {
+    number: "50+",
     label: "Countries",
-    icon: "🌍",
-    change: "+10"
+    icon: FiGlobe,
+    color: "from-pink-500 to-red-500"
+  },
+  {
+    number: "1000+",
+    label: "Certifications",
+    icon: FiAward,
+    color: "from-red-500 to-orange-500"
   }
 ];
 

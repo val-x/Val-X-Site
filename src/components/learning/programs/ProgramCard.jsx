@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../ProgressBar';
 
 const ProgramCard = ({ 
   program, 
@@ -76,7 +76,7 @@ const ProgramCard = ({
         <div className="flex gap-4 mt-6">
           {isEnrolled ? (
             <Link
-              to={`/program-materials/${program.id}`}
+              to={`/program/${program.id}/materials`}
               className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300"
             >
               Continue Learning

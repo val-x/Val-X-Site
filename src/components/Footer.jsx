@@ -6,6 +6,7 @@ const Footer = () => {
     company: [
       { label: 'About', path: '/about' },
       { label: 'Careers', path: '/careers' },
+      { label: 'Culture', path: '/culture' },
       { label: 'Contact', path: '/contact' }
     ],
     solutions: [

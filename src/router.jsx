@@ -18,6 +18,7 @@ import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
 import ModelViewPage from './pages/ModelViewPage';
 import NewBlog from './pages/NewBlog';
+import Culture from './pages/Culture';
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ export const router = createBrowserRouter([
     element: <LearnWithUs />,
   },
   {
-    path: "/program-materials/:programId",
+    path: "/program/:programId/materials",
     element: <ProgramMaterials />,
   },
   {
@@ -92,5 +93,9 @@ export const router = createBrowserRouter([
   {
     path: "/projects",
     element: <ModelViewPage />,
+  },
+  {
+    path: "/culture",
+    element: <Culture />,
   },
 ]); 

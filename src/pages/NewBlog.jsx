@@ -372,7 +372,7 @@ const NewBlog = () => {
       <main className="max-w-5xl mx-auto px-4 pt-24 pb-16">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Create New Post</h1>
+            <h1 className="text-4xl font-bold text-white mb-2">Create New Community Post</h1>
             <p className="text-gray-400">Share your thoughts and knowledge with the community</p>
           </div>
           <div className="flex items-center gap-4">
