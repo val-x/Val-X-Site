@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { useModal } from '../../contexts/ModalContext';
 
 const FloatingNavigation = ({ sections }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isModalActive } = useModal();
+
+  if (isModalActive) return null;
 
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 xl:hidden">

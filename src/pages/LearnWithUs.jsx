@@ -100,106 +100,109 @@ const LearnWithUs = () => {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${
           isScrolled ? 'bg-slate-900/90 backdrop-blur-xl shadow-lg' : ''
         }`}
       >
         <Navbar />
       </motion.header>
 
-      {/* Main Tab Navigation */}
-      <MainTabNavigation 
-        activeMainTab={activeMainTab}
-        setActiveMainTab={setActiveMainTab}
-      />
+      {/* Main Content */}
+      <div className="pt-[72px]">
+        {/* Main Tab Navigation */}
+        <MainTabNavigation 
+          activeMainTab={activeMainTab}
+          setActiveMainTab={setActiveMainTab}
+        />
 
-      <main className="relative">
-        {/* Conditional Content Based on Active Tab */}
-        {activeMainTab === 'programs' ? (
-          <ProgramsSection 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-            showFilters={showFilters}
-            setShowFilters={setShowFilters}
-            isMobile={isMobile}
-            filters={filters}
-            setFilters={setFilters}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            tabContent={tabContent}
-            onEnroll={handleEnroll}
-            onViewCurriculum={handleViewCurriculum}
-            checkEnrollment={checkEnrollment}
-          />
-        ) : (
-          <>
-            {/* Info Hero */}
-            <section id="hero" className="relative min-h-[90vh] flex items-center justify-center px-4 py-20">
-              <div className="max-w-7xl mx-auto relative z-10">
-                <Hero
-                  badge="Elevate Your Skills"
-                  title={
-                    <>
-                      Transform Your Future with{' '}
-                      <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
-                        Expert-Led Learning
-                      </span>
-                    </>
-                  }
-                  description="Join our comprehensive learning programs designed to help you master modern technologies and launch your dream career."
-                />
-              </div>
+        <main className="relative">
+          {/* Conditional Content Based on Active Tab */}
+          {activeMainTab === 'programs' ? (
+            <ProgramsSection 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              showFilters={showFilters}
+              setShowFilters={setShowFilters}
+              isMobile={isMobile}
+              filters={filters}
+              setFilters={setFilters}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              tabContent={tabContent}
+              onEnroll={handleEnroll}
+              onViewCurriculum={handleViewCurriculum}
+              checkEnrollment={checkEnrollment}
+            />
+          ) : (
+            <>
+              {/* Info Hero */}
+              <section id="hero" className="relative min-h-[90vh] flex items-center justify-center px-4 py-20">
+                <div className="max-w-7xl mx-auto relative z-10">
+                  <Hero
+                    badge="Elevate Your Skills"
+                    title={
+                      <>
+                        Transform Your Future with{' '}
+                        <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text">
+                          Expert-Led Learning
+                        </span>
+                      </>
+                    }
+                    description="Join our comprehensive learning programs designed to help you master modern technologies and launch your dream career."
+                  />
+                </div>
 
-              {/* Decorative Elements */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
-              </div>
-            </section>
+                {/* Decorative Elements */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
+                </div>
+              </section>
 
-            {/* Features Section */}
-            <section id="features" className="relative py-20 px-4">
-              <div className="max-w-7xl mx-auto">
-                <Features features={features} />
-              </div>
-            </section>
+              {/* Features Section */}
+              <section id="features" className="relative py-20 px-4">
+                <div className="max-w-7xl mx-auto">
+                  <Features features={features} />
+                </div>
+              </section>
 
-            {/* Learning Path Section */}
-            <section id="learning-path" className="relative py-20 px-4">
-              <div className="max-w-7xl mx-auto">
-                <LearningPath steps={learningPathSteps} />
-              </div>
-            </section>
+              {/* Learning Path Section */}
+              <section id="learning-path" className="relative py-20 px-4">
+                <div className="max-w-7xl mx-auto">
+                  <LearningPath steps={learningPathSteps} />
+                </div>
+              </section>
 
-            {/* Stats Section */}
-            <section id="stats" className="relative py-20 px-4">
-              <div className="max-w-7xl mx-auto">
-                <Stats stats={stats} />
-              </div>
-            </section>
+              {/* Stats Section */}
+              <section id="stats" className="relative py-20 px-4">
+                <div className="max-w-7xl mx-auto">
+                  <Stats stats={stats} />
+                </div>
+              </section>
 
-            {/* Testimonials Section */}
-            <section id="testimonials" className="relative py-20 px-4">
-              <div className="max-w-7xl mx-auto">
-                <Testimonials testimonials={testimonials} />
-              </div>
-            </section>
+              {/* Testimonials Section */}
+              <section id="testimonials" className="relative py-20 px-4">
+                <div className="max-w-7xl mx-auto">
+                  <Testimonials testimonials={testimonials} />
+                </div>
+              </section>
 
-            {/* CTA Section */}
-            <section className="relative py-20 px-4">
-              <div className="max-w-7xl mx-auto">
-                <CTA />
-              </div>
-            </section>
+              {/* CTA Section */}
+              <section className="relative py-20 px-4">
+                <div className="max-w-7xl mx-auto">
+                  <CTA />
+                </div>
+              </section>
 
-            {/* Navigation Helpers - Only shown in Info tab */}
-            <TableOfContents sections={sections} />
-            <FloatingNavigation sections={sections} />
-          </>
-        )}
-      </main>
+              {/* Navigation Helpers - Only shown in Info tab */}
+              <TableOfContents sections={sections} />
+              <FloatingNavigation sections={sections} />
+            </>
+          )}
+        </main>
+      </div>
 
       {/* Modals */}
       <AnimatePresence>

@@ -11,7 +11,7 @@ const Footer = () => {
     ],
     solutions: [
       { label: 'Solutions', path: '/solutions' },
-      { label: 'Case Studies', path: '/case-studies' },
+      { label: 'Case Studies', path: '/showcase' },
       { label: 'Technologies', path: '#technologies' }
     ],
     resources: [

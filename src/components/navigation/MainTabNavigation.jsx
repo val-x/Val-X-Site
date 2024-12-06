@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 
-const MainTabNavigation = ({ activeMainTab, setActiveMainTab }) => {
+const MainTabNavigation = ({ activeMainTab, setActiveMainTab, className = '' }) => {
   return (
-    <div className="sticky top-[72px] z-40 bg-slate-900/90 backdrop-blur-xl py-4 border-b border-slate-800/80">
+    <div className={`w-full bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/80 py-4 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="relative inline-flex p-1.5 bg-slate-800/80 backdrop-blur-sm rounded-2xl 

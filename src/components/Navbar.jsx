@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModal } from '../contexts/ModalContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { isModalActive } = useModal();
 
   const navItems = [
     { label: 'Home', path: '/' },
@@ -13,7 +15,8 @@ const Navbar = () => {
     { label: 'Showcase', path: '/showcase' },
     { label: 'Community', path: '/blog' },
     { label: 'Learn With Us', path: '/learn-with-us' },
-    { label: 'Careers', path: '/careers' }
+    { label: 'Careers', path: '/careers' },
+    { label: 'Support Us', path: '/support-us' }
   ];
 
   useEffect(() => {
@@ -30,6 +33,8 @@ const Navbar = () => {
     }
     return location.pathname.startsWith(path);
   };
+
+  if (isModalActive) return null;
 
   return (
     <motion.header 

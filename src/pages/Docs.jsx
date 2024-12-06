@@ -264,17 +264,155 @@ const Docs = () => {
   };
 
   return (
-    <div className="bg-black min-h-screen">
+    <>
       <Navbar />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="prose prose-invert max-w-none">
-          {/* Your existing docs content */}
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black pt-24">
+        {/* Mobile Navigation Button */}
+        <div className="fixed bottom-6 right-6 md:hidden z-40">
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMobileNavOpen(true)}
+            className="bg-violet-500 text-white p-4 rounded-full shadow-lg hover:bg-violet-600 
+              transition-colors flex items-center justify-center"
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </motion.button>
+        </div>
+
+        {/* Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {isMobileNavOpen && (
+            <MobileNavigation
+              sections={docSections}
+              activeSection={activeSection}
+              onSectionClick={handleSectionClick}
+              isOpen={isMobileNavOpen}
+              onClose={() => setIsMobileNavOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Hero Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent 
+              bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 mb-6"
+            >
+              Documentation
+            </h1>
+            <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
+              Everything you need to know about integrating and using our platform.
+            </p>
+            
+            {/* Enhanced Search Bar */}
+            <div className="max-w-2xl mx-auto relative group">
+              <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search documentation..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-400 
+                  focus:ring-2 focus:ring-violet-400/20 focus:outline-none text-white placeholder-gray-400 transition-all
+                  group-hover:border-violet-400/50"
+              />
+              
+              {/* Search Results Dropdown */}
+              {searchResults.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute top-full left-0 right-0 mt-2 bg-gray-900/95 backdrop-blur-xl rounded-xl 
+                    border border-white/10 shadow-xl overflow-hidden z-50"
+                >
+                  <ul className="max-h-96 overflow-y-auto">
+                    {searchResults.map((result, index) => (
+                      <li key={index}>
+                        <button
+                          onClick={() => handleSearchResultClick(result.sectionId)}
+                          className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors"
+                        >
+                          <p className="text-violet-400 text-sm font-medium mb-1">
+                            {result.sectionTitle}
+                          </p>
+                          <p className="text-gray-100 text-sm line-clamp-2">
+                            {result.text}
+                          </p>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Documentation Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Sidebar Navigation - Hidden on Mobile */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="hidden md:block md:col-span-1 md:sticky md:top-24 h-fit"
+            >
+              <nav className="space-y-8">
+                {docSections.map((section, index) => (
+                  <div key={index}>
+                    <h3 className="text-white font-semibold mb-4">{section.title}</h3>
+                    <ul className="space-y-3">
+                      {section.items.map((item, itemIndex) => (
+                        <li key={itemIndex}>
+                          <a
+                            href={item.href}
+                            onClick={() => handleSectionClick(item.href)}
+                            className={`group flex items-center transition-colors
+                              ${activeSection === item.href.replace('#', '') 
+                                ? 'text-white' 
+                                : 'text-gray-400 hover:text-white'}`}
+                          >
+                            <ChevronRightIcon className={`mr-2 w-4 h-4 transition-opacity
+                              ${activeSection === item.href.replace('#', '')
+                                ? 'opacity-100'
+                                : 'opacity-0 group-hover:opacity-100'}`}
+                            />
+                            {item.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
+            </motion.div>
+
+            {/* Main Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="md:col-span-3"
+            >
+              <div className="bg-white/5 rounded-2xl border border-white/10 p-4 sm:p-6 md:p-8 space-y-8">
+                {Object.entries(docsContent).map(([id, section]) => (
+                  <section key={id} id={id} className={id !== 'quick-start' ? 'pt-8 border-t border-white/10' : ''}>
+                    <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">{section.title}</h2>
+                    <div className="prose prose-invert max-w-none prose-sm sm:prose-base">
+                      {renderContent(section.content)}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
-
       <Footer />
-    </div>
+    </>
   );
 };
 
