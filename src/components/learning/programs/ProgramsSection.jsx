@@ -3,7 +3,9 @@ import Programs from './Programs';
 import ProgramsHeader from './ProgramsHeader';
 import SearchControls from './SearchControls';
 import FiltersPanel from './FiltersPanel';
-import { tabContent } from '../../../data/programs';
+import { programCategories, getAllPrograms, getProgramsByCategory } from '../../../data/programs';
+import { applyFilters } from './utils/filters';
+import { useMemo } from 'react';
 
 const ProgramsSection = ({ 
   searchQuery, 
@@ -17,17 +19,24 @@ const ProgramsSection = ({
   setFilters,
   activeTab,
   setActiveTab,
+  tabContent,
   onEnroll,
   onViewCurriculum,
-  checkEnrollment
+  checkEnrollment,
+  isEnrolled
 }) => {
+  const programs = useMemo(() => {
+    const categoryPrograms = getProgramsByCategory(activeTab);
+    return applyFilters(categoryPrograms, filters, searchQuery);
+  }, [activeTab, filters, searchQuery]);
+
   // Program Category Tabs
   const renderProgramTabs = () => (
     <div className="relative mb-8">
       <div className="flex flex-nowrap sm:flex-wrap gap-2 justify-start sm:justify-center 
         overflow-x-auto sm:overflow-x-visible scrollbar-thin scrollbar-thumb-slate-700 
         scrollbar-track-slate-800/50 pb-2 sm:pb-0 -mx-4 sm:mx-0 px-4 sm:px-0">
-        {Object.keys(tabContent).map((tab) => (
+        {Object.keys(programCategories).map((tab) => (
           <motion.button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -40,7 +49,7 @@ const ProgramsSection = ({
                   : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50'
               }`}
           >
-            {tabContent[tab].title}
+            {programCategories[tab].title}
           </motion.button>
         ))}
       </div>
@@ -98,13 +107,14 @@ const ProgramsSection = ({
           <Programs
             activeTab={activeTab}
             onTabChange={setActiveTab}
-            tabContent={tabContent}
+            tabContent={programCategories}
             onEnroll={onEnroll}
             onViewCurriculum={onViewCurriculum}
             isEnrolled={checkEnrollment}
             viewMode={isMobile ? 'list' : viewMode}
             searchQuery={searchQuery}
             filters={filters}
+            programs={programs}
           />
         </div>
       </div>

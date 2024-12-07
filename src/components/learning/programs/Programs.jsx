@@ -14,7 +14,8 @@ const Programs = ({
   isEnrolled,
   viewMode,
   searchQuery,
-  filters
+  filters,
+  programs
 }) => {
   const navigate = useNavigate();
 
@@ -28,18 +29,8 @@ const Programs = ({
 
   // Handle continue learning
   const handleContinueLearning = (program) => {
-    console.log('Continuing program:', program.title);
-    navigate(`/program/${program.id}/materials`, {
-      state: {
-        program: {
-          id: program.id,
-          title: program.title,
-          level: program.level,
-          duration: program.duration,
-          curriculum: program.curriculum
-        }
-      }
-    });
+    console.log('Continuing program:', program);
+    navigate(`/program/${program.id}/materials`);
   };
 
   // Handle view details
@@ -49,12 +40,6 @@ const Programs = ({
       onViewCurriculum(program);
     }
   };
-
-  // Get filtered programs using the centralized filter logic
-  const filteredPrograms = useMemo(() => {
-    const programs = tabContent[activeTab].programs;
-    return applyFilters(programs, filters, searchQuery);
-  }, [activeTab, tabContent, searchQuery, filters]);
 
   // Program Card Component
   const ProgramCard = ({ program, isListView }) => {
@@ -148,7 +133,10 @@ const Programs = ({
             {enrolled ? (
               <>
                 <button
-                  onClick={() => handleContinueLearning(program)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleContinueLearning(program);
+                  }}
                   className="flex-1 px-6 py-3 rounded-xl text-base font-medium
                     bg-green-500/20 text-green-400 hover:bg-green-500/30
                     transition-all duration-300 flex items-center justify-center gap-2"
@@ -201,7 +189,7 @@ const Programs = ({
           ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8'
           : 'space-y-6'
       }>
-        {filteredPrograms.map((program) => (
+        {programs.map((program) => (
           <ProgramCard
             key={program.id}
             program={program}
@@ -211,7 +199,7 @@ const Programs = ({
       </div>
 
       {/* Empty State */}
-      {filteredPrograms.length === 0 && (
+      {programs.length === 0 && (
         <div className="text-center py-12">
           <p className="text-slate-400 text-lg mb-4">No programs found matching your criteria</p>
           <button
@@ -237,7 +225,8 @@ Programs.propTypes = {
   isEnrolled: PropTypes.func,
   viewMode: PropTypes.oneOf(['grid', 'list']).isRequired,
   searchQuery: PropTypes.string.isRequired,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.object.isRequired,
+  programs: PropTypes.array.isRequired
 };
 
 export default Programs; 

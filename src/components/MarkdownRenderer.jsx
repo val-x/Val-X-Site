@@ -5,13 +5,155 @@ import remarkGfm from 'remark-gfm';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 
+// Language display names and icons mapping
+const LANGUAGES = {
+  javascript: { name: 'JavaScript', icon: '⚡️' },
+  typescript: { name: 'TypeScript', icon: '💪' },
+  python: { name: 'Python', icon: '🐍' },
+  java: { name: 'Java', icon: '☕️' },
+  cpp: { name: 'C++', icon: '⚙️' },
+  csharp: { name: 'C#', icon: '🎯' },
+  go: { name: 'Go', icon: '🏃' },
+  rust: { name: 'Rust', icon: '🦀' },
+  ruby: { name: 'Ruby', icon: '💎' },
+  php: { name: 'PHP', icon: '🐘' },
+  swift: { name: 'Swift', icon: '🦅' },
+  kotlin: { name: 'Kotlin', icon: '🎯' },
+  scala: { name: 'Scala', icon: '🌟' },
+  html: { name: 'HTML', icon: '🌐' },
+  css: { name: 'CSS', icon: '🎨' },
+  sql: { name: 'SQL', icon: '🗄️' },
+  shell: { name: 'Shell', icon: '🐚' },
+  dockerfile: { name: 'Dockerfile', icon: '🐋' },
+  yaml: { name: 'YAML', icon: '📝' },
+  json: { name: 'JSON', icon: '📦' },
+  markdown: { name: 'Markdown', icon: '📝' }
+};
+
+const CodeBlock = ({ language, code, langInfo, copiedCode, onCopy }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="relative group">
+      {/* Gradient Background */}
+      <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 
+        to-fuchsia-500/20 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500" />
+      
+      <div className="relative">
+        {/* Code Header */}
+        <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 
+          bg-gray-900/80 border-b border-white/10 rounded-t-lg">
+          {/* Left Side */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400 flex items-center gap-1.5 min-w-[100px]">
+              {langInfo.icon}
+              <span className="hidden sm:inline">{langInfo.name}</span>
+            </span>
+            <div className="hidden sm:flex gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30" />
+              <span className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30" />
+              <span className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30" />
+            </div>
+          </div>
+
+          {/* Right Side */}
+          <div className="flex items-center gap-2 ml-auto">
+            {/* Language Badge */}
+            <span className="text-xs px-2 py-1 rounded-md bg-slate-800 text-slate-400 
+              border border-slate-700/50 hidden sm:inline-block">
+              {language}
+            </span>
+
+            {/* Expand/Collapse Button - Only show if code is long */}
+            {code.split('\n').length > 15 && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-sm px-3 py-1 rounded-lg text-gray-400 
+                  hover:text-white hover:bg-white/5 transition-colors hidden sm:flex items-center gap-1"
+              >
+                {isExpanded ? 'Collapse' : 'Expand'}
+              </button>
+            )}
+
+            {/* Copy Button */}
+            <button
+              onClick={() => onCopy(code, language)}
+              className={`text-sm px-3 py-1 rounded-lg transition-all duration-300 ${
+                copiedCode === code
+                  ? 'bg-green-500/20 text-green-400'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <span className="hidden sm:inline">{copiedCode === code ? 'Copied!' : 'Copy'}</span>
+              <span className="sm:hidden">📋</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Code Content */}
+        <div className="relative overflow-hidden" style={{
+          maxHeight: isExpanded ? 'none' : '400px'
+        }}>
+          {/* Line Numbers */}
+          <div className="absolute left-0 top-0 pl-2 sm:pl-4 pt-4 text-gray-600 
+            select-none font-mono text-xs sm:text-sm">
+            {code.split('\n').map((_, i) => (
+              <div key={i} className="px-2">{i + 1}</div>
+            ))}
+          </div>
+
+          {/* Syntax Highlighted Code */}
+          <div className="overflow-x-auto">
+            <SyntaxHighlighter
+              language={language}
+              style={tomorrow}
+              className={`!bg-gray-900/50 !pl-12 sm:!pl-16 !py-4 !pr-4 !m-0 
+                rounded-b-lg border border-white/10 ${
+                  !isExpanded && 'max-h-[400px]'
+                }`}
+              showLineNumbers={false}
+              customStyle={{
+                fontSize: '13px',
+                lineHeight: '1.5',
+                minWidth: '100%'
+              }}
+              wrapLines={true}
+              wrapLongLines={true}
+            >
+              {code}
+            </SyntaxHighlighter>
+          </div>
+
+          {/* Fade Out Effect for Long Code */}
+          {!isExpanded && code.split('\n').length > 15 && (
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t 
+              from-gray-900/50 to-transparent pointer-events-none" />
+          )}
+        </div>
+
+        {/* Mobile Expand Button */}
+        {code.split('\n').length > 15 && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full py-2 text-sm text-gray-400 hover:text-white 
+              bg-gray-900/50 border-t border-white/10 sm:hidden"
+          >
+            {isExpanded ? 'Show Less' : 'Show More'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const MarkdownRenderer = ({ content }) => {
   const [copiedCode, setCopiedCode] = useState(null);
 
   const handleCopyCode = (code, language) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
-    toast.success(`${language} code copied!`, {
+    const langInfo = LANGUAGES[language] || { name: language, icon: '📝' };
+    toast.success(`${langInfo.icon} ${langInfo.name} code copied!`, {
       icon: '📋',
       style: {
         background: '#1f2937',
@@ -28,55 +170,21 @@ const MarkdownRenderer = ({ content }) => {
       components={{
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
-          const language = match ? match[1] : 'javascript';
+          const language = match ? match[1].toLowerCase() : 'text';
           const code = String(children).replace(/\n$/, '');
+          const langInfo = LANGUAGES[language] || { name: language, icon: '📝' };
           
           return !inline ? (
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 
-              to-fuchsia-500/20 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500" />
-              <div className="relative">
-                <div className="flex items-center justify-between px-4 py-2 bg-gray-900/80 
-                border-b border-white/10 rounded-t-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400">{language}</span>
-                    <div className="flex gap-1.5">
-                      <span className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/30" />
-                      <span className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/30" />
-                      <span className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/30" />
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleCopyCode(code, language)}
-                    className={`text-sm px-3 py-1 rounded-lg transition-all duration-300 ${
-                      copiedCode === code
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    {copiedCode === code ? 'Copied!' : 'Copy'}
-                  </button>
-                </div>
-                <div className="relative">
-                  <div className="absolute left-0 top-0 pl-4 pt-4 text-gray-600 select-none font-mono text-sm">
-                    {code.split('\n').map((_, i) => (
-                      <div key={i}>{i + 1}</div>
-                    ))}
-                  </div>
-                  <SyntaxHighlighter
-                    language={language}
-                    style={tomorrow}
-                    className="!bg-gray-900/50 !pl-16 !p-4 !m-0 rounded-b-lg border border-white/10"
-                    showLineNumbers={false}
-                    {...props}
-                  >
-                    {code}
-                  </SyntaxHighlighter>
-                </div>
-              </div>
-            </div>
+            <CodeBlock
+              language={language}
+              code={code}
+              langInfo={langInfo}
+              copiedCode={copiedCode}
+              onCopy={handleCopyCode}
+            />
           ) : (
-            <code className="bg-fuchsia-500/10 text-fuchsia-300 px-1.5 py-0.5 rounded-md font-mono" {...props}>
+            <code className="bg-fuchsia-500/10 text-fuchsia-300 px-1.5 py-0.5 
+              rounded-md font-mono text-sm" {...props}>
               {children}
             </code>
           );

@@ -1,28 +1,33 @@
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import Home from './pages/Home';
-import LearnWithUs from './pages/LearnWithUs';
-import ProgramMaterials from './pages/ProgramMaterials';
-import Blog from './pages/Blog';
-import BlogPost from './components/BlogPost';
-import Solutions from './pages/Solutions';
-import Careers from './pages/Careers';
-import GetStarted from './pages/GetStarted';
-import BlogError from './components/BlogError';
-import Support from './pages/Support';
-import Docs from './pages/Docs';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
-import CookiePolicy from './pages/CookiePolicy';
-import NewBlog from './pages/NewBlog';
-import Culture from './pages/Culture';
-import Showcase from './pages/Showcase';
-import SupportUs from './pages/SupportUs';
 import { Toaster } from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
-import SEO from './components/SEO';
+
+// Pages
+import {
+  Home,
+  LearnWithUs,
+  ProgramMaterials,
+  Blog,
+  Solutions,
+  Careers,
+  GetStarted,
+  Support,
+  Docs,
+  About,
+  Contact,
+  PrivacyPolicy,
+  TermsOfService,
+  CookiePolicy,
+  NewBlog,
+  Culture,
+  Showcase,
+  SupportUs
+} from '@pages';
+
+// Components
+import { BlogPost, BlogError } from '@components';
+import { SEO } from '@components/common';
 
 const App = () => {
   return (
@@ -40,6 +45,7 @@ const App = () => {
           <Route path="/showcase" element={<Showcase />} />
           <Route path="/learn-with-us" element={<LearnWithUs />} />
           <Route path="/program/:programId/materials" element={<ProgramMaterials />} />
+          <Route path="/program-materials/:programId" element={<ProgramMaterials />} />
           <Route path="/support" element={<Support />} />
           <Route path="/docs" element={<Docs />} />
           <Route path="/about" element={<About />} />

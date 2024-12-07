@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { checkEnrollment } from '../utils/enrollment';
-import { features, tabContent, stats, testimonials, learningPathSteps } from '../data/programs';
+import { 
+  programCategories, 
+  stats, 
+  testimonials, 
+  learningPathSteps,
+  features
+} from '../data/programs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -27,7 +33,7 @@ import Footer from '../components/Footer';
 gsap.registerPlugin(ScrollTrigger);
 
 const LearnWithUs = () => {
-  const [activeTab, setActiveTab] = useState(Object.keys(tabContent)[0]);
+  const [activeTab, setActiveTab] = useState(Object.keys(programCategories)[0]);
   const [activeMainTab, setActiveMainTab] = useState('programs');
   const [showEnrollment, setShowEnrollment] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
@@ -90,6 +96,16 @@ const LearnWithUs = () => {
     setShowCurriculum(true);
   };
 
+  const isEnrolled = (programId) => {
+    try {
+      const enrollmentData = localStorage.getItem(`enrollment_${programId}`);
+      return !!enrollmentData; // Returns true if enrollment data exists
+    } catch (err) {
+      console.error('Error checking enrollment:', err);
+      return false;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white relative overflow-hidden">
       {/* Background Effects */}
@@ -130,10 +146,11 @@ const LearnWithUs = () => {
               setFilters={setFilters}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              tabContent={tabContent}
+              tabContent={programCategories}
               onEnroll={handleEnroll}
               onViewCurriculum={handleViewCurriculum}
               checkEnrollment={checkEnrollment}
+              isEnrolled={isEnrolled}
             />
           ) : (
             <>
@@ -152,6 +169,17 @@ const LearnWithUs = () => {
                     }
                     description="Join our comprehensive learning programs designed to help you master modern technologies and launch your dream career."
                   />
+                  
+                  {/* Add Support Us Button */}
+                  <div className="mt-8 flex justify-center">
+                    <a
+                      href="/support-us"
+                      className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      <span className="mr-2">❤️</span>
+                      Support Our Mission
+                    </a>
+                  </div>
                 </div>
 
                 {/* Decorative Elements */}

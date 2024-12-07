@@ -51,4 +51,18 @@ export const updateUserProgress = (programId, progress) => {
     console.error('Error updating user progress:', error);
     return false;
   }
+};
+
+export const enrollInProgram = (programId) => {
+  try {
+    const enrollmentData = {
+      enrolledAt: new Date().toISOString(),
+      progress: 0
+    };
+    localStorage.setItem(`enrollment_${programId}`, JSON.stringify(enrollmentData));
+    return true;
+  } catch (err) {
+    console.error('Error enrolling in program:', err);
+    return false;
+  }
 }; 

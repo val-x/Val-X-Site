@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PropTypes from 'prop-types';
-import { FiLoader, FiAlertCircle } from 'react-icons/fi';
+import { FiLoader, FiAlertCircle, FiBookmark, FiCheck, FiPlus, FiStar, FiClock, FiTag, FiCode, FiEdit3, FiPlay, FiPause } from 'react-icons/fi';
 import MarkdownRenderer from '../MarkdownRenderer';
 import VideoPlayer from './video/VideoPlayer';
 import ArticleView from './ArticleView';
+import DOMPurify from 'dompurify';
+import TaskCard from './tasks/TaskCard';
 
 const TabContent = ({ children, isVisible }) => (
   <AnimatePresence mode="wait">
@@ -40,7 +42,7 @@ const ErrorState = ({ message }) => (
   </div>
 );
 
-const LessonContent = ({ lesson, onComplete }) => {
+const LessonContent = ({ lesson, onComplete, onAddToFlashcards }) => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
@@ -50,6 +52,7 @@ const LessonContent = ({ lesson, onComplete }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isResourceLoading, setIsResourceLoading] = useState(false);
+  const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
     // Simulate resource loading
@@ -102,6 +105,8 @@ const LessonContent = ({ lesson, onComplete }) => {
         return videoPlaylist && videoPlaylist.length > 0;
       case 'article':
         return articles && articles.length > 0;
+      case 'task':
+        return lesson.resources?.some(r => r.type === 'task');
       default:
         return true;
     }
@@ -160,6 +165,30 @@ const LessonContent = ({ lesson, onComplete }) => {
         ) : (
           <ErrorState message="No article content available" />
         );
+      case 'task':
+        const tasks = lesson.resources?.filter(r => r.type === 'task') || [];
+        return (
+          <TabContent isVisible={activeTab === 'task'}>
+            <div className="space-y-6">
+              <div className="bg-slate-900/50 rounded-xl p-6">
+                <h2 className="text-xl font-semibold text-white mb-4">
+                  Knowledge Check & Practice
+                </h2>
+                <p className="text-slate-300 mb-6">
+                  Complete these tasks to reinforce your understanding of the lesson content.
+                </p>
+                {tasks.map(task => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onComplete={handleTaskComplete}
+                    onAddToFlashcards={onAddToFlashcards}
+                  />
+                ))}
+              </div>
+            </div>
+          </TabContent>
+        );
       default:
         return null;
     }
@@ -177,6 +206,18 @@ const LessonContent = ({ lesson, onComplete }) => {
     setQuizSubmitted(true);
   };
 
+  const handleTaskComplete = (taskId) => {
+    setCompletedTasks(prev => [...prev, taskId]);
+    // Check if all tasks are completed
+    const allTasksCompleted = lesson.resources
+      ?.filter(r => r.type === 'task')
+      .every(task => [...completedTasks, taskId].includes(task.id));
+    
+    if (allTasksCompleted) {
+      handleLessonProgress();
+    }
+  };
+
   const currentVideo = videoPlaylist[currentVideoIndex];
   const currentArticle = articles[currentArticleIndex];
 
@@ -184,7 +225,7 @@ const LessonContent = ({ lesson, onComplete }) => {
     <div className="space-y-8">
       {/* Tab Navigation */}
       <div className="flex gap-4 border-b border-slate-700/50">
-        {['content', 'video', 'article'].map((tab) => {
+        {['content', 'video', 'article', 'task'].map((tab) => {
           if (!shouldShowTab(tab)) return null;
 
           const getTabLabel = () => {
@@ -195,6 +236,9 @@ const LessonContent = ({ lesson, onComplete }) => {
                 return `Video Tutorials (${videoPlaylist.length})`;
               case 'article':
                 return `Related Articles (${articles.length})`;
+              case 'task':
+                const tasks = lesson.resources?.filter(r => r.type === 'task') || [];
+                return `Tasks (${tasks.length})`;
               default:
                 return '';
             }
@@ -304,12 +348,14 @@ LessonContent.propTypes = {
   lesson: PropTypes.shape({
     content: PropTypes.string.isRequired,
     resources: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['video', 'article']).isRequired,
+      type: PropTypes.oneOf(['video', 'article', 'task']).isRequired,
       title: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
+      url: PropTypes.string,
       content: PropTypes.string,
       description: PropTypes.string,
-      duration: PropTypes.number
+      duration: PropTypes.number,
+      id: PropTypes.string,
+      example: PropTypes.string
     })),
     quiz: PropTypes.arrayOf(PropTypes.shape({
       question: PropTypes.string.isRequired,
@@ -317,7 +363,8 @@ LessonContent.propTypes = {
       correctAnswer: PropTypes.number.isRequired
     }))
   }).isRequired,
-  onComplete: PropTypes.func.isRequired
+  onComplete: PropTypes.func.isRequired,
+  onAddToFlashcards: PropTypes.func.isRequired
 };
 
 export default LessonContent; 

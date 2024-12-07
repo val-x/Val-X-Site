@@ -1,23 +1,100 @@
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
-import { FiExternalLink, FiBookmark, FiChevronLeft, FiChevronRight, FiList } from 'react-icons/fi';
+import { 
+  FiExternalLink, 
+  FiBookmark, 
+  FiChevronLeft, 
+  FiChevronRight, 
+  FiList,
+  FiClock,
+  FiShare2,
+  FiPrinter
+} from 'react-icons/fi';
 import MarkdownRenderer from '../MarkdownRenderer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 
 const ArticleView = ({ 
   article, 
   onBookmark, 
   isBookmarked,
-  articles = [], // Array of related articles
+  articles = [],
   currentIndex = 0,
-  onNavigate
+  onNavigate,
+  onComplete
 }) => {
   const [showList, setShowList] = useState(false);
+  const [readTime, setReadTime] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  // Calculate estimated read time
+  useEffect(() => {
+    if (article.content) {
+      const words = article.content.trim().split(/\s+/).length;
+      const time = Math.ceil(words / 200); // Average reading speed of 200 words per minute
+      setReadTime(time);
+    }
+  }, [article.content]);
+
+  // Track reading progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const element = document.getElementById('article-content');
+      if (!element) return;
+
+      const totalHeight = element.scrollHeight - element.clientHeight;
+      const currentProgress = (element.scrollTop / totalHeight) * 100;
+      setProgress(Math.min(currentProgress, 100));
+
+      // Mark as complete when reaching the end
+      if (currentProgress > 90 && onComplete) {
+        onComplete();
+      }
+    };
+
+    const element = document.getElementById('article-content');
+    if (element) {
+      element.addEventListener('scroll', handleScroll);
+      return () => element.removeEventListener('scroll', handleScroll);
+    }
+  }, [onComplete]);
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: article.title,
+          text: article.description,
+          url: article.url
+        });
+      } else {
+        await navigator.clipboard.writeText(article.url);
+        toast.success('Link copied to clipboard');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      toast.error('Failed to share article');
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <div className="bg-slate-800/50 rounded-xl overflow-hidden flex">
       {/* Main Article Content */}
       <div className="flex-1">
+        {/* Progress Bar */}
+        <div className="h-1 bg-slate-700/50">
+          <motion.div
+            className="h-full bg-blue-500"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.2 }}
+          />
+        </div>
+
         <div className="p-6">
           {/* Navigation Header */}
           <div className="flex items-center justify-between mb-6">
@@ -30,9 +107,29 @@ const ArticleView = ({
                   <FiChevronLeft className="w-5 h-5" />
                 </button>
               )}
-              <h3 className="text-xl font-semibold text-white">{article.title}</h3>
+              <div>
+                <h3 className="text-xl font-semibold text-white">{article.title}</h3>
+                {readTime > 0 && (
+                  <div className="flex items-center gap-2 mt-1 text-sm text-slate-400">
+                    <FiClock className="w-4 h-4" />
+                    <span>{readTime} min read</span>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                onClick={handleShare}
+                className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+              >
+                <FiShare2 className="w-5 h-5" />
+              </button>
+              <button
+                onClick={handlePrint}
+                className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+              >
+                <FiPrinter className="w-5 h-5" />
+              </button>
               <button
                 onClick={onBookmark}
                 className={`p-2 rounded-lg transition-colors ${
@@ -65,7 +162,10 @@ const ArticleView = ({
           </div>
 
           {/* Article Content */}
-          <div className="prose prose-invert max-w-none">
+          <div 
+            id="article-content"
+            className="prose prose-invert max-w-none overflow-y-auto max-h-[calc(100vh-300px)] pr-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50"
+          >
             <MarkdownRenderer content={article.content || 'Article content will be displayed here.'} />
           </div>
 
@@ -74,10 +174,15 @@ const ArticleView = ({
             {currentIndex > 0 ? (
               <button
                 onClick={() => onNavigate(currentIndex - 1)}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group"
               >
-                <FiChevronLeft className="w-5 h-5" />
-                <span>Previous Article</span>
+                <FiChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                <div className="text-left">
+                  <div className="text-sm">Previous</div>
+                  <div className="text-white group-hover:text-blue-400 transition-colors">
+                    {articles[currentIndex - 1]?.title}
+                  </div>
+                </div>
               </button>
             ) : (
               <div />
@@ -85,10 +190,15 @@ const ArticleView = ({
             {currentIndex < articles.length - 1 && (
               <button
                 onClick={() => onNavigate(currentIndex + 1)}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group"
               >
-                <span>Next Article</span>
-                <FiChevronRight className="w-5 h-5" />
+                <div className="text-right">
+                  <div className="text-sm">Next</div>
+                  <div className="text-white group-hover:text-blue-400 transition-colors">
+                    {articles[currentIndex + 1]?.title}
+                  </div>
+                </div>
+                <FiChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             )}
           </div>
@@ -106,7 +216,7 @@ const ArticleView = ({
             <div className="p-4 border-b border-slate-700/50">
               <h3 className="text-lg font-semibold text-white">Related Articles</h3>
             </div>
-            <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
+            <div className="overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50">
               {articles.map((item, index) => (
                 <button
                   key={item.id}
@@ -150,7 +260,8 @@ ArticleView.propTypes = {
     description: PropTypes.string
   })),
   currentIndex: PropTypes.number,
-  onNavigate: PropTypes.func
+  onNavigate: PropTypes.func,
+  onComplete: PropTypes.func
 };
 
 export default ArticleView; 

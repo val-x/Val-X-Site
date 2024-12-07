@@ -134,42 +134,66 @@ const FiltersPanel = ({ filters, setFilters }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="relative bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 
-        rounded-xl p-4 sm:p-6 mb-6 group"
+      className="bg-slate-900/50 rounded-xl p-6 border border-slate-700/50"
     >
-      {/* Panel glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-violet-500/5 
-        to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Level Filter */}
+        <div>
+          <label className="text-sm text-slate-400 mb-2 block">Level</label>
+          <select
+            value={filters.level}
+            onChange={(e) => setFilters({ ...filters, level: e.target.value })}
+            className="w-full bg-slate-800 rounded-lg px-4 py-2 text-white"
+          >
+            <option value="all">All Levels</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
 
-      {/* Content */}
-      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <FilterSelect
-          label="Level"
-          value={filters.level}
-          onChange={(e) => setFilters({ ...filters, level: e.target.value })}
-          options={filterOptions.level}
-        />
+        {/* Duration Filter */}
+        <div>
+          <label className="text-sm text-slate-400 mb-2 block">Duration</label>
+          <select
+            value={filters.duration}
+            onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
+            className="w-full bg-slate-800 rounded-lg px-4 py-2 text-white"
+          >
+            <option value="all">Any Duration</option>
+            <option value="short">Short (≤ 6 weeks)</option>
+            <option value="medium">Medium (7-12 weeks)</option>
+            <option value="long">Long (> 12 weeks)</option>
+          </select>
+        </div>
 
-        <FilterSelect
-          label="Duration"
-          value={filters.duration}
-          onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
-          options={filterOptions.duration}
-        />
+        {/* Price Filter */}
+        <div>
+          <label className="text-sm text-slate-400 mb-2 block">Price</label>
+          <select
+            value={filters.price}
+            onChange={(e) => setFilters({ ...filters, price: e.target.value })}
+            className="w-full bg-slate-800 rounded-lg px-4 py-2 text-white"
+          >
+            <option value="all">All Prices</option>
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
 
-        <FilterSelect
-          label="Price"
-          value={filters.price}
-          onChange={(e) => setFilters({ ...filters, price: e.target.value })}
-          options={filterOptions.price}
-        />
-
-        <div className="flex items-center sm:justify-center lg:justify-start h-full pt-4 sm:pt-8">
-          <ToggleSwitch
-            label="Featured Only"
-            checked={filters.featured}
-            onChange={(e) => setFilters({ ...filters, featured: e.target.checked })}
-          />
+        {/* Featured Toggle */}
+        <div>
+          <label className="text-sm text-slate-400 mb-2 block">Featured</label>
+          <button
+            onClick={() => setFilters({ ...filters, featured: !filters.featured })}
+            className={`w-full px-4 py-2 rounded-lg transition-colors ${
+              filters.featured
+                ? 'bg-blue-500 text-white'
+                : 'bg-slate-800 text-slate-300'
+            }`}
+          >
+            Featured Only
+          </button>
         </div>
       </div>
     </motion.div>

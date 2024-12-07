@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  tabContent, 
+  getProgram,
   sampleFlashCards,
   sampleLiveSession,
   sampleMentor,
@@ -17,10 +17,9 @@ import ProgressBar from '../components/learning/ProgressBar';
 import BackgroundEffects from '../components/learning/BackgroundEffects';
 import LessonContent from '../components/learning/LessonContent';
 import Navbar from '../components/Navbar';
-import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload, FiTarget, FiBook, FiVideo } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiLock, FiBookmark, FiShare2, FiDownload, FiTarget, FiBook, FiVideo, FiUnlock } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
 import ProgressStats from '../components/learning/tracker/ProgressStats';
-import PomodoroTimer from '../components/learning/tracker/PomodoroTimer';
 import LiveSession from '../components/learning/LiveSession';
 import MentoringSection from '../components/learning/MentoringSection';
 import WeeklyReview from '../components/learning/WeeklyReview';
@@ -28,6 +27,7 @@ import CommunicationHub from '../components/learning/CommunicationHub';
 
 const ProgramMaterials = () => {
   const { programId } = useParams();
+  const program = getProgram(programId);
   const [activeWeek, setActiveWeek] = useState(0);
   const [activeDay, setActiveDay] = useState(0);
   const [activeTopic, setActiveTopic] = useState(0);
@@ -46,11 +46,7 @@ const ProgramMaterials = () => {
   const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [contentError, setContentError] = useState(null);
   const [activeTab, setActiveTab] = useState('lesson');
-
-  // Find program data
-  const program = Object.values(tabContent)
-    .flatMap(tab => tab.programs)
-    .find(p => p.id === programId);
+  const [isAllUnlocked, setIsAllUnlocked] = useState(false);
 
   useEffect(() => {
     try {
@@ -264,10 +260,10 @@ const ProgramMaterials = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white mb-4">Program Not Found</h1>
           <p className="text-slate-400 mb-4">
-            The program "{programId}" could not be found or has no curriculum content.
+            The program you're looking for could not be found.
           </p>
           <Link 
-            to="/learn" 
+            to="/learn-with-us" 
             className="text-blue-400 hover:text-blue-300 transition-colors"
           >
             Return to Programs
@@ -321,16 +317,15 @@ const ProgramMaterials = () => {
   };
 
   const isLessonLocked = (weekIndex, dayIndex) => {
+    if (isAllUnlocked) return false;
     if (weekIndex === 0 && dayIndex === 0) return false;
     
     const prevWeekProgress = progress?.weekProgress?.[weekIndex - 1];
     const prevDayProgress = progress?.weekProgress?.[weekIndex]?.days?.[dayIndex - 1];
 
     if (dayIndex === 0) {
-      // Check if previous week is completed
       return !prevWeekProgress?.days?.every(day => day.completed === day.total);
     } else {
-      // Check if previous day is completed
       return !prevDayProgress || prevDayProgress.completed < prevDayProgress.total;
     }
   };
@@ -579,6 +574,37 @@ const ProgramMaterials = () => {
     toast.success('Focus session completed!');
   };
 
+  // Add this function to handle unlocking all courses
+  const handleUnlockAll = () => {
+    try {
+      if (!progress || !program.curriculum) return;
+
+      const newProgress = {
+        ...progress,
+        weekProgress: program.curriculum.map(week => ({
+          weekNum: week?.week || 0,
+          days: week?.days ? week.days.map(day => ({
+            dayNum: day?.day || 0,
+            completed: day?.topics?.length || 0,
+            total: day?.topics?.length || 0
+          })) : [{
+            dayNum: 1,
+            completed: week?.topics?.length || 0,
+            total: week?.topics?.length || 0
+          }]
+        }))
+      };
+
+      updateUserProgress(programId, newProgress);
+      setProgress(newProgress);
+      setIsAllUnlocked(true);
+      toast.success('All lessons unlocked! 🎉');
+    } catch (err) {
+      console.error('Error unlocking lessons:', err);
+      toast.error('Failed to unlock lessons');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-800">
       <Navbar />
@@ -650,6 +676,21 @@ const ProgramMaterials = () => {
                       d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                   </svg>
                   Resume Learning
+                </button>
+
+                {/* Add Unlock All Button */}
+                <button
+                  onClick={handleUnlockAll}
+                  disabled={isAllUnlocked}
+                  className={`px-6 py-3 rounded-xl font-medium flex items-center justify-center gap-2 
+                    transition-all duration-300 ${
+                    isAllUnlocked
+                      ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg hover:shadow-emerald-500/20 hover:scale-105 transform-gpu'
+                  }`}
+                >
+                  <FiUnlock className="w-5 h-5" />
+                  {isAllUnlocked ? 'All Unlocked' : 'Subscribe to Unlock All'}
                 </button>
                 
                 <button

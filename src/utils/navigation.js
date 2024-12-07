@@ -1,0 +1,1 @@
+export const getProgramMaterialsUrl = (programId) => `/program/${programId}/materials`; 

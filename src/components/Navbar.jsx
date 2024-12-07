@@ -16,7 +16,6 @@ const Navbar = () => {
     { label: 'Community', path: '/blog' },
     { label: 'Learn With Us', path: '/learn-with-us' },
     { label: 'Careers', path: '/careers' },
-    { label: 'Support Us', path: '/support-us' }
   ];
 
   useEffect(() => {
