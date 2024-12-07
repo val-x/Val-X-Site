@@ -15,6 +15,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { DashboardTab, UsersTab, ContentTab, SettingsTab } from '../components/admin/tabs';
 
 // Register ChartJS components
 ChartJS.register(
@@ -1210,264 +1211,48 @@ const Admin = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
-          <>
-            <UserActivityBreakdown activities={userActivities} />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Activity Timeline</h3>
-                <ActivityLineChart data={userEngagementData} />
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Performance Metrics</h3>
-                <PerformanceMetrics metrics={userMetrics} />
-              </motion.div>
-            </div>
-
-            {/* Stats Grid */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
-              variants={containerVariants}
-            >
-              {stats.map((stat) => (
-                <motion.div
-                  key={stat.label}
-                  variants={itemVariants}
-                  className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                >
-                  <h3 className="text-gray-400 text-sm font-medium mb-2">{stat.label}</h3>
-                  <div className="flex items-center justify-between">
-                    <p className="text-2xl font-bold text-white">{stat.value}</p>
-                    <span className={`flex items-center text-sm ${
-                      stat.trend === 'up' ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {stat.change}
-                      <svg
-                        className={`w-4 h-4 ml-1 ${stat.trend === 'down' && 'transform rotate-180'}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Analytics and System Health */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-              variants={containerVariants}
-            >
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Weekly Activity</h3>
-                <AnalyticsChart />
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">System Health</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {Object.entries(systemHealth).map(([key, value]) => (
-                    <SystemHealthIndicator
-                      key={key}
-                      type={key}
-                      value={value.usage}
-                      status={value.status}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Recent Activity */}
-            <motion.div 
-              className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mt-6"
-              variants={itemVariants}
-            >
-              <h2 className="text-xl font-semibold text-white mb-6">Recent Activity</h2>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/10 
-                      transition-colors"
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    <div>
-                      <p className="text-white font-medium">{activity.user}</p>
-                      <p className="text-gray-400 text-sm">{activity.action}</p>
-                    </div>
-                    <span className="text-gray-400 text-sm">{activity.time}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </>
+          <DashboardTab
+            userActivities={userActivities}
+            userEngagementData={userEngagementData}
+            userMetrics={userMetrics}
+            stats={stats}
+            systemHealth={systemHealth}
+            recentActivity={recentActivity}
+            analytics={analytics}
+            itemVariants={itemVariants}
+            containerVariants={containerVariants}
+          />
         );
 
       case 'users':
         return (
-          <>
-            {/* View Toggle and Search */}
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setSelectedView('grid')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    selectedView === 'grid'
-                      ? 'bg-white/10 text-white'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" 
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => setSelectedView('table')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    selectedView === 'table'
-                      ? 'bg-white/10 text-white'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" 
-                    />
-                  </svg>
-                </button>
-              </div>
-              <button
-                onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                className="text-gray-400 hover:text-white transition-colors flex items-center space-x-2"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
-                  />
-                </svg>
-                <span>Advanced Search</span>
-              </button>
-            </div>
-
-            <AnimatePresence>
-              {showAdvancedSearch && <AdvancedSearchPanel />}
-            </AnimatePresence>
-
-            {selectedView === 'table' ? renderUsersTable() : renderUsersGrid()}
-
-            <AnimatePresence>
-              {showBulkActions && <BulkActionsBar />}
-            </AnimatePresence>
-          </>
+          <UsersTab
+            selectedView={selectedView}
+            setSelectedView={setSelectedView}
+            showAdvancedSearch={showAdvancedSearch}
+            setShowAdvancedSearch={setShowAdvancedSearch}
+            showBulkActions={showBulkActions}
+            renderUsersTable={renderUsersTable}
+            renderUsersGrid={renderUsersGrid}
+          />
         );
 
       case 'content':
         return (
-          <motion.div 
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-            variants={itemVariants}
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-white">Content Management</h2>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowAddContentModal(true)}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 via-violet-500 
-                  to-fuchsia-500 text-white font-medium"
-              >
-                New Content
-              </motion.button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {contentItems.map((item) => (
-                <motion.div
-                  key={item.id}
-                  className="p-4 rounded-xl bg-white/5 border border-white/10"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-white font-medium">{item.title}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      item.status === 'Published' ? 'bg-green-500/20 text-green-300' :
-                      item.status === 'Draft' ? 'bg-yellow-500/20 text-yellow-300' :
-                      'bg-blue-500/20 text-blue-300'
-                    }`}>
-                      {item.status}
-                    </span>
-                  </div>
-                  <p className="text-gray-400 text-sm mb-4">{item.type}</p>
-                  <div className="flex space-x-2">
-                    <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 
-                      transition-colors text-sm">
-                      Edit
-                    </button>
-                    <button className="px-3 py-1 rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 
-                      transition-colors text-sm">
-                      Preview
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <ContentTab
+            contentItems={contentItems}
+            setShowAddContentModal={setShowAddContentModal}
+            itemVariants={itemVariants}
+          />
         );
 
       case 'settings':
         return (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            variants={containerVariants}
-          >
-            {settings.map((section) => (
-              <motion.div
-                key={section.category}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-                variants={itemVariants}
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">{section.category}</h3>
-                <div className="space-y-3">
-                  {section.items.map((item) => (
-                    <button
-                      key={item}
-                      className="w-full p-3 rounded-lg bg-white/5 text-gray-100 hover:bg-white/10 
-                        transition-colors text-left flex justify-between items-center"
-                    >
-                      {item}
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                          d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <SettingsTab
+            settings={settings}
+            containerVariants={containerVariants}
+            itemVariants={itemVariants}
+          />
         );
 
       default:
