@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import { Link } from 'react-router-dom';
 gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
@@ -114,7 +114,7 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-
+              <Link to="/get-started/#contact-form">
               <button 
                 className={`w-full py-4 rounded-xl text-lg font-semibold
                   transition-all duration-300 transform hover:scale-[1.02]
@@ -128,9 +128,11 @@ const Pricing = () => {
                   hover:ring-2 hover:ring-blue-400/50
                   hover:-translate-y-0.5
                 `}
+               
               >
                 Get Started
               </button>
+              </Link>
             </div>
           ))}
         </div>

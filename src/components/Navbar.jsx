@@ -15,7 +15,7 @@ const Navbar = () => {
     { label: 'Showcase', path: '/showcase' },
     { label: 'Community', path: '/blog' },
     { label: 'Learn With Us', path: '/learn-with-us' },
-    { label: 'Careers', path: '/careers' },
+    // { label: 'Careers', path: '/careers' },
   ];
 
   useEffect(() => {

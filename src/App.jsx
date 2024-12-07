@@ -28,6 +28,8 @@ import {
 // Components
 import { BlogPost, BlogError } from '@components';
 import { SEO } from '@components/common';
+import Copyright from './pages/Copyright';
+import Admin from './pages/Admin';
 
 const App = () => {
   return (
@@ -55,6 +57,8 @@ const App = () => {
           <Route path="/cookies" element={<CookiePolicy />} />
           <Route path="/culture" element={<Culture />} />
           <Route path="/support-us" element={<SupportUs />} />
+          <Route path="/copyright" element={<Copyright />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Toaster />
       </div>

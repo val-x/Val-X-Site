@@ -241,7 +241,7 @@ const GetStarted = () => {
                 Experience the future of digital transformation with our cutting-edge solutions
               </p>
               <Link 
-                to="/projects"
+                to="/showcase"
                 className="inline-flex items-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
                   text-white font-medium text-lg hover:opacity-90 transition-opacity group"
               >
@@ -375,7 +375,7 @@ const GetStarted = () => {
         `}</style>
 
         {/* Contact Form Section */}
-        <section className="py-20">
+        <section className="py-20" id="contact-form">
           <div className="max-w-4xl mx-auto px-6">
             <div className="contact-form bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-10">
               <div className="text-center mb-10">
