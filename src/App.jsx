@@ -30,6 +30,14 @@ import { BlogPost, BlogError } from '@components';
 import { SEO } from '@components/common';
 import Copyright from './pages/Copyright';
 import Admin from './pages/Admin';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import NewProject from './pages/NewProject';
+import ScheduleSession from './pages/ScheduleSession';
 
 const App = () => {
   return (
@@ -59,6 +67,14 @@ const App = () => {
           <Route path="/support-us" element={<SupportUs />} />
           <Route path="/copyright" element={<Copyright />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/new-project" element={<NewProject />} />
+          <Route path="/schedule-session" element={<ScheduleSession />} />
         </Routes>
         <Toaster />
       </div>

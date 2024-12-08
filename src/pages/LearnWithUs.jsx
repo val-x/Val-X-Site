@@ -29,6 +29,7 @@ import { FiGrid, FiList, FiFilter, FiSearch } from 'react-icons/fi';
 import MainTabNavigation from '../components/navigation/MainTabNavigation';
 import ProgramsSection from '../components/learning/programs/ProgramsSection';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,8 @@ const LearnWithUs = () => {
     featured: false
   });
   const [isMobile, setIsMobile] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
