@@ -23,13 +23,26 @@ export default defineConfig({
         short_name: 'VAL-X',
         description: 'Professional IT services and solutions provider',
         theme_color: '#000000',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
         icons: [
           {
             src: 'favicon.ico',
             sizes: '64x64 32x32 24x24 16x16',
             type: 'image/x-icon'
+          },
+          {
+            src: 'apple-touch-icon.png',
+            sizes: '180x180',
+            type: 'image/png'
           }
         ]
+      },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true
       }
     }),
     imagemin({
@@ -38,19 +51,20 @@ export default defineConfig({
         interlaced: false,
       },
       optipng: {
-        optimizationLevel: 7,
+        optimizationLevel: 5,
       },
       mozjpeg: {
-        quality: 80,
+        quality: 75,
       },
       pngquant: {
-        quality: [0.8, 0.9],
+        quality: [0.7, 0.8],
         speed: 4,
       },
       svgo: {
         plugins: [
           {
             name: 'removeViewBox',
+            active: false
           },
           {
             name: 'removeEmptyAttrs',
