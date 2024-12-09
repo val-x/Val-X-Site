@@ -31,9 +31,15 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          mermaid: ['mermaid'],
+          katex: ['katex'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          charts: ['chart.js', 'react-chartjs-2'],
+          motion: ['framer-motion', '@react-spring/web'],
         },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
 
   resolve: {
