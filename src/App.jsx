@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
+import { SEO } from '@components/common';
 
 // Pages
 import {
@@ -27,7 +28,6 @@ import {
 
 // Components
 import { BlogPost, BlogError } from '@components';
-import { SEO } from '@components/common';
 import Copyright from './pages/Copyright';
 import Admin from './pages/Admin';
 import Signup from './pages/Signup';
@@ -38,12 +38,33 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import NewProject from './pages/NewProject';
 import ScheduleSession from './pages/ScheduleSession';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
     <HelmetProvider>
+      <SEO>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.val-x.in;"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+          crossOrigin="anonymous"
+        />
+      </SEO>
       <div className="bg-black text-white">
-        <SEO />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
@@ -75,8 +96,18 @@ const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/new-project" element={<NewProject />} />
           <Route path="/schedule-session" element={<ScheduleSession />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        <Toaster />
+        <Toaster 
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: '#1f2937',
+              color: '#fff',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            },
+          }}
+        />
       </div>
     </HelmetProvider>
   );

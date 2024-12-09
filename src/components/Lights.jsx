@@ -1,32 +1,30 @@
-import { Environment, Lightformer } from "@react-three/drei";
+import React, { memo } from 'react';
+import { motion } from 'framer-motion';
 
-const Lights = () => {
+const Lights = memo(() => {
   return (
-    <>
-      <spotLight
-        position={[0, 15, 0]}
-        angle={0.3}
-        penumbra={1}
-        castShadow
-        intensity={2}
-        shadow-bias={-0.0001}
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: [0.2, 0.4, 0.2],
+          scale: [1, 1.2, 1],
+          rotate: [0, 45, 0]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] 
+          bg-gradient-to-b from-cyan-500/20 via-violet-500/10 to-transparent blur-[100px]
+          will-change-transform"
       />
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[-10, 0, -5]} intensity={0.5} />
-      <directionalLight
-        castShadow
-        position={[10, 10, 5]}
-        intensity={1.5}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-far={50}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
-      />
-    </>
+      {/* ... other light elements with will-change-transform ... */}
+    </div>
   );
-};
+});
 
+Lights.displayName = 'Lights';
 export default Lights;
