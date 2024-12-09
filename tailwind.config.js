@@ -1,8 +1,18 @@
+import defaultTheme from 'tailwindcss/defaultTheme'
+import typography from '@tailwindcss/typography'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         blue: "#2997FF",
         gray: {
@@ -17,23 +27,13 @@ export default {
         DEFAULT: {
           css: {
             color: '#9ca3af',
-            h1: {
-              color: '#fff',
-            },
-            h2: {
-              color: '#fff',
-            },
-            h3: {
-              color: '#fff',
-            },
-            strong: {
-              color: '#fff',
-            },
+            h1: { color: '#fff' },
+            h2: { color: '#fff' },
+            h3: { color: '#fff' },
+            strong: { color: '#fff' },
             a: {
               color: '#60a5fa',
-              '&:hover': {
-                color: '#3b82f6',
-              },
+              '&:hover': { color: '#3b82f6' },
             },
             code: {
               color: '#fff',
@@ -103,8 +103,9 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
-    function ({ addUtilities }) {
+    typography,
+    aspectRatio,
+    function({ addUtilities }) {
       addUtilities({
         '.scrollbar-hide': {
           '-ms-overflow-style': 'none',
@@ -116,8 +117,7 @@ export default {
         '.perspective-1000': {
           'perspective': '1000px',
         },
-      });
-    },
-    require('@tailwindcss/aspect-ratio'),
+      })
+    }
   ],
-};
+}
