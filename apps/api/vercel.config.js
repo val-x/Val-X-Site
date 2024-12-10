@@ -7,5 +7,6 @@ module.exports = {
     env: {
       TURBO_REMOTE_ONLY: 'true',
     },
+    command: 'node vercel-build.js'
   },
 }; 
