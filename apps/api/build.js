@@ -21,7 +21,17 @@ async function runBuild() {
 
     // Copy necessary files
     await copy('package.json', 'dist/package.json');
-    await copy('.env', 'dist/.env');
+
+    // Only copy .env if it exists
+    try {
+      await copy('.env', 'dist/.env');
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        console.log('No .env file found, skipping...');
+      } else {
+        throw error;
+      }
+    }
 
     console.log('Build completed successfully!');
   } catch (error) {
