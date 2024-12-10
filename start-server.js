@@ -10,48 +10,36 @@ const app = express();
 const distPath = process.env.SERVE_PATH || path.resolve(__dirname, 'dist');
 console.log('Serving files from:', distPath);
 
-// Configure proper MIME types
-const mimeTypes = {
-  '.js': 'application/javascript',
-  '.mjs': 'application/javascript',
-  '.css': 'text/css',
-  '.html': 'text/html',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.gif': 'image/gif',
-  '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.ttf': 'font/ttf',
-  '.eot': 'application/vnd.ms-fontobject'
-};
-
-// Add MIME type headers
+// Add security headers and CORS
 app.use((req, res, next) => {
-  const ext = path.extname(req.url).toLowerCase();
-  if (mimeTypes[ext]) {
-    res.type(mimeTypes[ext]);
+  // Security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  
+  // Handle JavaScript modules specifically
+  if (req.url.endsWith('.js')) {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
   }
   next();
 });
 
-// Serve static files with proper MIME types
+// Serve static files with specific configuration
 app.use(express.static(distPath, {
+  maxAge: '1y',
+  etag: true,
+  lastModified: true,
   setHeaders: (res, filePath) => {
-    const ext = path.extname(filePath).toLowerCase();
-    if (mimeTypes[ext]) {
-      res.setHeader('Content-Type', mimeTypes[ext]);
+    if (filePath.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
     }
-    // Add cache control for static assets
-    if (ext === '.js' || ext === '.css') {
-      res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+    if (filePath.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css; charset=utf-8');
     }
   }
 }));
 
-// Handle SPA routing
+// SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });

@@ -45,7 +45,10 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 1000,
+    modulePreload: true,
+    target: 'esnext',
+    minify: 'esbuild',
+    sourcemap: true,
   },
 
   resolve: {
@@ -60,6 +63,13 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/styles'),
       '@assets': path.resolve(__dirname, './src/assets'),
     }
-  }
+  },
 
+  server: {
+    headers: {
+      'Cache-Control': 'no-store',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp'
+    }
+  }
 })
