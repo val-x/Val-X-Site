@@ -3,10 +3,7 @@
   "builds": [
     {
       "src": "src/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "runtime": "edge"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -25,11 +22,5 @@
         { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
       ]
     }
-  ],
-  "functions": {
-    "src/index.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  ]
 } 
