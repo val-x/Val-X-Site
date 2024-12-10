@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { copy, ensureDir } from 'fs-extra';
+import { copy, ensureDir, pathExists } from 'fs-extra';
 
 async function runBuild() {
   try {
@@ -26,14 +26,10 @@ async function runBuild() {
     await copy('package.json', 'dist/package.json');
 
     // Only copy .env if it exists
-    try {
+    if (await pathExists('.env')) {
       await copy('.env', 'dist/.env');
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        console.log('No .env file found, skipping...');
-      } else {
-        throw error;
-      }
+    } else {
+      console.log('No .env file found, skipping...');
     }
 
     console.log('Build completed successfully!');
