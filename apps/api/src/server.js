@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import router from './routes/index.js';
 
 dotenv.config();
 
@@ -11,6 +12,10 @@ app.use(cors({
   origin: ['https://val-x.in', 'http://localhost:5173'],
   credentials: true
 }));
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Security headers
 app.use((req, res, next) => {
@@ -23,5 +28,11 @@ app.use((req, res, next) => {
 
 // API routes
 app.use('/api/v1', router);
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
+});
 
 export default app; 
