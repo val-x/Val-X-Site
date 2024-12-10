@@ -32,12 +32,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         format: 'es',
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.js')) {
-            return 'assets/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
         manualChunks: {
           vendor: ['react', 'react-dom'],
           mermaid: ['mermaid'],
@@ -64,4 +61,5 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, './src/assets'),
     }
   }
+
 })
