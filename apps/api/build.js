@@ -1,18 +1,24 @@
 import { build } from 'esbuild';
 import { copy, ensureDir, pathExists } from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function runBuild() {
   try {
+    const distPath = path.join(__dirname, 'dist');
+    
     // Ensure dist directory exists
-    await ensureDir('dist');
+    await ensureDir(distPath);
 
     // Build the application
     await build({
-      entryPoints: ['src/index.js'],
+      entryPoints: [path.join(__dirname, 'src/index.js')],
       bundle: true,
       platform: 'node',
       target: 'node18',
-      outdir: 'dist',
+      outdir: distPath,
       format: 'esm',
       banner: {
         js: `
@@ -23,11 +29,15 @@ async function runBuild() {
     });
 
     // Copy necessary files
-    await copy('package.json', 'dist/package.json');
+    await copy(
+      path.join(__dirname, 'package.json'), 
+      path.join(distPath, 'package.json')
+    );
 
     // Only copy .env if it exists
-    if (await pathExists('.env')) {
-      await copy('.env', 'dist/.env');
+    const envPath = path.join(__dirname, '.env');
+    if (await pathExists(envPath)) {
+      await copy(envPath, path.join(distPath, '.env'));
     } else {
       console.log('No .env file found, skipping...');
     }
