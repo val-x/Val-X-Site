@@ -31,6 +31,13 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
+        format: 'es',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.js')) {
+            return 'assets/[name]-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
         manualChunks: {
           vendor: ['react', 'react-dom'],
           mermaid: ['mermaid'],

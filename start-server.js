@@ -10,7 +10,20 @@ const app = express();
 const distPath = process.env.SERVE_PATH || path.resolve(__dirname, 'dist');
 console.log('Serving files from:', distPath);
 
-app.use(express.static(distPath));
+app.use((req, res, next) => {
+  if (req.url.endsWith('.js')) {
+    res.type('application/javascript');
+  }
+  next();
+});
+
+app.use(express.static(distPath, {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
