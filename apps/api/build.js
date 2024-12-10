@@ -1,8 +1,11 @@
 import { build } from 'esbuild';
-import { copy } from 'fs-extra';
+import { copy, ensureDir } from 'fs-extra';
 
 async function runBuild() {
   try {
+    // Ensure dist directory exists
+    await ensureDir('dist');
+
     // Build the application
     await build({
       entryPoints: ['src/index.js'],
