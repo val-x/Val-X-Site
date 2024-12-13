@@ -6,125 +6,214 @@ Source: https://sketchfab.com/3d-models/apple-iphone-15-pro-max-black-df17520841
 Title: Apple iPhone 15 Pro Max Black
 */
 
-import * as THREE from 'three';
-import React, { useEffect, useRef, useState } from "react";
-import { useGLTF, useTexture } from "@react-three/drei";
-import { useSpring, animated } from '@react-spring/three';
+import React, { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import gsap from 'gsap';
+import * as THREE from 'three';
 
-function Model(props) {
-  const { nodes, materials } = useGLTF("/models/scene.glb");
-  const groupRef = useRef();
-  const [hovered, setHovered] = useState(false);
-  
-  // Keep only screen ref
-  const screenRef = useRef();
-  
-  // Screen texture handling
-  const [currentTexture, setCurrentTexture] = useState(null);
-  
-  useEffect(() => {
-    const texture = new THREE.TextureLoader().load(props.item.img);
-    texture.encoding = THREE.sRGBEncoding;
-    texture.flipY = false;
+export default function IPhone({ scale, rotation, position, materials, explodeView, project }) {
+  const group = useRef();
+  const [textureError, setTextureError] = useState(false);
+
+  // Create texture loader with error handling
+  const textureLoader = new THREE.TextureLoader();
+  const screenTexture = project?.image ? 
+    textureLoader.load(
+      project.image,
+      undefined,
+      undefined,
+      () => {
+        console.warn('Failed to load texture:', project.image);
+        setTextureError(true);
+      }
+    ) : null;
+
+  // Create fallback texture for errors
+  const fallbackTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
     
-    // Add fade transition
-    gsap.to(currentTexture || {}, {
-      opacity: 0,
-      duration: 0.3,
-      onComplete: () => {
-        setCurrentTexture(texture);
-        gsap.to(texture, {
-          opacity: 1,
-          duration: 0.3
-        });
-      }
-    });
-  }, [props.item.img]);
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#1a1a1a');
+    gradient.addColorStop(1, '#2a2a2a');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '24px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(project?.title || 'Loading...', canvas.width / 2, canvas.height / 2);
+    
+    return new THREE.CanvasTexture(canvas);
+  }, [project?.title]);
 
-  // Basic material updates
-  useEffect(() => {
-    Object.entries(materials).forEach(([key, material]) => {
-      if (
-        key !== "zFdeDaGNRwzccye" &&
-        key !== "ujsvqBWRMnqdwPx" &&
-        key !== "hUlRcbieVuIiOXG" &&
-        key !== "jlzuBkUzuJqgiAK" &&
-        key !== "xNrofRCqOXXHVZt"
-      ) {
-        material.color = new THREE.Color(props.item.color[0]);
-      }
-      material.needsUpdate = true;
-    });
-  }, [materials, props.item]);
+  // Materials
+  const screenMaterial = new THREE.MeshStandardMaterial({
+    map: textureError ? fallbackTexture : screenTexture,
+    metalness: 0.5,
+    roughness: 0.2,
+    emissive: new THREE.Color(0x222222),
+    emissiveIntensity: 1,
+    envMapIntensity: 1
+  });
 
-  // Simple hover effects for screen
-  const handlePointerOver = () => {
-    setHovered(true);
-    document.body.style.cursor = 'pointer';
-  };
+  const bodyMaterial = new THREE.MeshPhysicalMaterial({
+    color: '#2a2a2a',
+    metalness: 0.8,
+    roughness: 0.2,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.2,
+    reflectivity: 1,
+    envMapIntensity: 1
+  });
 
-  const handlePointerOut = () => {
-    setHovered(false);
-    document.body.style.cursor = 'auto';
-  };
+  const cameraMaterial = new THREE.MeshPhysicalMaterial({
+    color: '#111111',
+    metalness: 1,
+    roughness: 0.1,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.1
+  });
 
-  // Screen animation spring
-  const screenSpring = useSpring({
-    scale: hovered ? 1.02 : 1,
-    config: { tension: 300, friction: 10 }
+  // Handle explosion animation
+  useFrame(() => {
+    if (!group.current) return;
+
+    if (explodeView) {
+      group.current.children.forEach((child, i) => {
+        child.position.x += Math.sin(Date.now() * 0.001 + i) * 0.01;
+        child.position.y += Math.cos(Date.now() * 0.001 + i) * 0.01;
+        child.position.z += Math.sin(Date.now() * 0.002 + i) * 0.01;
+      });
+    } else {
+      group.current.children.forEach(child => {
+        child.position.lerp(child.userData.originalPosition || new THREE.Vector3(0, 0, 0), 0.1);
+      });
+    }
   });
 
   return (
-    <group ref={groupRef} {...props} dispose={null}>
-      {/* Screen Assembly */}
-      <animated.group 
-        ref={screenRef}
-        scale={screenSpring.scale}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.xXDHkMplTIDAXLN.geometry}
-        >
-          <meshStandardMaterial
-            map={currentTexture}
-            roughness={0.2}
-            metalness={0.8}
-            envMapIntensity={1.5}
-            emissive={new THREE.Color('#ffffff')}
-            emissiveIntensity={0.2}
-            transparent={true}
-            opacity={1}
-            side={THREE.DoubleSide}
-            toneMapped={false}
+    <group ref={group} scale={scale} rotation={rotation} position={position}>
+      {/* Main Body Frame */}
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[0.075, 0.15, 0.008]} />
+        <meshPhysicalMaterial
+          {...bodyMaterial}
+          side={THREE.DoubleSide}
+          transparent
+          opacity={1}
+          envMapIntensity={2}
+        />
+      </mesh>
+
+      {/* Rounded Corners */}
+      {[[-0.0375, 0.075], [0.0375, 0.075], [-0.0375, -0.075], [0.0375, -0.075]].map((pos, i) => (
+        <mesh key={i} position={[pos[0], pos[1], 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.004, 0.004, 0.008, 16]} rotation={[Math.PI / 2, 0, 0]} />
+          <meshPhysicalMaterial
+            {...bodyMaterial}
+            envMapIntensity={2}
           />
         </mesh>
-      </animated.group>
+      ))}
 
-      {/* Static Parts */}
-      {Object.entries(nodes).map(([key, node]) => {
-        if (key !== "xXDHkMplTIDAXLN" && node.geometry) {
-          return (
-            <mesh
-              key={key}
-              castShadow
-              receiveShadow
-              geometry={node.geometry}
-              material={materials[node.material?.name]}
-              scale={0.01}
+      {/* Screen */}
+      <mesh position={[0, 0, 0.0041]} castShadow receiveShadow>
+        <boxGeometry args={[0.07, 0.14, 0.0001]} />
+        <meshPhysicalMaterial
+          map={textureError ? fallbackTexture : screenTexture}
+          metalness={0.5}
+          roughness={0.2}
+          emissive={new THREE.Color(0x222222)}
+          emissiveIntensity={0.5}
+          envMapIntensity={2}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+
+      {/* Dynamic Island */}
+      <mesh position={[0, 0.065, 0.0042]} castShadow receiveShadow>
+        <capsuleGeometry args={[0.003, 0.012, 16, 32]} rotation={[0, 0, Math.PI / 2]} />
+        <meshPhysicalMaterial
+          {...bodyMaterial}
+          color="#000000"
+          metalness={0.9}
+          roughness={0.1}
+          envMapIntensity={1.5}
+        />
+      </mesh>
+
+      {/* Camera Module */}
+      <group position={[0.025, 0.06, 0.004]}>
+        {/* Camera Square Background */}
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[0.03, 0.03, 0.002]} />
+          <meshPhysicalMaterial
+            {...cameraMaterial}
+            envMapIntensity={1.5}
+          />
+        </mesh>
+
+        {/* Camera Lenses */}
+        {[[0.006, 0.006], [-0.006, 0.006], [0, -0.006]].map((pos, i) => (
+          <mesh key={i} position={[pos[0], pos[1], 0.001]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.005, 0.005, 0.002, 32]} />
+            <meshPhysicalMaterial
+              color="#000000"
+              metalness={1}
+              roughness={0.1}
+              clearcoat={1}
+              clearcoatRoughness={0.1}
+              envMapIntensity={2}
             />
-          );
-        }
-        return null;
-      })}
+          </mesh>
+        ))}
+
+        {/* Camera Glass */}
+        {[[0.006, 0.006], [-0.006, 0.006], [0, -0.006]].map((pos, i) => (
+          <mesh key={`glass-${i}`} position={[pos[0], pos[1], 0.002]} castShadow receiveShadow>
+            <cylinderGeometry args={[0.0045, 0.0045, 0.0001, 32]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              metalness={1}
+              roughness={0}
+              transparent
+              opacity={0.3}
+              envMapIntensity={3}
+            />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Side Buttons */}
+      <group position={[-0.039, 0, 0]}>
+        {/* Volume Buttons */}
+        <mesh position={[0, 0.02, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.002, 0.015, 0.004]} />
+          <meshPhysicalMaterial
+            {...bodyMaterial}
+            envMapIntensity={2}
+          />
+        </mesh>
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.002, 0.015, 0.004]} />
+          <meshPhysicalMaterial
+            {...bodyMaterial}
+            envMapIntensity={2}
+          />
+        </mesh>
+      </group>
+
+      {/* Power Button */}
+      <mesh position={[0.039, 0.02, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.002, 0.02, 0.004]} />
+        <meshPhysicalMaterial
+          {...bodyMaterial}
+          envMapIntensity={2}
+        />
+      </mesh>
     </group>
   );
 }
-
-export default Model;
-
-useGLTF.preload("/models/scene.glb");

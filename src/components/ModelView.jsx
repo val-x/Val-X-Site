@@ -4,8 +4,8 @@ import gsap from "gsap";
 import { Canvas } from "@react-three/fiber";
 import { 
   OrbitControls, 
-  PerspectiveCamera, 
-  Environment, 
+  PerspectiveCamera,
+  Environment,
   useProgress,
   Html,
   Float,
@@ -13,374 +13,404 @@ import {
 } from "@react-three/drei";
 import * as THREE from 'three';
 import IPhone from './IPhone';
-import Lights from './Lights';
+import { ErrorBoundary } from './ErrorBoundary';
 
+// Enhanced loading screen with 3D elements
 const LoadingScreen = () => {
   const { progress } = useProgress();
   return (
     <Html center>
-      <div className="flex flex-col items-center">
-        <div className="w-24 h-24 border-4 border-t-blue-500 border-r-transparent border-b-purple-500 border-l-transparent rounded-full animate-spin" />
-        <p className="mt-4 text-white text-lg font-medium">{progress.toFixed(0)}%</p>
+      <div className="flex flex-col items-center space-y-4">
+        {/* Modern loading animation */}
+        <div className="relative w-32 h-32">
+          <div className="absolute inset-0 rounded-full border-4 border-white/10" />
+          <div 
+            className="absolute inset-0 rounded-full border-4 border-t-violet-500 border-r-transparent border-b-cyan-500 border-l-transparent animate-spin"
+            style={{ animationDuration: '2s' }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-500 to-cyan-500">
+              {progress.toFixed(0)}%
+            </span>
+          </div>
+        </div>
+        <div className="text-white/80 font-medium animate-pulse">
+          Loading Experience...
+        </div>
       </div>
     </Html>
   );
 };
 
+// Update the ProjectDetails component
+const ProjectDetails = ({ project, position = [0, 2, 0] }) => {
+  if (!project) return null;
+
+  return (
+    <group position={position}>
+      <Html center transform>
+        <div className="px-4 py-2 rounded-lg bg-black/50 backdrop-blur-md text-center min-w-[200px]">
+          <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400">
+            {project.title}
+          </h3>
+          <p className="text-sm text-white/70 mt-1">
+            {project.tech}
+          </p>
+          <div className="mt-2 flex justify-center gap-2">
+            {Object.entries(project.stats).map(([key, value]) => (
+              <div key={key} className="text-xs">
+                <span className="text-white/50">{key}: </span>
+                <span className="text-white">{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Html>
+    </group>
+  );
+};
+
+// New component for interactive hotspots
+const Hotspot = ({ position, label, onClick }) => {
+  const [hovered, setHovered] = useState(false);
+  
+  return (
+    <group
+      position={position}
+      onClick={onClick}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
+      <mesh>
+        <sphereGeometry args={[0.05, 16, 16]} />
+        <meshStandardMaterial 
+          color={hovered ? "#60a5fa" : "#fff"}
+          emissive={hovered ? "#60a5fa" : "#fff"}
+          emissiveIntensity={0.5}
+        />
+      </mesh>
+      {hovered && (
+        <Html center>
+          <div className="px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-md text-white text-sm whitespace-nowrap">
+            {label}
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+};
+
+// Update the CanvasErrorBoundary component
+const CanvasErrorBoundary = ({ children }) => {
+  return (
+    <ErrorBoundary>
+      <div className="relative w-full h-full">
+        {children}
+      </div>
+    </ErrorBoundary>
+  );
+};
+
+// Update camera position for better visibility
 const ModelView = ({ projects }) => {
   const groupRef = useRef(null);
   const containerRef = useRef(null);
+  const [currentProject, setCurrentProject] = useState(projects[0]);
+  const [cameraPosition] = useState([0, 0, 12]); // Move camera further back
   const [autoRotate, setAutoRotate] = useState(true);
-  const [hovered, setHovered] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [zoomLevel, setZoomLevel] = useState(8);
-  const [isExploding, setIsExploding] = useState(false);
+  const [viewMode, setViewMode] = useState('default');
 
-  // Add new states for button interactions
-  const [buttonStates, setButtonStates] = useState({
-    rotate: true,
-    explode: false
+  // Update materials with better visibility
+  const [materials] = useState({
+    body: new THREE.MeshPhysicalMaterial({
+      color: '#2a2a2a', // Slightly lighter color
+      metalness: 0.7,
+      roughness: 0.2,
+      clearcoat: 0.8,
+      clearcoatRoughness: 0.2
+    })
   });
 
-  // Add state for project images
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  
-  // Add project button styles state
-  const [activeProject, setActiveProject] = useState(0);
-
-  // Add animation state for project transitions
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Handle project selection with animation
-  const handleProjectSelect = (index) => {
-    if (isTransitioning) return;
-    
-    setIsTransitioning(true);
-    setCurrentProjectIndex(index);
-    setActiveProject(index);
-
-    // Reset transition state after animation
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 500);
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      const x = (clientX / window.innerWidth) * 2 - 1;
-      const y = -(clientY / window.innerHeight) * 2 + 1;
-      setCursorPos({ x, y });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
+  // Animation sequences
   useGSAP(() => {
-    // Simple fade-in animation without scroll trigger
-    gsap.from(containerRef.current, {
-      opacity: 0,
-      duration: 1,
+    if (!groupRef.current) return;
+
+    // Entrance animation
+    gsap.from(groupRef.current.position, {
+      y: -10,
+      duration: 2,
+      ease: "elastic.out(1, 0.5)"
+    });
+
+    gsap.from(groupRef.current.rotation, {
+      y: Math.PI * 2,
+      duration: 2,
       ease: "power3.out"
     });
 
-    gsap.from([".control-button", ".instruction-panel"], {
-      y: 20,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power2.out",
-      delay: 0.3
+    // Continuous floating animation
+    gsap.to(groupRef.current.position, {
+      y: '+=0.2',
+      duration: 2,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut"
     });
+  }, []);
 
-    // Continuous rotation animation
-    if (groupRef.current && autoRotate) {
-      gsap.to(groupRef.current.rotation, {
-        y: Math.PI * 2,
-        duration: 25,
-        repeat: -1,
-        ease: "none"
-      });
-    }
+  // Handle project transitions with screen update
+  const transitionToProject = (project) => {
+    if (!groupRef.current) return;
 
-    // Remove scroll-based rotation
-    // Keep explosion animation
-    if (isExploding && groupRef.current) {
-      const parts = groupRef.current.children;
-      parts.forEach((part, i) => {
-        const randomX = (Math.random() - 0.5) * 3;
-        const randomY = (Math.random() - 0.5) * 3;
-        const randomZ = (Math.random() - 0.5) * 3;
-
-        gsap.to(part.position, {
-          x: randomX,
-          y: randomY,
-          z: randomZ,
-          duration: 1,
-          ease: "power2.out"
-        });
-      });
-    } else if (groupRef.current) {
-      // Reset positions
-      groupRef.current.children.forEach(part => {
-        gsap.to(part.position, {
-          x: 0,
-          y: 0,
-          z: 0,
-          duration: 1,
-          ease: "power2.in"
-        });
-      });
-    }
-  }, [autoRotate, isExploding]);
-
-  // Enhanced button handlers
-  const handleRotateToggle = () => {
-    setAutoRotate(!autoRotate);
-    setButtonStates(prev => ({
-      ...prev,
-      rotate: !prev.rotate
-    }));
-  };
-
-  const handleExplodeToggle = () => {
-    setIsExploding(!isExploding);
-    setButtonStates(prev => ({
-      ...prev,
-      explode: !prev.explode
-    }));
-    // Stop auto-rotation when exploding
-    if (!isExploding) {
-      setAutoRotate(false);
-    }
-  };
-
-  const handleZoom = (direction) => {
-    const newZoom = direction === 'in' 
-      ? Math.min(12, zoomLevel + 1)
-      : Math.max(4, zoomLevel - 1);
+    setAutoRotate(false);
     
-    gsap.to(containerRef.current, {
-      duration: 0.5,
-      ease: "power2.out",
-      onUpdate: () => setZoomLevel(newZoom)
+    // Update current project
+    setCurrentProject(project);
+
+    // Animate the model
+    gsap.to(groupRef.current.rotation, {
+      y: Math.PI * 2,
+      duration: 1.5,
+      ease: "power3.inOut"
+    });
+
+    // Update materials with project theme
+    gsap.to(materials.body.color, {
+      r: 0.16, // #2a2a2a
+      g: 0.16,
+      b: 0.16,
+      duration: 1
     });
   };
 
-  return (
-    <div 
-      ref={containerRef} 
-      className="relative w-full h-full"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => {
-        setHovered(false);
-        setAutoRotate(buttonStates.rotate);
-      }}
-    >
-      {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-gray-900/40 to-purple-900/20 backdrop-blur-sm rounded-2xl" />
-
-      {/* Interactive Background Effect */}
-      <div 
-        className="absolute inset-0 opacity-50 transition-opacity duration-500"
-        style={{
-          background: `radial-gradient(circle at ${(cursorPos.x + 1) * 50}% ${(cursorPos.y + 1) * 50}%, rgba(56, 189, 248, 0.1) 0%, rgba(0, 0, 0, 0) 60%)`
-        }}
-      />
-
-      {/* Enhanced Instruction Panel */}
-      <div className="instruction-panel absolute top-4 left-4 bg-black/30 backdrop-blur-xl rounded-xl px-6 py-3 text-white/80 text-sm z-10 transform transition-all duration-300 hover:scale-105">
-        <div className="flex items-center space-x-2">
-          <svg className="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-          </svg>
-          <span>Interact with the model</span>
-        </div>
-        <div className="mt-2 text-xs text-white/60 space-y-1">
-          <p>• Click and drag to rotate</p>
-          <p>• Scroll to zoom</p>
-          <p>• Hover over parts for details</p>
-          <p>• Double-click for part specs</p>
-        </div>
+  // Enhanced controls UI
+  const Controls = () => (
+    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4">
+      <div className="flex gap-2 bg-white/5 backdrop-blur-2xl rounded-full p-1 border border-white/10">
+        {projects.map((project, index) => (
+          <button
+            key={project.id}
+            onClick={() => transitionToProject(project)}
+            className={`
+              px-4 py-2 rounded-full transition-all duration-300
+              ${currentProject.id === project.id 
+                ? 'bg-gradient-to-r from-violet-500 to-cyan-500 text-white'
+                : 'text-white/70 hover:bg-white/10'
+              }
+            `}
+          >
+            {project.title}
+          </button>
+        ))}
       </div>
+    </div>
+  );
 
-      {/* Enhanced Controls Overlay */}
-      <div className="absolute bottom-4 left-4 z-10 flex space-x-4">
+  // Add new state for view controls
+  const [showSpecs, setShowSpecs] = useState(false);
+
+  // Add new controls for view modes
+  const ViewControls = () => (
+    <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
+      <div className="flex gap-2 bg-white/5 backdrop-blur-2xl rounded-xl p-2 border border-white/10">
         <button
-          onClick={handleRotateToggle}
-          className={`control-button px-4 py-2 rounded-full text-white/80 transition-all duration-300 flex items-center space-x-2
-            ${buttonStates.rotate ? 'bg-green-500/20 hover:bg-green-500/30' : 'bg-white/10 hover:bg-white/20'}`}
+          onClick={() => setViewMode('default')}
+          className={`p-2 rounded-lg transition-all duration-300 ${
+            viewMode === 'default' ? 'bg-violet-500/20 text-violet-400' : 'text-white/70 hover:bg-white/10'
+          }`}
+          title="Default View"
         >
-          <svg className={`w-4 h-4 ${buttonStates.rotate ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
-          <span>{autoRotate ? 'Stop Rotation' : 'Auto Rotate'}</span>
         </button>
         <button
-          onClick={handleExplodeToggle}
-          className={`control-button px-4 py-2 rounded-full text-white/80 transition-all duration-300 flex items-center space-x-2
-            ${buttonStates.explode ? 'bg-purple-500/20 hover:bg-purple-500/30' : 'bg-white/10 hover:bg-white/20'}`}
+          onClick={() => setViewMode('explode')}
+          className={`p-2 rounded-lg transition-all duration-300 ${
+            viewMode === 'explode' ? 'bg-cyan-500/20 text-cyan-400' : 'text-white/70 hover:bg-white/10'
+          }`}
+          title="Explode View"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
-          <span>{isExploding ? 'Reset View' : 'Explode View'}</span>
-        </button>
-      </div>
-
-      {/* Enhanced Zoom Controls */}
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex flex-col space-y-2">
-        <button
-          onClick={() => handleZoom('in')}
-          className="control-button bg-white/10 backdrop-blur-md p-2 rounded-full text-white/80 hover:bg-white/20 transition-all"
-          disabled={zoomLevel >= 12}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
         </button>
         <button
-          onClick={() => handleZoom('out')}
-          className="control-button bg-white/10 backdrop-blur-md p-2 rounded-full text-white/80 hover:bg-white/20 transition-all"
-          disabled={zoomLevel <= 4}
+          onClick={() => setShowSpecs(!showSpecs)}
+          className={`p-2 rounded-lg transition-all duration-300 ${
+            showSpecs ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'text-white/70 hover:bg-white/10'
+          }`}
+          title="Show Specifications"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
         </button>
       </div>
+    </div>
+  );
 
-      {/* Enhanced Project Navigation - Horizontal Layout */}
-      <div className="absolute bottom-8 left-0 right-0 z-20">
-        <div className="max-w-6xl mx-auto px-6">
-          {/* Project Navigation Track */}
-          <div className="relative">
-            {/* Navigation Background */}
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-xl rounded-2xl border border-white/10" />
-            
-            {/* Projects Scroll Container */}
-            <div className="relative overflow-x-auto hide-scrollbar py-4 px-2">
-              <div className="flex items-center gap-4 min-w-max mx-auto">
-                {projects.map((project, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleProjectSelect(index)}
-                    className={`
-                      group relative px-6 py-3 rounded-xl backdrop-blur-sm
-                      transition-all duration-300 transform
-                      ${activeProject === index 
-                        ? `bg-gradient-to-r ${project.color} scale-105 shadow-lg` 
-                        : 'bg-black/30 hover:bg-black/50'
-                      }
-                      ${isTransitioning ? 'pointer-events-none' : ''}
-                      min-w-[200px]
-                    `}
-                  >
-                    {/* Project Info */}
-                    <div className="flex flex-col items-center">
-                      <span className={`text-sm font-medium ${activeProject === index ? 'text-white' : 'text-white/80'}`}>
-                        {project.title}
-                      </span>
-                      <span className="text-xs text-white/60">
-                        {project.tech}
-                      </span>
-                    </div>
-
-                    {/* Active Indicator */}
-                    {activeProject === index && (
-                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white" />
-                    )}
-
-                    {/* Enhanced Hover Preview */}
-                    <div className={`
-                      absolute -top-32 left-1/2 -translate-x-1/2 
-                      w-48 rounded-lg overflow-hidden 
-                      opacity-0 group-hover:opacity-100 
-                      transition-all duration-300
-                      pointer-events-none
-                      border border-white/10
-                      shadow-xl
-                      transform group-hover:-translate-y-2
-                    `}>
-                      <div className="relative aspect-video">
-                        <img 
-                          src={project.image} 
-                          alt={project.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                        <div className="absolute bottom-2 left-2 right-2 text-xs text-white">
-                          {project.description}
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
+  // Add specifications panel
+  const SpecificationsPanel = () => (
+    <div className={`
+      absolute left-4 top-4 w-64 bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 
+      transform transition-all duration-300 ${showSpecs ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
+    `}>
+      <div className="p-4 space-y-4">
+        <h3 className="text-lg font-medium text-white">{currentProject.title} Specs</h3>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span className="text-white/60">Display</span>
+            <span className="text-white">6.7" OLED</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-white/60">Processor</span>
+            <span className="text-white">A16 Bionic</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-white/60">Camera</span>
+            <span className="text-white">48MP Main</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-white/60">Battery</span>
+            <span className="text-white">4323 mAh</span>
           </div>
         </div>
       </div>
+    </div>
+  );
 
-      {/* Add this CSS to hide scrollbar but keep functionality */}
-      <style jsx>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+  return (
+    <div ref={containerRef} className="relative w-full h-full">
+      {/* Background gradients */}
+      <div className="absolute inset-0 bg-gradient-radial from-violet-500/20 via-transparent to-cyan-500/20 animate-pulse-slow" />
+      
+      <ViewControls />
+      <SpecificationsPanel />
+      <Controls />
 
-      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, zoomLevel], fov: 45 }}>
-        <color attach="background" args={['#000']} />
-        <fog attach="fog" args={['#000', 5, 15]} />
-        <Environment preset="city" />
-        
-        <ambientLight intensity={0.5} />
-        <Lights />
-        
-        {/* Background Effects */}
-        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-
-        <OrbitControls 
-          enableZoom={true}
-          enablePan={false}
-          rotateSpeed={0.5}
-          zoomSpeed={0.8}
-          minDistance={4}
-          maxDistance={12}
-          target={new THREE.Vector3(0, 0, 0)}
-          autoRotate={autoRotate && !hovered}
-          autoRotateSpeed={0.5}
-          onChange={() => setAutoRotate(false)}
-        />
-
-        <Float
-          speed={1.5}
-          rotationIntensity={0.5}
-          floatIntensity={0.5}
-          floatingRange={[-.1, .1]}
+      <CanvasErrorBoundary>
+        <Canvas
+          shadows
+          dpr={[1, 2]}
+          camera={{ position: cameraPosition, fov: 35 }} // Narrower FOV for better perspective
+          onCreated={({ gl }) => {
+            gl.setClearColor('#000000');
+            gl.domElement.addEventListener('webglcontextlost', (event) => {
+              event.preventDefault();
+              setTimeout(() => gl.forceContextRestore(), 1000);
+            });
+          }}
         >
-          <group ref={groupRef} position={[0, -0.5, 0]}>
-            <Suspense fallback={<LoadingScreen />}>
-              <IPhone 
-                scale={[18, 18, 18]}
-                position={[0, 0, 0]}
-                rotation={[0, Math.PI / 2, 0]}
-                item={{
-                  title: projects[currentProjectIndex].title,
-                  color: "#B8B8B8",
-                  img: projects[currentProjectIndex].image
-                }}
-                isExploding={isExploding}
-              />
-            </Suspense>
-          </group>
-        </Float>
-      </Canvas>
+          <color attach="background" args={['#000']} />
+          <fog attach="fog" args={['#000', 10, 20]} /> // Adjust fog distance
+          
+          {/* Improved lighting setup */}
+          <ambientLight intensity={1} />
+          <directionalLight
+            position={[5, 5, 5]}
+            intensity={2}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
+          <pointLight position={[-5, -5, -5]} intensity={1} />
+          <pointLight position={[0, 2, 0]} intensity={1} color="#fff" />
+          <spotLight
+            position={[0, 5, 0]}
+            angle={0.3}
+            penumbra={1}
+            intensity={2}
+            castShadow
+          />
+
+          <Environment preset="city" />
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade />
+
+          <OrbitControls
+            enableZoom={true}
+            enablePan={false}
+            autoRotate={autoRotate}
+            autoRotateSpeed={0.5}
+            maxPolarAngle={Math.PI / 1.5}
+            minPolarAngle={Math.PI / 3}
+            maxDistance={15}
+            minDistance={8}
+          />
+
+          <Float
+            speed={1}
+            rotationIntensity={0.2}
+            floatIntensity={0.2}
+          >
+            <group ref={groupRef}>
+              <Suspense fallback={<LoadingScreen />}>
+                <IPhone
+                  scale={[12, 12, 12]}  // Adjusted scale
+                  rotation={[0.1, -Math.PI / 4, 0]}  // Slight tilt for better view
+                  position={[0, 0, 0]}
+                  materials={materials}
+                  explodeView={viewMode === 'explode'}
+                  project={currentProject}
+                />
+                {currentProject && (
+                  <Html
+                    position={[0, 2, 0]}
+                    center
+                    className="pointer-events-none"
+                  >
+                    <div className="px-4 py-2 rounded-lg bg-black/50 backdrop-blur-md text-center min-w-[200px]">
+                      <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400">
+                        {currentProject.title}
+                      </h3>
+                      <p className="text-sm text-white/70 mt-1">
+                        {currentProject.tech}
+                      </p>
+                    </div>
+                  </Html>
+                )}
+                
+                {currentProject && viewMode === 'default' && (
+                  <>
+                    <Hotspot
+                      position={[0.3, 0.3, 0]}
+                      label="Screen Technology"
+                      onClick={() => console.log("Screen info")}
+                    />
+                    <Hotspot
+                      position={[-0.3, 0.3, 0]}
+                      label="Camera System"
+                      onClick={() => console.log("Camera info")}
+                    />
+                    <Hotspot
+                      position={[0.3, -0.3, 0]}
+                      label="Face ID"
+                      onClick={() => console.log("Face ID info")}
+                    />
+                    <Hotspot
+                      position={[-0.3, -0.3, 0]}
+                      label="Battery"
+                      onClick={() => console.log("Battery info")}
+                    />
+                  </>
+                )}
+              </Suspense>
+            </group>
+          </Float>
+        </Canvas>
+      </CanvasErrorBoundary>
+
+      {/* Wrap Suspense and model content in ErrorBoundary */}
+      <ErrorBoundary>
+        <Suspense fallback={
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <LoadingScreen />
+          </div>
+        }>
+          {/* Model content is now handled by Canvas */}
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };

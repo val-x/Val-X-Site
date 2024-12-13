@@ -3,7 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ModelView from '../components/ModelView';
-import { projects } from '../data/projects';
+import { 
+  modelProjects, 
+  clientProjects, 
+  getAllProjects,
+  getCategories,
+  getProjectStats 
+} from '../data/projects';
 import { useDebounce } from '../hooks/useDebounce';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { useInView } from 'react-intersection-observer';
@@ -313,18 +319,21 @@ const Showcase = () => {
     triggerOnce: false
   });
 
-  const categories = ['all', ...new Set(projects.map(project => project.category))];
+  const categories = useMemo(() => getCategories(), []);
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
   const filteredProjects = useMemo(() => {
+    const projects = showModel ? modelProjects : clientProjects;
     return projects.filter(project => {
       const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
-      const matchesSearch = project.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-                          project.description.toLowerCase().includes(debouncedSearch.toLowerCase());
+      const matchesSearch = (
+        project.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        project.description.toLowerCase().includes(debouncedSearch.toLowerCase())
+      );
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, debouncedSearch]);
+  }, [selectedCategory, debouncedSearch, showModel]);
 
   const paginatedProjects = useMemo(() => {
     return filteredProjects.slice(0, page * ITEMS_PER_PAGE);
@@ -363,27 +372,24 @@ const Showcase = () => {
 
   // Calculate category counts
   useEffect(() => {
-    const stats = projects.reduce((acc, project) => {
-      acc[project.category] = (acc[project.category] || 0) + 1;
-      return acc;
-    }, { all: projects.length });
+    const stats = getProjectStats().categoryCounts;
     setCategoryStats(stats);
   }, []);
 
   // Enhanced project filtering and sorting
   const filteredAndSortedProjects = useMemo(() => {
-    let result = filteredProjects;
+    let result = [...filteredProjects];
     
     switch (sortBy) {
       case SORT_OPTIONS.POPULAR:
-        result = [...result].sort((a, b) => b.stats.users - a.stats.users);
+        result.sort((a, b) => parseInt(b.stats.users) - parseInt(a.stats.users));
         break;
       case SORT_OPTIONS.RATING:
-        result = [...result].sort((a, b) => b.stats.rating - a.stats.rating);
+        result.sort((a, b) => parseFloat(b.stats.rating) - parseFloat(a.stats.rating));
         break;
       case SORT_OPTIONS.NEWEST:
       default:
-        result = [...result].sort((a, b) => new Date(b.date) - new Date(a.date));
+        result.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
     
     return result;
@@ -410,7 +416,7 @@ const Showcase = () => {
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400">
-                  Our Projects
+                  Projects 
                 </span>
               </h1>
               <p className="text-xl text-gray-400 mb-8">
@@ -426,14 +432,14 @@ const Showcase = () => {
                     ${showModel ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white' : 'bg-white/5 text-white/60 hover:bg-white/10'}
                     ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  {isLoading ? <LoadingSpinner /> : '3D View'}
+                  {isLoading ? <LoadingSpinner /> : 'Our Projects '}
                 </button>
                 <button
                   onClick={() => setShowModel(!showModel)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
                     ${!showModel ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white' : 'bg-white/5 text-white/60 hover:bg-white/10'}`}
                 >
-                  Gallery View
+                  Client Projects 
                 </button>
               </div>
             </motion.div>
@@ -454,7 +460,7 @@ const Showcase = () => {
                     </div>
                   )}
                   <ModelView 
-                    projects={projects} 
+                    projects={modelProjects} 
                     onLoad={() => setModelLoading(false)}
                   />
                 </div>
