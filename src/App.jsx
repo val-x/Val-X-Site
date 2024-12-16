@@ -22,7 +22,8 @@ import {
   NewBlog,
   Culture,
   Showcase,
-  SupportUs
+  SupportUs,
+  NotFound
 } from '@pages';
 
 // Components
@@ -38,46 +39,54 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import NewProject from './pages/NewProject';
 import ScheduleSession from './pages/ScheduleSession';
+import DocumentPreview from './pages/DocumentPreview';
+import EditDocument from './pages/EditDocument';
+import { DocumentProvider } from './contexts/DocumentContext';
 
 const App = () => {
   return (
     <HelmetProvider>
-      <div className="bg-black text-white">
-        <SEO />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/new" element={<NewBlog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} errorElement={<BlogError />} />
-          <Route path="/solutions" element={<Solutions />} />
-          <Route path="/get-started" element={<GetStarted />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/showcase" element={<Showcase />} />
-          <Route path="/learn-with-us" element={<LearnWithUs />} />
-          <Route path="/program/:programId/materials" element={<ProgramMaterials />} />
-          <Route path="/program-materials/:programId" element={<ProgramMaterials />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/docs" element={<Docs />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/cookies" element={<CookiePolicy />} />
-          <Route path="/culture" element={<Culture />} />
-          <Route path="/support-us" element={<SupportUs />} />
-          <Route path="/copyright" element={<Copyright />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/new-project" element={<NewProject />} />
-          <Route path="/schedule-session" element={<ScheduleSession />} />
-        </Routes>
-        <Toaster />
-      </div>
+      <DocumentProvider>
+        <div className="bg-black text-white">
+          <SEO />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/new" element={<NewBlog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} errorElement={<BlogError />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/get-started" element={<GetStarted />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/showcase" element={<Showcase />} />
+            <Route path="/learn-with-us" element={<LearnWithUs />} />
+            <Route path="/program/:programId/materials" element={<ProgramMaterials />} />
+            <Route path="/program-materials/:programId" element={<ProgramMaterials />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/docs" element={<Docs />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/cookies" element={<CookiePolicy />} />
+            <Route path="/culture" element={<Culture />} />
+            <Route path="/support-us" element={<SupportUs />} />
+            <Route path="/copyright" element={<Copyright />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/new-project" element={<NewProject />} />
+            <Route path="/schedule-session" element={<ScheduleSession />} />
+            <Route path="/admin/content/preview/:id" element={<DocumentPreview />} />
+            <Route path="/admin/content/edit/:id" element={<EditDocument />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+        </div>
+      </DocumentProvider>
     </HelmetProvider>
   );
 };

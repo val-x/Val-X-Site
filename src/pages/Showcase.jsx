@@ -93,7 +93,7 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
       </div>
 
       {/* Add action buttons */}
-      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" >
         <button
           onClick={handleShare}
           className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"

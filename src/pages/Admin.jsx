@@ -30,6 +30,112 @@ ChartJS.register(
   Filler
 );
 
+const AddContentModal = ({ onClose }) => {
+  const [documentType, setDocumentType] = useState('Documentation');
+  const [content, setContent] = useState('');
+
+  const handleTypeChange = (type) => {
+    setDocumentType(type);
+    setContent(DOCUMENT_TEMPLATES[type]?.defaultContent || '');
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-gray-900 rounded-2xl p-8 max-w-2xl w-full mx-4"
+      >
+        <div className="flex justify-between items-start mb-6">
+          <h2 className="text-2xl font-bold text-white">Create New Content</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form className="space-y-6">
+          <div>
+            <label className="block text-gray-400 mb-2">Title</label>
+            <input
+              type="text"
+              placeholder="Enter title"
+              className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-400 mb-2">Document Type</label>
+            <select
+              value={documentType}
+              onChange={(e) => handleTypeChange(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+            >
+              {Object.values(DOCUMENT_TYPES).map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-gray-400 mb-2">Content</label>
+            <div className="grid grid-cols-2 gap-4">
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={12}
+                className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white font-mono text-sm"
+              />
+              <div className="bg-white/5 rounded-lg p-4 prose prose-invert max-w-none">
+                {/* Add markdown preview here if needed */}
+                <div dangerouslySetInnerHTML={{ __html: content }} />
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div className="flex space-x-2">
+              {DOCUMENT_TEMPLATES[documentType]?.sections.map(section => (
+                <button
+                  key={section}
+                  type="button"
+                  onClick={() => setContent(prev => `${prev}\n\n## ${section}`)}
+                  className="px-3 py-1 rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 text-sm"
+                >
+                  + {section}
+                </button>
+              ))}
+            </div>
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 rounded-lg bg-white/5 text-gray-300 hover:bg-white/10"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 via-violet-500 
+                  to-fuchsia-500 text-white"
+              >
+                Create Content
+              </button>
+            </div>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Admin = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
@@ -101,10 +207,14 @@ const Admin = () => {
   ];
 
   const contentItems = [
-    { id: 1, title: 'Getting Started Guide', type: 'Documentation', status: 'Published' },
-    { id: 2, title: 'Product Features', type: 'Page', status: 'Draft' },
-    { id: 3, title: 'API Documentation', type: 'Documentation', status: 'Published' },
-    { id: 4, title: 'Release Notes', type: 'Blog', status: 'Review' },
+    { id: 1, title: 'Sample Business Proposal', type: 'Business Proposal', status: 'Draft', content: '# Executive Summary\n\nThis is a sample business proposal...' },
+    { id: 2, title: 'Developer Offer Letter', type: 'Offer Letter', status: 'Published', content: '# Offer Letter\n\nWe are pleased to offer you...' },
+    { id: 3, title: 'Q4 Services Invoice', type: 'Invoice', status: 'Published', content: '# Invoice\n\n## Bill To\nAcme Corp...' },
+    { id: 4, title: 'Contract Termination Notice', type: 'Termination Letter', status: 'Draft', content: '# Termination Letter\n\nThis letter serves to notify...' },
+    { id: 5, title: 'Getting Started Guide', type: 'Documentation', status: 'Published' },
+    { id: 6, title: 'Product Features', type: 'Page', status: 'Draft' },
+    { id: 7, title: 'API Documentation', type: 'Documentation', status: 'Published' },
+    { id: 8, title: 'Release Notes', type: 'Blog', status: 'Review' },
   ];
 
   const settings = [
@@ -1297,6 +1407,9 @@ const Admin = () => {
                 setUserToDelete(null);
               }}
             />
+          )}
+          {showAddContentModal && (
+            <AddContentModal onClose={() => setShowAddContentModal(false)} />
           )}
         </AnimatePresence>
       </motion.div>

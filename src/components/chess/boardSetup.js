@@ -1,0 +1,37 @@
+export const initialBoardSetup = {
+  // Black pieces
+  '0,0': { type: 'rook', color: 'black' },
+  '1,0': { type: 'knight', color: 'black' },
+  '2,0': { type: 'bishop', color: 'black' },
+  '3,0': { type: 'queen', color: 'black' },
+  '4,0': { type: 'king', color: 'black' },
+  '5,0': { type: 'bishop', color: 'black' },
+  '6,0': { type: 'knight', color: 'black' },
+  '7,0': { type: 'rook', color: 'black' },
+  '0,1': { type: 'pawn', color: 'black' },
+  '1,1': { type: 'pawn', color: 'black' },
+  '2,1': { type: 'pawn', color: 'black' },
+  '3,1': { type: 'pawn', color: 'black' },
+  '4,1': { type: 'pawn', color: 'black' },
+  '5,1': { type: 'pawn', color: 'black' },
+  '6,1': { type: 'pawn', color: 'black' },
+  '7,1': { type: 'pawn', color: 'black' },
+
+  // White pieces
+  '0,7': { type: 'rook', color: 'white' },
+  '1,7': { type: 'knight', color: 'white' },
+  '2,7': { type: 'bishop', color: 'white' },
+  '3,7': { type: 'queen', color: 'white' },
+  '4,7': { type: 'king', color: 'white' },
+  '5,7': { type: 'bishop', color: 'white' },
+  '6,7': { type: 'knight', color: 'white' },
+  '7,7': { type: 'rook', color: 'white' },
+  '0,6': { type: 'pawn', color: 'white' },
+  '1,6': { type: 'pawn', color: 'white' },
+  '2,6': { type: 'pawn', color: 'white' },
+  '3,6': { type: 'pawn', color: 'white' },
+  '4,6': { type: 'pawn', color: 'white' },
+  '5,6': { type: 'pawn', color: 'white' },
+  '6,6': { type: 'pawn', color: 'white' },
+  '7,6': { type: 'pawn', color: 'white' }
+}; 

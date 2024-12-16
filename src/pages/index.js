@@ -15,4 +15,5 @@ export { default as CookiePolicy } from './CookiePolicy';
 export { default as NewBlog } from './NewBlog';
 export { default as Culture } from './Culture';
 export { default as Showcase } from './Showcase';
-export { default as SupportUs } from './SupportUs'; 
+export { default as SupportUs } from './SupportUs';
+export { default as NotFound } from './NotFound'; 
