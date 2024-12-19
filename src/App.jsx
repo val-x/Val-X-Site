@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
 import { useParams } from 'react-router-dom';
@@ -64,6 +64,19 @@ const App = () => {
   return (
     <HelmetProvider>
       <DocumentProvider>
+        <Helmet>
+          <meta 
+            http-equiv="Content-Security-Policy" 
+            content="
+              default-src 'self';
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live;
+              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+              font-src 'self' https://fonts.gstatic.com;
+              img-src 'self' data: https:;
+              connect-src 'self' https:;
+            "
+          />
+        </Helmet>
         <div className="bg-black text-white">
           <SEO />
           <Routes>
