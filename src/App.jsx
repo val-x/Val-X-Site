@@ -69,7 +69,7 @@ const App = () => {
             http-equiv="Content-Security-Policy" 
             content={`
               default-src 'self' https: data: blob:;
-              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live;
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live https://*.val-x.in;
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.googleapis.com;
               font-src 'self' https://fonts.gstatic.com https://*.gstatic.com;
               img-src 'self' data: blob: https: http:;
