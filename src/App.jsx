@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
+import { useParams } from 'react-router-dom';
 
 // Pages
 import {
@@ -42,6 +43,22 @@ import ScheduleSession from './pages/ScheduleSession';
 import DocumentPreview from './pages/DocumentPreview';
 import EditDocument from './pages/EditDocument';
 import { DocumentProvider } from './contexts/DocumentContext';
+import VideoBlogPost from './pages/VideoBlogPost';
+import PodcastBlogPost from './pages/PodcastBlogPost';
+import { blogPosts } from './data/blogData';
+
+const VideoBlogWrapper = () => {
+  const { slug } = useParams();
+  const post = blogPosts.find(p => p.slug === slug);
+  
+  if (post?.type === 'video') {
+    return <VideoBlogPost />;
+  } else if (post?.type === 'podcast' || post?.type === 'audio') {
+    return <PodcastBlogPost />;
+  } else {
+    return <BlogPost />;
+  }
+};
 
 const App = () => {
   return (
@@ -53,7 +70,11 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/new" element={<NewBlog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} errorElement={<BlogError />} />
+            <Route 
+              path="/blog/:slug" 
+              element={<VideoBlogWrapper />}
+              errorElement={<BlogError />}
+            />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/get-started" element={<GetStarted />} />
             <Route path="/careers" element={<Careers />} />

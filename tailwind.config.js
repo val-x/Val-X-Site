@@ -84,7 +84,19 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
-        }
+        },
+        noise: {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '10%': { transform: 'translate(-5%, -5%)' },
+          '20%': { transform: 'translate(-10%, 5%)' },
+          '30%': { transform: 'translate(5%, -10%)' },
+          '40%': { transform: 'translate(-5%, 15%)' },
+          '50%': { transform: 'translate(-10%, 5%)' },
+          '60%': { transform: 'translate(15%, 0)' },
+          '70%': { transform: 'translate(0, 10%)' },
+          '80%': { transform: 'translate(-15%, 0)' },
+          '90%': { transform: 'translate(10%, 5%)' },
+        },
       },
       animation: {
         'text-shine': 'text-shine 3s linear infinite',
@@ -96,9 +108,11 @@ export default {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 6s ease-in-out infinite',
         'float-delayed': 'float 6s ease-in-out 3s infinite',
+        'noise': 'noise 8s steps(10) infinite',
       },
       backgroundImage: {
         'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
+        'noise': "url('/noise.png')",
       },
     },
   },
