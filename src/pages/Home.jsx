@@ -19,54 +19,15 @@ const Home = () => {
     <>
       <Navbar />
       <Hero />
-      <Stats 
-        stats={[
-          {
-            number: "500+",
-            label: "Projects Completed",
-            icon: "🚀"
-          },
-          {
-            number: "100+",
-            label: "Happy Clients",
-            icon: "🤝"
-          },
-          {
-            number: "98%",
-            label: "Client Retention",
-            icon: "♥️"
-          },
-          {
-            number: "24/7",
-            label: "Support Available",
-            icon: "💬"
-          }
-        ]}
-        badge="Our Impact"
-        title="Making a Difference"
-        variant="default"
-      />
-      <Features features={features} />
+      <Features />
+      <Pricing />
       <Technologies />
       <Process />
       <Achievements />
-      <Testimonials testimonials={testimonials} />
+      <Testimonials />
       <Team />
-      <Pricing />
       <FAQ />
-      <CTA 
-        badge="Ready to Get Started?"
-        title="Build Something Amazing Together"
-        description="Join our community of innovators and creators. Let's turn your vision into reality with cutting-edge technology and expert guidance."
-        primaryAction={{
-          text: "Our Projects",
-          link: "/projects"
-        }}
-        secondaryAction={{
-          text: "Schedule Consultation",
-          onClick: () => window.location.href = '/get-started'
-        }}
-      />
+      <CTA />
       <Contact />
       <Footer />
     </>

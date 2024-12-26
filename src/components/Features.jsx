@@ -77,6 +77,50 @@ const projects = [
   }
 ];
 
+// New sections data
+const successStories = [
+  {
+    title: "From Idea to IPO",
+    company: "TechFlow Solutions",
+    description: "Started with our accelerator program and achieved unicorn status in 3 years.",
+    metrics: {
+      growth: "3000%",
+      valuation: "$1.2B",
+      timeframe: "36 months"
+    },
+    logo: "/logos/techflow.svg"
+  },
+  {
+    title: "Market Expansion Success",
+    company: "GlobalReach",
+    description: "Expanded to 15 countries with our international scaling program.",
+    metrics: {
+      markets: "15+",
+      revenue: "10x",
+      timeframe: "24 months"
+    },
+    logo: "/logos/globalreach.svg"
+  }
+];
+
+const techStack = {
+  frontend: {
+    title: "Frontend Technologies",
+    icon: "🎨",
+    tools: ["React", "Next.js", "Vue", "Angular", "Tailwind CSS"]
+  },
+  backend: {
+    title: "Backend Technologies",
+    icon: "⚙️",
+    tools: ["Node.js", "Python", "Java", "Go", "Ruby"]
+  },
+  cloud: {
+    title: "Cloud & DevOps",
+    icon: "☁️",
+    tools: ["AWS", "Azure", "GCP", "Docker", "Kubernetes"]
+  }
+};
+
 const FeatureCard = memo(({ feature, index }) => {
   const cardRef = useRef(null);
 
@@ -230,44 +274,150 @@ const ProjectCard = memo(({ project }) => (
 const Features = () => {
   const [activeSection, setActiveSection] = useState('features');
   const containerRef = useRef(null);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const visibleProjects = showAllProjects ? projects : projects.slice(0, 3);
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
-      // Set initial state for feature cards
-      gsap.set(".feature-card", {
-        opacity: 0,
-        y: 30
-      });
-
-      // Fade in animation for section header
-      gsap.from(".features-header", {
-        scrollTrigger: {
-          trigger: ".features-header",
-          start: "top 80%",
-          once: true
-        },
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-      });
-
-      // Stagger animation for feature cards
-      gsap.to(".feature-card", {
+      // Create a timeline for better control
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".features-grid",
-          start: "top 80%",
-          once: true,
-        },
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: {
-          amount: 0.6,
-          from: "start"
-        },
-        ease: "power3.out"
+          start: "top center+=100",
+          end: "bottom center",
+          toggleActions: "play none none reverse"
+        }
       });
+
+      // Animate feature cards with stagger
+      tl.fromTo(".feature-card", 
+        {
+          opacity: 0,
+          y: 30,
+          scale: 0.95,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger: {
+            amount: 0.8,
+            from: "start"
+          },
+          clearProps: "all" // Important: clear properties after animation
+        }
+      );
+
+      // Animate project cards after features
+      tl.fromTo(".project-card", 
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: {
+            amount: 0.6,
+            from: "start"
+          },
+          clearProps: "all"
+        },
+        "-=0.2" // Slight overlap with previous animation
+      );
+
+      // Add hover animations for feature cards
+      gsap.utils.toArray(".feature-card").forEach(card => {
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, {
+            y: -5,
+            scale: 1.02,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, {
+            y: 0,
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      });
+
+      // Add hover animations for project cards
+      gsap.utils.toArray(".project-card").forEach(card => {
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, {
+            y: -5,
+            scale: 1.02,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, {
+            y: 0,
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      });
+
+      // Add animations for new sections
+      const successTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".success-stories",
+          start: "top center+=100",
+          end: "bottom center",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      successTl.fromTo(".success-story-card", 
+        {
+          opacity: 0,
+          y: 30,
+          scale: 0.95,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.2,
+          clearProps: "all"
+        }
+      );
+
+      const techTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".tech-stack",
+          start: "top center+=100",
+          end: "bottom center",
+          toggleActions: "play none none reverse"
+        }
+      });
+
+      techTl.fromTo(".tech-category", 
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.2,
+          clearProps: "all"
+        }
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -311,11 +461,77 @@ const Features = () => {
           <h3 className="text-3xl font-bold text-white mb-12 text-center">
             Featured Projects
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+          
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            {visibleProjects.map((project, index) => (
               <ProjectCard key={index} project={project} />
             ))}
           </div>
+
+          {/* See More/Show Less Button - Updated Styling */}
+          {projects.length > 3 && (
+            <div className="flex justify-center mt-12">
+              <button
+                onClick={() => setShowAllProjects(!showAllProjects)}
+                className="relative inline-flex items-center justify-center px-8 py-3 
+                  bg-gradient-to-r from-blue-500 to-purple-500
+                  text-white font-medium rounded-full
+                  transform transition-all duration-300
+                  hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25
+                  focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              >
+                <span className="relative flex items-center space-x-2">
+                  <span>{showAllProjects ? 'Show Less' : 'See More Projects'}</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-300 ${
+                      showAllProjects ? 'rotate-180' : ''
+                    }`}
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* Project Stats - Only shown when expanded */}
+          {showAllProjects && (
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="text-center p-6 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50">
+                <div className="text-3xl font-bold text-blue-400 mb-2">
+                  {projects.length}+
+                </div>
+                <div className="text-gray-400">Successful Projects</div>
+              </div>
+              <div className="text-center p-6 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50">
+                <div className="text-3xl font-bold text-purple-400 mb-2">
+                  95%
+                </div>
+                <div className="text-gray-400">Client Satisfaction</div>
+              </div>
+              <div className="text-center p-6 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50">
+                <div className="text-3xl font-bold text-pink-400 mb-2">
+                  150K+
+                </div>
+                <div className="text-gray-400">Total Users</div>
+              </div>
+              <div className="text-center p-6 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50">
+                <div className="text-3xl font-bold text-indigo-400 mb-2">
+                  4.8
+                </div>
+                <div className="text-gray-400">Average Rating</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

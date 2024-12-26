@@ -12,24 +12,40 @@ import {
 
 export const features = [
   {
-    IconComponent: FaChalkboardTeacher,
-    title: "Live Sessions",
-    description: "Interactive learning with industry experts"
+    title: "End-to-End Development",
+    description: "Complete IT product development from ideation to deployment.",
+    icon: "💻",
+    color: "from-[#FF3CAC] via-[#784BA0] to-[#2B86C5]"
   },
   {
-    IconComponent: FaBook,
-    title: "Rich Resources",
-    description: "Comprehensive learning materials and guides"
+    title: "Business Formation",
+    description: "Expert assistance in company registration and legal compliance.",
+    icon: "📋",
+    color: "from-[#4158D0] via-[#C850C0] to-[#FFCC70]"
   },
   {
-    IconComponent: FaUserFriends,
-    title: "1-on-1 Mentoring",
-    description: "Personal guidance from professionals"
+    title: "Marketing & Growth",
+    description: "Strategic marketing and business scaling solutions.",
+    icon: "📈",
+    color: "from-[#3EECAC] via-[#EE74E1] to-[#FF8B67]"
   },
   {
-    IconComponent: FaCertificate,
-    title: "Certification",
-    description: "Industry-recognized certificates"
+    title: "Investor Connect",
+    description: "Access to our network of angel investors and VCs.",
+    icon: "🤝",
+    color: "from-[#FA8BFF] via-[#2BD2FF] to-[#2BFF88]"
+  },
+  {
+    title: "Startup Education",
+    description: "Comprehensive training in IT project development and management.",
+    icon: "📚",
+    color: "from-[#21D4FD] via-[#B721FF] to-[#21D4FD]"
+  },
+  {
+    title: "Mentorship",
+    description: "Guidance from experienced entrepreneurs and tech leaders.",
+    icon: "👥",
+    color: "from-[#08AEEA] via-[#2AF598] to-[#08AEEA]"
   }
 ];
 
@@ -1040,5 +1056,152 @@ export const testimonials = [
     company: "Global Solutions",
     image: "https://randomuser.me/api/portraits/women/3.jpg",
     quote: "The practical approach and real-world projects helped me secure my dream role as a tech lead. Highly recommended!"
+  }
+];
+
+// Add pricing plans
+export const pricingPlans = [
+  {
+    name: "Guided Journey",
+    description: "Perfect for hands-on entrepreneurs",
+    price: "Starting at $10,000",
+    features: [
+      "Expert guidance for IT product development",
+      "Company registration assistance",
+      "Marketing strategy consulting",
+      "Business scaling roadmap",
+      "Investor pitch preparation",
+      "6 months mentorship support"
+    ],
+    popular: false,
+    buttonText: "Start Your Journey"
+  },
+  {
+    name: "Full-Service Solution",
+    description: "Complete startup launch and growth service",
+    price: "Starting at $25,000",
+    features: [
+      "End-to-end IT product development",
+      "Complete company registration",
+      "Full-scale marketing execution",
+      "Dedicated scaling team",
+      "Direct investor introductions",
+      "12 months comprehensive support"
+    ],
+    popular: true,
+    buttonText: "Partner With Us"
+  }
+];
+
+// Update technologies section
+export const technologies = {
+  development: [
+    { name: "React", icon: "react.svg" },
+    { name: "Node.js", icon: "nodejs.svg" },
+    { name: "Python", icon: "python.svg" },
+    { name: "AWS", icon: "aws.svg" },
+    { name: "Docker", icon: "docker.svg" },
+    { name: "MongoDB", icon: "mongodb.svg" },
+    { name: "PostgreSQL", icon: "postgresql.svg" },
+    { name: "TypeScript", icon: "typescript.svg" },
+    { name: "Next.js", icon: "nextjs.svg" },
+    { name: "Flutter", icon: "flutter.svg" }
+  ],
+  business: [
+    { name: "Stripe", icon: "stripe.svg" },
+    { name: "QuickBooks", icon: "quickbooks.svg" },
+    { name: "Salesforce", icon: "salesforce.svg" },
+    { name: "HubSpot", icon: "hubspot.svg" },
+    { name: "Slack", icon: "slack.svg" }
+  ],
+  marketing: [
+    { name: "Google Analytics", icon: "analytics.svg" },
+    { name: "Meta Ads", icon: "meta.svg" },
+    { name: "Mailchimp", icon: "mailchimp.svg" },
+    { name: "SEMrush", icon: "semrush.svg" },
+    { name: "LinkedIn Ads", icon: "linkedin.svg" }
+  ]
+};
+
+// Update process steps
+export const processSteps = [
+  {
+    title: "Vision & Strategy",
+    description: "Define your startup vision and create a comprehensive roadmap",
+    icon: "🎯",
+    details: [
+      "Market research & analysis",
+      "Business model validation",
+      "Technology stack planning",
+      "MVP scope definition"
+    ]
+  },
+  {
+    title: "Development & Setup",
+    description: "Build your product and establish business foundation",
+    icon: "⚡",
+    details: [
+      "Product development",
+      "Company registration",
+      "Legal compliance setup",
+      "Infrastructure deployment"
+    ]
+  },
+  {
+    title: "Launch & Growth",
+    description: "Go to market and start scaling your business",
+    icon: "🚀",
+    details: [
+      "Market launch strategy",
+      "Marketing campaigns",
+      "User acquisition",
+      "Performance monitoring"
+    ]
+  },
+  {
+    title: "Scale & Optimize",
+    description: "Expand your business and optimize operations",
+    icon: "📈",
+    details: [
+      "Business scaling",
+      "Process optimization",
+      "Team expansion",
+      "Market expansion"
+    ]
+  },
+  {
+    title: "Investment & Beyond",
+    description: "Secure funding and plan for long-term success",
+    icon: "💰",
+    details: [
+      "Pitch deck preparation",
+      "Investor networking",
+      "Due diligence support",
+      "Growth planning"
+    ]
+  }
+];
+
+// Update FAQ items
+export const faqItems = [
+  {
+    question: "How long does it take to launch a startup with your program?",
+    answer: "The timeline varies based on project complexity and chosen plan. Typically, our Guided Journey takes 4-6 months, while the Full-Service Solution spans 6-8 months from concept to launch."
+  },
+  {
+    question: "What kind of support do you provide after launch?",
+    answer: "We offer comprehensive post-launch support including technical maintenance, marketing optimization, business scaling guidance, and investor networking opportunities."
+  },
+  {
+    question: "Do you help with funding?",
+    answer: "Yes, we connect startups with our network of investors and help prepare compelling pitch decks and financial projections."
+  },
+  {
+    question: "What technologies do you work with?",
+    answer: "We work with modern tech stacks including React, Node.js, Python, AWS, and more. The specific technologies are chosen based on your project requirements."
+  },
+  {
+    question: "Can you help with company registration in different countries?",
+    answer: "Yes, we have experience with company registration in multiple jurisdictions and can guide you through the process."
   }
 ];

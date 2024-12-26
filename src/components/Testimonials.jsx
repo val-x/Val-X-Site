@@ -1,102 +1,180 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useState } from "react";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
-    name: "John Smith",
-    role: "CEO, TechCorp",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    quote: "VAL-X transformed our business with their innovative solutions. Their team's expertise and dedication are unmatched.",
-    rating: 5
+    quote: "The accelerator program helped us transform our idea into a thriving business. Their technical expertise and business guidance were invaluable.",
+    author: "Sarah Chen",
+    role: "Founder & CEO, TechFlow",
+    company: "Series A Funded Startup",
+    image: "/testimonials/sarah.jpg"
   },
   {
-    name: "Lisa Chen",
-    role: "CTO, InnovateLabs",
-    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    quote: "Working with VAL-X has been a game-changer. They delivered beyond our expectations and continue to provide excellent support.",
-    rating: 5
+    quote: "Their comprehensive approach to startup development, from technical architecture to market strategy, gave us the foundation we needed to succeed.",
+    author: "Michael Rodriguez",
+    role: "Co-founder, DataSense",
+    company: "Recently Acquired",
+    image: "/testimonials/michael.jpg"
   },
   {
-    name: "David Miller",
-    role: "Founder, StartupX",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    quote: "The team's technical expertise and project management skills are exceptional. They're truly invested in their clients' success.",
-    rating: 5
+    quote: "The mentorship and networking opportunities opened doors we didn't even know existed. Our startup grew 10x in just 18 months.",
+    author: "Aisha Patel",
+    role: "CTO, FinEdge",
+    company: "$5M Seed Round",
+    image: "/testimonials/aisha.jpg"
   }
 ];
 
 const Testimonials = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   useGSAP(() => {
-    gsap.from(".testimonial-card", {
+    // Create a timeline for better control
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".testimonials-container",
+        trigger: ".testimonials-grid",
         start: "top center+=100",
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
+        end: "bottom center",
+        toggleActions: "play none none reverse"
+      }
     });
+
+    // Animate testimonial cards with stagger
+    tl.fromTo(".testimonial-card", 
+      {
+        opacity: 0,
+        y: 30,
+        scale: 0.95,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        stagger: {
+          amount: 0.8,
+          from: "start"
+        },
+        clearProps: "all" // Important: clear properties after animation
+      }
+    );
+
+    // Animate testimonial content after cards
+    tl.fromTo([".testimonial-content", ".testimonial-author"], 
+      {
+        opacity: 0,
+        y: 20,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        stagger: {
+          amount: 0.4,
+          from: "start"
+        },
+        clearProps: "all"
+      },
+      "-=0.2" // Slight overlap with previous animation
+    );
+
+    // Add hover animations
+    gsap.utils.toArray(".testimonial-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        gsap.to(card, {
+          y: -5,
+          scale: 1.02,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          y: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+    });
+
+    // Optional: Add quote icon animation
+    gsap.fromTo(".quote-icon", 
+      {
+        opacity: 0,
+        scale: 0.5,
+        rotate: -15
+      },
+      {
+        opacity: 0.1,
+        scale: 1,
+        rotate: 0,
+        duration: 0.6,
+        stagger: 0.2,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: ".testimonials-grid",
+          start: "top center+=100",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
   }, []);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-900 to-black" id="testimonials">
+    <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Client Testimonials
+          <span className="inline-block px-4 py-2 mb-6 text-sm font-medium bg-gradient-to-r from-blue-500/10 to-purple-500/10 
+            border border-blue-500/20 rounded-full text-blue-400 backdrop-blur-sm">
+            Client Success Stories
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+              What Our Clients Say
+            </span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Hear what our clients have to say about working with us
+            Real stories from startups we've helped grow and succeed
           </p>
         </div>
 
-        <div className="testimonials-container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={index}
-                className="testimonial-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 relative"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <h4 className="text-lg font-bold text-white">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-blue-400">{testimonial.role}</p>
-                  </div>
-                </div>
-                
-                <blockquote className="text-gray-100 mb-6">
-                  "{testimonial.quote}"
-                </blockquote>
-                
-                <div className="flex text-yellow-400">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <svg 
-                      key={i}
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
+        <div className="testimonials-grid grid md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div 
+              key={index}
+              className="testimonial-card relative p-8 rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
+            >
+              {/* Quote Icon */}
+              <div className="quote-icon absolute top-4 right-4 text-4xl text-gray-600/10">
+                "
+              </div>
+              
+              {/* Testimonial Content */}
+              <div className="testimonial-content mb-6">
+                <p className="text-gray-100 leading-relaxed">
+                  {testimonial.content}
+                </p>
+              </div>
+              
+              {/* Author Info */}
+              <div className="testimonial-author flex items-center">
+                <img 
+                  src={testimonial.avatar} 
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="text-white font-semibold">{testimonial.name}</h4>
+                  <p className="text-gray-400 text-sm">{testimonial.role}</p>
+                  <p className="text-blue-400 text-xs mt-1">{testimonial.company}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

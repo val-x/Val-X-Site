@@ -9,116 +9,225 @@ import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const plans = [
-  {
-    name: "Free Consultation",
-    duration: "30 mins",
-    description: "Clear your doubts and explore possibilities",
-    features: [
-      "Project feasibility discussion",
-      "Basic technical guidance",
-      "Cost estimation overview",
-      "Technology recommendations",
-      "Next steps planning"
-    ],
-    price: "Free",
-    accent: "from-green-400 to-emerald-500",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" 
-        />
-      </svg>
-    ),
-    // highlight: "No commitment required",
-    buttonText: "Book Free Session"
+const planCategories = {
+  consultation: {
+    title: "We Help You Build & Scale",
+    description: "Expert guidance and support for your journey",
+    plans: {
+      freeConsultation: {
+        title: "Free Consultation",
+        description: "Clear your doubts and explore possibilities",
+        duration: "30 mins",
+        price: {
+          amount: "Free",
+          note: "No commitment required"
+        },
+        features: [
+          "Project feasibility discussion",
+          "Basic technical guidance",
+          "Cost estimation overview",
+          "Technology recommendations",
+          "Next steps planning"
+        ],
+        icon: "💡",
+        accent: "from-green-400 to-emerald-500",
+        buttonText: "Book Free Session"
+      },
+      guidedJourney: {
+        title: "Guided Journey",
+        description: "We help you build your startup",
+        duration: "6-12 months",
+        price: {
+          starting: "$999/month",
+          note: "Flexible payment plans available"
+        },
+        features: [
+          "Help build your IT product",
+          "Help register your company",
+          "Guide your marketing strategy",
+          "Support in scaling",
+          "Connect with investors",
+          "Technical architecture guidance",
+          "Development best practices",
+          "Monthly progress reviews"
+        ],
+        icon: "🚀",
+        accent: "from-blue-400 to-indigo-500"
+      }
+    }
   },
-  {
-    name: "Website Development",
-    duration: "1 hour",
-    description: "Complete web development consultation",
-    features: [
-      "Website architecture planning",
-      "UI/UX design consultation",
-      "Technology stack recommendations",
-      "SEO & performance optimization",
-      "Scalability planning"
-    ],
-    price: "$199",
-    accent: "from-emerald-400 to-teal-500",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-      </svg>
-    )
-  },
-  {
-    name: "Mobile App Development",
-    duration: "1 hour",
-    description: "Native & cross-platform app consultation",
-    features: [
-      "App architecture design",
-      "Platform strategy (iOS/Android)",
-      "UI/UX mobile patterns",
-      "Performance optimization",
-      "App store guidelines",
-      "Monetization strategy"
-    ],
-    price: "$249",
-    accent: "from-blue-400 to-indigo-500",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-    )
-  },
-  {
-    name: "Full Stack Package",
-    duration: "2 hours",
-    description: "Complete web & mobile solution",
-    features: [
-      "Full-stack architecture",
-      "Cross-platform strategy",
-      "API design & integration",
-      "Database architecture",
-      "Security planning",
-      "Deployment strategy",
-      "Maintenance planning"
-    ],
-    price: "$399",
-    popular: true,
-    accent: "from-purple-400 to-pink-500",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-      </svg>
-    )
-  },
-  {
-    name: "Enterprise Solutions",
-    duration: "3 hours",
-    description: "Custom enterprise software consultation",
-    features: [
-      "Enterprise architecture",
-      "Legacy system integration",
-      "Cloud migration strategy",
-      "Security & compliance",
-      "Scalability planning",
-      "Team structure planning",
-      "Long-term roadmap",
-      "ROI analysis"
-    ],
-    price: "$599",
-    accent: "from-amber-400 to-orange-500",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    )
+  fullService: {
+    title: "We Build & Scale For You",
+    description: "End-to-end development and growth solutions",
+    plans: {
+      webDevelopment: {
+        title: "Website Development",
+        description: "From simple landing pages to complex web applications",
+        duration: "2-12 weeks",
+        price: {
+          starting: "From $999",
+          packages: {
+            basic: "$999 - Landing Page",
+            custom: "From $4,999 - Custom Website"
+          },
+          note: "Choose package during consultation"
+        },
+        features: [
+          {
+            basic: [
+              "Single page design",
+              "Mobile responsive",
+              "Basic SEO setup",
+              "Contact form",
+              "Social media integration",
+              "1 month support",
+              "Domain setup",
+              "Basic analytics"
+            ],
+            custom: [
+              "Multi-page custom design",
+              "Advanced UI/UX",
+              "Full SEO optimization",
+              "CMS integration",
+              "Payment gateway setup",
+              "Database integration",
+              "API development",
+              "3 months support"
+            ]
+          }
+        ],
+        icon: "🌐",
+        accent: "from-purple-400 to-pink-500",
+        
+        render: function(formData, setFormData, setFormProgress) {
+          return (
+            <WebDevelopmentPlan 
+              features={this.features[0]}
+              setFormData={setFormData}
+              setFormProgress={setFormProgress}
+            />
+          );
+        }
+      },
+      fullStack: {
+        title: "Full Stack Package",
+        description: "Complete digital solution",
+        duration: "16-24 weeks",
+        price: {
+          starting: "$25,000",
+          custom: "Custom pricing based on scope"
+        },
+        features: [
+          "Web & mobile development",
+          "Company registration",
+          "Marketing execution",
+          "Business scaling",
+          "Investor connections",
+          "Technical architecture",
+          "Cloud infrastructure",
+          "12 months support"
+        ],
+        icon: "⚡",
+        accent: "from-amber-400 to-orange-500",
+        popular: true
+      },
+      enterprise: {
+        title: "Enterprise Solutions",
+        description: "Custom enterprise development",
+        duration: "24+ weeks",
+        price: {
+          custom: "Custom Quote",
+          note: "Tailored to your requirements"
+        },
+        features: [
+          "Custom software development",
+          "Legacy system integration",
+          "Scalable architecture",
+          "Security compliance",
+          "Team training",
+          "24/7 support",
+          "Dedicated team",
+          "Long-term partnership"
+        ],
+        icon: "🏢",
+        accent: "from-red-400 to-rose-500"
+      }
+    }
   }
-];
+};
+
+const WebDevelopmentPlan = ({ features, setFormData, setFormProgress }) => {
+  const [activePlan, setActivePlan] = useState('basic');
+  
+  return (
+    <div className="space-y-6">
+      {/* Package Tabs */}
+      <div className="flex gap-2 p-1 bg-gray-800/50 rounded-lg">
+        <button 
+          onClick={() => setActivePlan('basic')}
+          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300
+            ${activePlan === 'basic' 
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
+              : 'text-gray-400 hover:bg-gray-700/50'}`}
+        >
+          Landing Page
+        </button>
+        <button 
+          onClick={() => setActivePlan('custom')}
+          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300
+            ${activePlan === 'custom' 
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
+              : 'text-gray-400 hover:bg-gray-700/50'}`}
+        >
+          Custom Website
+        </button>
+      </div>
+
+      {/* Package Details */}
+      <div className="space-y-4">
+        <div className="p-4 rounded-lg bg-gray-800/30 border border-gray-700/50">
+          <div className="text-lg font-semibold text-white mb-2">
+            {activePlan === 'basic' ? 'Landing Page' : 'Custom Website'}
+          </div>
+          <div className="text-blue-400 font-medium mb-3">
+            {activePlan === 'basic' ? '$999' : 'From $4,999'}
+          </div>
+          <div className="text-sm text-gray-400 mb-4">
+            {activePlan === 'basic' ? '2-3 weeks' : '8-12 weeks'}
+          </div>
+          <ul className="space-y-2">
+            {(activePlan === 'basic' ? features.basic : features.custom).map((feature, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-gray-100">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* CTA Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            const planTitle = `Website Development - ${activePlan === 'basic' ? 'Landing Page' : 'Custom Website'}`;
+            setFormData(prev => ({ ...prev, plan: planTitle }));
+            setFormProgress(2);
+            document.querySelector('.contact-form')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 
+            text-white font-medium hover:opacity-90 transition-opacity"
+        >
+          Get Started
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const GetStarted = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -129,6 +238,9 @@ const GetStarted = () => {
     referralCode: ""
   });
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('freeConsultation');
+  const [activeCategory, setActiveCategory] = useState('consultation');
+  const [formProgress, setFormProgress] = useState(1); // 1: Plan Selection, 2: Details, 3: Confirmation
 
   useEffect(() => {
     const checkMobile = () => {
@@ -213,9 +325,28 @@ const GetStarted = () => {
     });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log(formData);
+      
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        plan: "",
+        message: "",
+        referralCode: ""
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -225,198 +356,245 @@ const GetStarted = () => {
     });
   };
 
+  const getProgressState = () => {
+    if (formData.plan) {
+      if (formData.name && formData.email && formData.company && formData.message) {
+        return 3; // All details completed
+      }
+      return 2; // Plan selected
+    }
+    return 1; // Initial state
+  };
+
+  useEffect(() => {
+    setFormProgress(getProgressState());
+  }, [formData]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-black">
       <Navbar />
-      
-      <main className="pt-24">
-        {/* Hero Section */}
+      <main>
+        {/* Hero Section - Enhanced */}
         <section className="relative py-20 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="hero-content text-center max-w-5xl mx-auto">
-              <h1 className="text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-6">
-                Transform Your Vision
-              </h1>
-              <p className="text-xl text-gray-300 mb-12">
-                Experience the future of digital transformation with our cutting-edge solutions
-              </p>
-              <Link 
-                to="/showcase"
-                className="inline-flex items-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
-                  text-white font-medium text-lg hover:opacity-90 transition-opacity group"
-              >
-                View Our Projects
-                <svg 
-                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              {isMobile && (
-                <div className="relative w-full h-[300px] rounded-2xl overflow-hidden bg-gradient-to-b from-blue-500/10 to-purple-500/10">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-gray-400 text-lg">
-                      Please view on desktop for 3D experience
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Plans Section */}
-        <section className="plans-section py-20 relative">
-          {/* Background elements */}
-          <div className="absolute inset-0">
-            <div className="absolute -top-[40%] -left-[20%] w-[70%] h-[70%] rounded-full bg-blue-500/5 blur-[120px]" />
-            <div className="absolute -bottom-[40%] -right-[20%] w-[70%] h-[70%] rounded-full bg-purple-500/5 blur-[120px]" />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-            {/* Header content */}
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-                  Choose Your Journey
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-purple-500/5 to-transparent"></div>
+          <div className="relative max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16 hero-content">
+              <span className="inline-block px-4 py-2 mb-6 text-sm font-medium bg-gradient-to-r from-blue-500/10 
+                to-purple-500/10 border border-blue-500/20 rounded-full text-blue-400">
+                Start Your Journey
+              </span>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                Launch Your Startup
+                <span className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                  With Expert Support
                 </span>
-              </h2>
-              <div className="max-w-3xl mx-auto space-y-4">
-                <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
-                  Select the perfect consultation package that aligns with your goals
-                </p>
-                <p className="text-base md:text-lg text-gray-400">
-                  All packages include a personalized roadmap and actionable recommendations
-                </p>
-              </div>
+              </h1>
+              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                Choose your ideal startup package and let's transform your vision into reality
+              </p>
             </div>
 
-            {/* Update the grid container */}
-            <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {plans.map((plan, index) => (
-                <div 
-                  key={index}
-                  className={`plan-card relative p-6 rounded-2xl 
-                    bg-gray-800/90 backdrop-blur-xl
-                    border border-gray-700 hover:border-blue-500/50
-                    shadow-lg shadow-black/20
-                    transition-all duration-300
-                    flex flex-col`}
-                >
-                  {/* Add popular badge if exists */}
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 
-                      bg-gradient-to-r from-blue-500 to-purple-500 
-                      text-white text-sm rounded-full font-medium">
-                      Most Popular
-                    </div>
-                  )}
-
-                  {/* Icon */}
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${plan.accent} 
-                    flex items-center justify-center mb-6`}>
-                    {plan.icon}
-                  </div>
-                  
-                  {/* Plan details */}
-                  <div className="mb-6">
-                    <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
-                    <p className="text-sm text-gray-400 mb-4">{plan.description}</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                        {plan.price}
-                      </span>
-                      <span className="text-gray-400">/ session</span>
-                    </div>
-                    <p className="text-sm text-gray-400 mt-2">{plan.duration}</p>
-                  </div>
-
-                  {/* Features list */}
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-start text-sm text-gray-100">
-                        <svg className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" 
-                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Button */}
-                  <button 
-                    className={`w-full py-3 rounded-xl text-base font-semibold 
-                      bg-gradient-to-r ${plan.accent} text-white 
-                      hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/20 
-                      active:scale-[0.98] transition-all duration-300`}
-                    onClick={() => setFormData({ ...formData, plan: plan.name })}
+            {/* Progress Indicator */}
+            <div className="max-w-4xl mx-auto mb-12">
+              <div className="flex justify-between">
+                <div className="text-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 
+                    ${formProgress >= 1 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                      : 'bg-gray-800'}`}
                   >
-                    {plan.buttonText || "Get Started"}
-                  </button>
+                    <span className="text-white">1</span>
+                  </div>
+                  <span className={`text-sm ${formProgress >= 1 ? 'text-blue-400' : 'text-gray-400'}`}>
+                    Select Plan
+                  </span>
                 </div>
-              ))}
+                <div className="text-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 
+                    ${formProgress >= 2 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                      : 'bg-gray-800'}`}
+                  >
+                    <span className="text-white">2</span>
+                  </div>
+                  <span className={`text-sm ${formProgress >= 2 ? 'text-blue-400' : 'text-gray-400'}`}>
+                    Your Details
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 
+                    ${formProgress >= 3 
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                      : 'bg-gray-800'}`}
+                  >
+                    <span className="text-white">3</span>
+                  </div>
+                  <span className={`text-sm ${formProgress >= 3 ? 'text-blue-400' : 'text-gray-400'}`}>
+                    Confirmation
+                  </span>
+                </div>
+              </div>
+              <div className="relative mt-4">
+                <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-800 -translate-y-1/2"></div>
+                <div 
+                  className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 -translate-y-1/2 transition-all duration-300"
+                  style={{ 
+                    width: `${(formProgress - 1) * 50}%`  // 0%, 50%, or 100%
+                  }}
+                ></div>
+              </div>
             </div>
-          </div>
-        </section>
 
-        {/* Add this CSS to your global styles or as a style tag */}
-        <style jsx>{`
-          .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-          .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-
-        {/* Contact Form Section */}
-        <section className="py-20" id="contact-form">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="contact-form bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-10">
-              <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-white mb-4">Schedule Your Consultation</h2>
-                <p className="text-gray-400">Fill out the form below and we'll get back to you within 24 hours</p>
+            {/* Category Tabs */}
+            <div className="max-w-7xl mx-auto px-6 mb-16">
+              <div className="flex justify-center gap-4 mb-12">
+                {Object.entries(planCategories).map(([key, category]) => (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setActiveCategory(key);
+                      // Set first plan of the category as selected
+                      setSelectedPlan(Object.keys(planCategories[key].plans)[0]);
+                    }}
+                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300
+                      ${activeCategory === key
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                        : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                      }`}
+                  >
+                    {category.title}
+                  </button>
+                ))}
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Category Description */}
+              <div className="text-center mb-12">
+                <p className="text-xl text-gray-400">
+                  {planCategories[activeCategory].description}
+                </p>
+              </div>
+
+              {/* Plans Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 plan-cards">
+                {Object.entries(planCategories[activeCategory].plans).map(([key, plan]) => (
+                  <div
+                    key={key}
+                    onClick={() => setSelectedPlan(key)}
+                    className={`p-6 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 
+                      border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 cursor-pointer
+                      ${selectedPlan === key ? 'border-blue-500 ring-2 ring-blue-500/50' : ''}`}
+                  >
+                    {/* Plan Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <span className="text-2xl mb-2">{plan.icon}</span>
+                        <h3 className="text-xl font-bold text-white">{plan.title}</h3>
+                      </div>
+                      {plan.popular && (
+                        <span className="px-3 py-1 text-xs font-medium bg-blue-500 text-white rounded-full">
+                          Popular
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-gray-400 mb-4">{plan.description}</p>
+
+                    {/* Render custom content for webDevelopment, otherwise render default content */}
+                    {key === 'webDevelopment' ? (
+                      plan.render(formData, setFormData, setFormProgress)
+                    ) : (
+                      <>
+                        {/* Default plan content */}
+                        <div className="space-y-3 mb-6">
+                          {plan.features.map((feature, index) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              <span className="text-gray-100">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="mt-auto">
+                          <div className="text-xl font-bold text-white mb-2">
+                            {plan.price.amount || plan.price.starting || plan.price.custom}
+                          </div>
+                          <div className="text-sm text-gray-400 mb-4">
+                            Duration: {plan.duration}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFormData({ ...formData, plan: plan.title });
+                              setFormProgress(2); // Move to details section after plan selection
+                              // Optionally scroll to form
+                              document.querySelector('.contact-form')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className={`w-full py-3 rounded-xl bg-gradient-to-r ${plan.accent} 
+                              text-white font-medium hover:opacity-90 transition-opacity`}
+                          >
+                            {plan.buttonText || "Get Started"}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Enhanced Form Section */}
+            <div className="max-w-2xl mx-auto mt-16 contact-form">
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-3">
+                  {activeCategory === 'consultation' 
+                    ? 'Schedule Your Consultation'
+                    : 'Start Your Project'}
+                </h3>
+                <p className="text-lg text-gray-400">
+                  {activeCategory === 'consultation'
+                    ? "Let's discuss how we can help you build and scale your startup"
+                    : 'Tell us about your project requirements'}
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-8 bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 shadow-xl">
+                {/* Name and Email */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">Name</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-100 mb-2">Name</label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent text-white"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                        focus:border-blue-500 text-white transition-all duration-300"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-100 mb-2">Email</label>
                     <input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent text-white"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                        focus:border-blue-500 text-white transition-all duration-300"
                       required
                     />
                   </div>
                 </div>
 
+                {/* Phone and Company */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-2">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-100 mb-2">
                       Phone Number
                       <span className="text-gray-500 ml-2">(Optional)</span>
                     </label>
@@ -426,89 +604,93 @@ const GetStarted = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent text-white"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                        focus:border-blue-500 text-white transition-all duration-300"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-2">Company</label>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-100 mb-2">
+                      {activeCategory === 'consultation' ? 'Company/Startup Name' : 'Company Name'}
+                    </label>
                     <input
                       type="text"
                       id="company"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent text-white"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                        focus:border-blue-500 text-white transition-all duration-300"
+                      required
                     />
                   </div>
                 </div>
 
+                {/* Selected Plan */}
                 <div>
-                  <label htmlFor="plan" className="block text-sm font-medium text-gray-400 mb-2">Selected Plan</label>
+                  <label htmlFor="plan" className="block text-sm font-medium text-gray-100 mb-2">Selected Plan</label>
                   <select
                     id="plan"
                     name="plan"
                     value={formData.plan}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                      focus:border-transparent text-white"
+                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                      focus:border-blue-500 text-white transition-all duration-300"
                     required
                   >
                     <option value="">Select a plan</option>
-                    {plans.map((plan) => (
-                      <option key={plan.name} value={plan.name}>{plan.name}</option>
+                    {Object.entries(planCategories[activeCategory].plans).map(([key, plan]) => (
+                      <option key={key} value={plan.title}>
+                        {plan.title}
+                      </option>
                     ))}
                   </select>
                 </div>
 
+                {/* Project Details */}
                 <div>
-                  <label htmlFor="referralCode" className="block text-sm font-medium text-gray-400 mb-2">
-                    Referral Code
-                    <span className="text-gray-500 ml-2">(Optional)</span>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-100 mb-2">
+                    {activeCategory === 'consultation' 
+                      ? 'Tell us about your startup idea'
+                      : 'Project requirements and specifications'}
                   </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="referralCode"
-                      name="referralCode"
-                      value={formData.referralCode}
-                      onChange={handleChange}
-                      placeholder="Enter referral code if you have one"
-                      className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                        focus:border-transparent text-white pr-12"
-                    />
-                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" 
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Project Details</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 
-                      focus:border-transparent text-white"
+                    placeholder={activeCategory === 'consultation'
+                      ? "Describe your startup idea and what you'd like to achieve..."
+                      : "Share your project requirements, timeline, and any specific features..."}
+                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 
+                      focus:border-blue-500 text-white transition-all duration-300"
+                    required
                   ></textarea>
                 </div>
 
+                {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl text-lg font-semibold 
-                    hover:opacity-90 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
+                  className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl 
+                    text-lg font-semibold transition-all duration-300 hover:opacity-90 hover:scale-[1.02] 
+                    hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed 
+                    disabled:hover:scale-100"
+                  disabled={isSubmitting}
                 >
-                  Schedule Consultation
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    activeCategory === 'consultation' 
+                      ? 'Schedule Consultation'
+                      : 'Submit Project Request'
+                  )}
                 </button>
               </form>
             </div>
