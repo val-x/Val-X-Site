@@ -33,19 +33,19 @@ const teamCategories = {
           dribbble: "#"
         }
       },
-      {
-        name: "Arjun Chandran",
-        role: "CMO",
-        image: "https://avatars.githubusercontent.com/u/86820656?v=4",
-        bio: "an aspiring entrepreneur with experience in sales and marketing",
-        expertise: ["Digital Marketing", "Growth Strategy", "Brand Building"],
-        achievements: ["200% Avg. Growth Rate", "15+ Major Campaigns"],
-        socials: {
-          linkedin: "#",
-          twitter: "#",
-          github: "https://github.com/MrUnwonted"
-        }
-      }
+      // {
+      //   name: "Arjun Chandran",
+      //   role: "CMO",
+      //   image: "https://avatars.githubusercontent.com/u/86820656?v=4",
+      //   bio: "an aspiring entrepreneur with experience in sales and marketing",
+      //   expertise: ["Digital Marketing", "Growth Strategy", "Brand Building"],
+      //   achievements: ["200% Avg. Growth Rate", "15+ Major Campaigns"],
+      //   socials: {
+      //     linkedin: "#",
+      //     twitter: "#",
+      //     github: "https://github.com/MrUnwonted"
+      //   }
+      // }
     ]
   },
   // advisors: {
