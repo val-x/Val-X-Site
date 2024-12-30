@@ -16,12 +16,19 @@ export default defineConfig({
   ],
 
   build: {
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true
+    },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      input: {
+        main: path.resolve(__dirname, 'index.html')
+      },
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'framer-motion': ['framer-motion'],
+          'mdx': ['@mdx-js/rollup', 'remark-gfm', 'rehype-prism-plus']
         }
       }
     }
@@ -39,5 +46,9 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/styles'),
       '@assets': path.resolve(__dirname, './src/assets'),
     }
+  },
+
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'framer-motion', '@mdx-js/react']
   }
 })

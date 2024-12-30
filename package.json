@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "npm install && vite build",
+    "vercel-build": "npm install --force && vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -76,6 +76,11 @@
     "postcss": "^8.4.35",
     "vite": "^5.1.4",
     "@rollup/rollup-linux-x64-gnu": "4.6.1",
-    "terser": "^5.4.0"
+    "terser": "^5.4.0",
+    "rollup": "^4.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
