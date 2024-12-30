@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { FaLinkedin, FaTwitter, FaGithub, FaLightbulb, FaHandshake, FaRocket, FaChartLine, FaReact, FaNodeJs, FaPython, FaAws, FaMobile, FaMicrosoft } from 'react-icons/fa';
+import { FaLinkedin, FaTwitter, FaGithub, FaLightbulb, FaHandshake, FaRocket, FaChartLine, FaReact, FaNodeJs, FaPython, FaAws, FaMobile, FaMicrosoft, FaCloud } from 'react-icons/fa';
 import { FiDribbble } from 'react-icons/fi';
-import { SiTensorflow, SiMongodb, SiDocker, SiNextdotjs, SiExpress, SiPostgresql, SiCapacitor, SiBun, SiAppwrite, SiSupabase, SiGraphql, SiPrisma, SiTailwindcss, SiTypescript, SiExpo, SiFlutter, SiKotlin, SiSwift, SiFirebase, SiAndroid, SiIos, SiMicrosoftazure } from 'react-icons/si';
+import { SiTensorflow, SiMongodb, SiDocker, SiNextdotjs, SiExpress, SiPostgresql, SiCapacitor, SiBun, SiAppwrite, SiSupabase, SiGraphql, SiPrisma, SiTailwindcss, SiTypescript, SiExpo, SiFlutter, SiKotlin, SiSwift, SiFirebase, SiAndroid, SiIos } from 'react-icons/si';
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -134,7 +134,7 @@ const techStacks = [
       { icon: <SiAppwrite className="w-12 h-12" />, name: "Appwrite" },
       { icon: <SiSupabase className="w-12 h-12" />, name: "Supabase" },
       { icon: <FaAws className="w-12 h-12" />, name: "AWS" },
-      { icon: <SiMicrosoftazure className="w-12 h-12" />, name: "Azure" }
+      { icon: <FaMicrosoft className="w-12 h-12" />, name: "Azure" }
     ]
   }
 ];
