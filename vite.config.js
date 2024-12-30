@@ -17,21 +17,14 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
+      external: ['react', 'react-dom'],
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) {
-              return 'react-vendor';
-            }
-            if (id.includes('framer-motion')) {
-              return 'motion-vendor';
-            }
-            return 'vendor';
-          }
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM'
         }
       }
-    },
-    chunkSizeWarningLimit: 1500
+    }
   },
 
   resolve: {
