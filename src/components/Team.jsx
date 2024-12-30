@@ -26,7 +26,7 @@ const teamCategories = {
         image: "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
         bio: "a full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
         expertise: ["Full Stack Development", "AI/ML", "Web3"],
-        achievements: ["50+ Projects Delivered", "3 Patents"],
+        achievements: ["78+ Projects Delivered", "3 Patents"],
         socials: {
           linkedin: "https://github.com/JJ-Dynamite",
           twitter: "#",
