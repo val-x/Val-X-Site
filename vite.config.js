@@ -22,7 +22,8 @@ export default defineConfig({
       'react-syntax-highlighter/dist/cjs/styles/prism',
       'react-syntax-highlighter/dist/cjs/languages/prism/javascript',
       'react-syntax-highlighter/dist/cjs/languages/prism/typescript',
-      'react-syntax-highlighter/dist/cjs/languages/prism/jsx'
+      'react-syntax-highlighter/dist/cjs/languages/prism/jsx',
+      'framer-motion'
     ]
   },
 
@@ -31,15 +32,18 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          mermaid: ['mermaid'],
-          katex: ['katex'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          charts: ['chart.js', 'react-chartjs-2'],
-          motion: ['framer-motion', '@react-spring/web'],
+          motion: ['framer-motion'],
         },
       },
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1500,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
   },
 
   resolve: {

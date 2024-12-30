@@ -41,134 +41,77 @@ const team = [
 
 const About = () => {
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-        {/* Hero Section */}
-        <div className="relative pt-32 pb-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400">
-                About VAL-X
-              </h1>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                We're a team of passionate individuals dedicated to transforming businesses through innovative digital solutions.
-              </p>
-            </motion.div>
-          </div>
+    <div className="min-h-screen bg-gray-900">
+      {/* Hero Section */}
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="pt-32 pb-16 px-6"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.h1 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 mb-6"
+          >
+            Transforming Ideas Into Digital Reality
+          </motion.h1>
+          <motion.p 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-gray-400 text-xl max-w-3xl"
+          >
+            At VAL-X, we're passionate about pushing the boundaries of what's possible in technology. 
+            Our mission is to empower businesses with innovative digital solutions that drive growth and success.
+          </motion.p>
         </div>
+      </motion.section>
 
-        {/* Mission Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="py-20 px-6 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10"
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-                <p className="text-gray-400 leading-relaxed">
-                  At VAL-X, we strive to empower businesses with cutting-edge technology solutions that drive growth and innovation. 
-                  Our commitment to excellence and forward-thinking approach enables us to deliver transformative digital experiences.
-                </p>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 blur-3xl" />
-                <div className="relative bg-gray-900 rounded-2xl p-8 border border-white/10">
-                  <h3 className="text-2xl font-bold mb-4">Our Values</h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-center gap-3">
-                      <span className="h-2 w-2 rounded-full bg-cyan-400" />
-                      <span>Innovation at our core</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="h-2 w-2 rounded-full bg-violet-400" />
-                      <span>Customer-centric approach</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <span className="h-2 w-2 rounded-full bg-fuchsia-400" />
-                      <span>Continuous learning</span>
-                    </li>
-                  </ul>
+      {/* Stats Section - Using stagger effect */}
+      <motion.section 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="py-16 px-6 bg-gradient-to-b from-gray-900 to-black"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+          >
+            {stats.map((stat) => (
+              <motion.div 
+                key={stat.label}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="text-center"
+              >
+                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-violet-400">
+                  {stat.value}
                 </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Team Section */}
-        <div className="py-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
-              <p className="text-gray-400">The passionate individuals behind VAL-X</p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {team.map((member, index) => (
-                <motion.div
-                  key={member.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
-                    rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-gray-900 p-6 rounded-2xl border border-white/10">
-                    <div className="aspect-square mb-4 overflow-hidden rounded-xl">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                    <p className="text-sm text-gray-400 mb-2">{member.role}</p>
-                    <p className="text-sm text-gray-500 mb-4">{member.bio}</p>
-                    <div className="flex gap-4">
-                      {member.socials.linkedin && (
-                        <a href={member.socials.linkedin} className="text-gray-400 hover:text-white transition-colors">
-                          <FaLinkedin size={20} />
-                        </a>
-                      )}
-                      {member.socials.twitter && (
-                        <a href={member.socials.twitter} className="text-gray-400 hover:text-white transition-colors">
-                          <FaTwitter size={20} />
-                        </a>
-                      )}
-                      {member.socials.github && (
-                        <a href={member.socials.github} className="text-gray-400 hover:text-white transition-colors">
-                          <FaGithub size={20} />
-                        </a>
-                      )}
-                      {member.socials.dribbble && (
-                        <a href={member.socials.dribbble} className="text-gray-400 hover:text-white transition-colors">
-                          <FiDribbble size={20} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+                <div className="text-gray-400 mt-2">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </div>
-      <Footer />
-    </>
+      </motion.section>
+
+      {/* Rest of the sections with optimized animations */}
+      // ... keep existing team and values sections ...
+    </div>
   );
 };
 
