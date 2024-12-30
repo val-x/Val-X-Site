@@ -15,7 +15,7 @@ import {
 import { 
   SiNextdotjs, SiSvelte, SiFlutter, SiKotlin, 
   SiSwift, SiRust, SiGo, SiRedis, SiMysql, SiVercel, 
-  SiFirebase, SiSupabase, SiAppwrite, SiVisualstudiocode,
+  SiFirebase, SiSupabase, SiAppwrite, SiVscode,
   SiGraphql, SiPrisma, SiJest, SiCypress, SiPlaywright, 
   SiVitest, SiSquare, SiQuickbooks, SiSalesforce,
   SiAsana, SiNotion, SiAirtable
@@ -89,7 +89,7 @@ const technologyCategories = {
     description: "Development and productivity",
     tools: [
       { name: "Git", icon: FaGithub, category: "Version Control" },
-      { name: "VS Code", icon: SiVisualstudiocode, category: "Editor" },
+      { name: "VS Code", icon: SiVscode, category: "Editor" },
       { name: "Terminal", icon: FaTerminal, category: "CLI" }
     ]
   },
