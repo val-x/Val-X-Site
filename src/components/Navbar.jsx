@@ -11,10 +11,10 @@ const Navbar = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Solutions', path: '/solutions' },
+    // { label: 'Solutions', path: '/solutions' },
     { label: 'Showcase', path: '/showcase' },
     { label: 'Community', path: '/blog' },
-    { label: 'Learn With Us', path: '/learn-with-us' },
+    { label: 'Learn', path: '/learn-with-us' },
     // { label: 'Careers', path: '/careers' },
   ];
 

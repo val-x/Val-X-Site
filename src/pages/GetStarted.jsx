@@ -33,6 +33,58 @@ const planCategories = {
         accent: "from-green-400 to-emerald-500",
         buttonText: "Book Free Session"
       },
+      qaTechSupport: {
+        title: "QA Tech Support",
+        description: "Professional QA and technical support for your projects",
+        duration: "Pay per hour",
+        price: {
+          starting: "$75/hour",
+          packages: {
+            standard: "$75/hour - Regular Support",
+            urgent: "$150/hour - Emergency Support"
+          },
+          note: "Minimum 4 hours booking"
+        },
+        features: [
+          "Dedicated QA team support",
+          "Technical issue resolution",
+          "Code review & optimization",
+          "Performance testing",
+          "Security assessment",
+          "Bug tracking & reporting",
+          "Priority emergency support",
+          "Detailed QA reports"
+        ],
+        icon: "🛠️",
+        accent: "from-cyan-400 to-blue-500",
+        buttonText: "Book Support Hours"
+      },
+      fixWithYou: {
+        title: "Fix With You",
+        description: "Collaborative problem-solving and debugging sessions",
+        duration: "Pay per hour",
+        price: {
+          starting: "$95/hour",
+          packages: {
+            standard: "$95/hour - Regular Session",
+            urgent: "$180/hour - Emergency Fix"
+          },
+          note: "Minimum 2 hours booking"
+        },
+        features: [
+          "Live collaborative debugging",
+          "Real-time code fixes",
+          "System architecture review",
+          "Performance optimization",
+          "Best practices guidance",
+          "Knowledge transfer",
+          "Post-session documentation",
+          "Follow-up support"
+        ],
+        icon: "🔧",
+        accent: "from-orange-400 to-red-500",
+        buttonText: "Start Fixing"
+      },
       guidedJourney: {
         title: "Guided Journey",
         description: "We help you build your startup",

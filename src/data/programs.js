@@ -1,7 +1,9 @@
 import { 
   FiCode, FiUsers, FiBook, FiTarget, 
   FiAward, FiTrendingUp, FiGlobe, FiLayers, 
-  FiBriefcase, FiCpu, FiMessageSquare 
+  FiBriefcase, FiCpu, FiMessageSquare,
+  FiMonitor, FiFileText, FiTrendingUp as FiGrowth,
+  FiUsers as FiMentors, FiBookOpen, FiUserCheck
 } from 'react-icons/fi';
 import { 
   FaChalkboardTeacher,
@@ -14,37 +16,37 @@ export const features = [
   {
     title: "End-to-End Development",
     description: "Complete IT product development from ideation to deployment.",
-    icon: "💻",
+    IconComponent: FiMonitor,
     color: "from-[#FF3CAC] via-[#784BA0] to-[#2B86C5]"
   },
   {
     title: "Business Formation",
     description: "Expert assistance in company registration and legal compliance.",
-    icon: "📋",
+    IconComponent: FiFileText,
     color: "from-[#4158D0] via-[#C850C0] to-[#FFCC70]"
   },
   {
     title: "Marketing & Growth",
     description: "Strategic marketing and business scaling solutions.",
-    icon: "📈",
+    IconComponent: FiGrowth,
     color: "from-[#3EECAC] via-[#EE74E1] to-[#FF8B67]"
   },
   {
     title: "Investor Connect",
     description: "Access to our network of angel investors and VCs.",
-    icon: "🤝",
+    IconComponent: FiUsers,
     color: "from-[#FA8BFF] via-[#2BD2FF] to-[#2BFF88]"
   },
   {
     title: "Startup Education",
     description: "Comprehensive training in IT project development and management.",
-    icon: "📚",
+    IconComponent: FiBookOpen,
     color: "from-[#21D4FD] via-[#B721FF] to-[#21D4FD]"
   },
   {
     title: "Mentorship",
     description: "Guidance from experienced entrepreneurs and tech leaders.",
-    icon: "👥",
+    IconComponent: FiMentors,
     color: "from-[#08AEEA] via-[#2AF598] to-[#08AEEA]"
   }
 ];
@@ -1041,21 +1043,24 @@ export const testimonials = [
     role: "Software Architect",
     company: "Tech Giants Inc",
     image: "https://randomuser.me/api/portraits/women/1.jpg",
-    quote: "The system design course completely transformed my approach to building scalable applications. The mentorship was invaluable."
+    quote: "The system design course completely transformed my approach to building scalable applications. The mentorship was invaluable.",
+    rating: 5
   },
   {
     name: "Michael Chen",
     role: "Startup Founder",
     company: "InnovateTech",
     image: "https://randomuser.me/api/portraits/men/2.jpg",
-    quote: "From coding to launching my startup, this program provided all the skills and confidence I needed to succeed."
+    quote: "From coding to launching my startup, this program provided all the skills and confidence I needed to succeed.",
+    rating: 5
   },
   {
     name: "Emily Rodriguez",
     role: "Tech Lead",
     company: "Global Solutions",
     image: "https://randomuser.me/api/portraits/women/3.jpg",
-    quote: "The practical approach and real-world projects helped me secure my dream role as a tech lead. Highly recommended!"
+    quote: "The practical approach and real-world projects helped me secure my dream role as a tech lead. Highly recommended!",
+    rating: 5
   }
 ];
 
