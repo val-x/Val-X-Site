@@ -23,6 +23,7 @@ import {
 import { TbBrandReactNative } from "react-icons/tb";
 import { FaBullhorn, FaChartLine } from 'react-icons/fa';
 import { VscCode } from 'react-icons/vsc';
+import { TbBrandPlaywright } from 'react-icons/tb';
 
 const technologyCategories = {
   frontend: {
@@ -110,7 +111,7 @@ const technologyCategories = {
     tools: [
       { name: "Jest", icon: SiJest, category: "Unit Testing" },
       { name: "Cypress", icon: SiCypress, category: "E2E Testing" },
-      { name: "Playwright", icon: SiPlaywright, category: "E2E Testing" },
+      { name: "Playwright", icon: TbBrandPlaywright, category: "E2E Testing" },
       { name: "Vitest", icon: SiVitest, category: "Unit Testing" }
     ]
   },
