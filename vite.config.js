@@ -15,35 +15,23 @@ export default defineConfig({
     })
   ],
 
-  optimizeDeps: {
-    include: [
-      '@mdx-js/react',
-      'react-syntax-highlighter',
-      'react-syntax-highlighter/dist/cjs/styles/prism',
-      'react-syntax-highlighter/dist/cjs/languages/prism/javascript',
-      'react-syntax-highlighter/dist/cjs/languages/prism/typescript',
-      'react-syntax-highlighter/dist/cjs/languages/prism/jsx',
-      'framer-motion'
-    ]
-  },
-
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          motion: ['framer-motion'],
-        },
-      },
-    },
-    chunkSizeWarningLimit: 1500,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) {
+              return 'react-vendor';
+            }
+            if (id.includes('framer-motion')) {
+              return 'motion-vendor';
+            }
+            return 'vendor';
+          }
+        }
       }
-    }
+    },
+    chunkSizeWarningLimit: 1500
   },
 
   resolve: {
@@ -58,9 +46,5 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/styles'),
       '@assets': path.resolve(__dirname, './src/assets'),
     }
-  },
-
-  server: {
-    historyApiFallback: true
   }
 })
