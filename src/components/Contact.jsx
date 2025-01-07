@@ -18,7 +18,7 @@ const Contact = () => {
             </p>
             <form className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Name
                 </label>
                 <input 
@@ -28,7 +28,7 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Email
                 </label>
                 <input 
@@ -38,7 +38,7 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-100 mb-2">
                   Message
                 </label>
                 <textarea 
@@ -61,7 +61,7 @@ const Contact = () => {
             <h2 className="text-3xl font-bold text-white mb-6">Contact Information</h2>
             <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-300 mb-4">Office Location</h3>
+                <h3 className="text-lg font-semibold text-gray-100 mb-4">Office Location</h3>
                 <p className="text-gray-400">
                   123 Startup Hub<br />
                   Innovation District<br />
@@ -69,14 +69,14 @@ const Contact = () => {
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-300 mb-4">Contact Details</h3>
+                <h3 className="text-lg font-semibold text-gray-100 mb-4">Contact Details</h3>
                 <p className="text-gray-400">
                   Email: hello@yourstartup.com<br />
                   Phone: +91 (123) 456-7890
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-300 mb-4">Office Hours</h3>
+                <h3 className="text-lg font-semibold text-gray-100 mb-4">Office Hours</h3>
                 <p className="text-gray-400">
                   Monday - Friday: 9:00 AM - 6:00 PM<br />
                   Saturday: By appointment only<br />

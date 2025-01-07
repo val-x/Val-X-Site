@@ -1,24 +1,25 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const links = {
     company: [
-      { label: 'About', path: '/about' },
-      { label: 'Careers', path: '/careers' },
-      { label: 'Culture', path: '/culture' },
-      { label: 'Contact', path: '/contact' }
+      { label: "About", path: "/about" },
+      { label: "Careers", path: "/careers" },
+      { label: "Culture", path: "/culture" },
+      { label: "Contact", path: "/contact" },
     ],
     solutions: [
-      { label: 'Solutions', path: '/solutions' },
-      { label: 'Case Studies', path: '/showcase' },
-      { label: 'Technologies', path: '#technologies' }
+      { label: "Solutions", path: "/solutions" },
+      { label: "Case Studies", path: "/showcase" },
+      { label: "Technologies", path: "#technologies" },
     ],
     resources: [
-      { label: 'Blog', path: '/blog' },
-      { label: 'Documentation', path: '/docs' },
-      { label: 'Support', path: '/support' }
-    ]
+      { label: "Blog", path: "/blog" },
+      { label: "Documentation", path: "/docs" },
+      { label: "Support", path: "/support" },
+      { label: "Pitch", path: "/pitch" },
+    ],
   };
 
   return (
@@ -27,7 +28,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
           <div>
-            <Link to="/" className="text-2xl font-bold text-white mb-4 block">VAL-X</Link>
+            <Link to="/" className="text-2xl font-bold text-white mb-4 block">
+              VAL-X
+            </Link>
             <p className="text-gray-400 text-sm">
               Transforming businesses through innovative digital solutions.
             </p>
@@ -39,7 +42,10 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.company.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="text-gray-400 hover:text-white transition-colors">
+                  <Link
+                    to={link.path}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -52,7 +58,10 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.solutions.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="text-gray-400 hover:text-white transition-colors">
+                  <Link
+                    to={link.path}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -65,7 +74,10 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.resources.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="text-gray-400 hover:text-white transition-colors">
+                  <Link
+                    to={link.path}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -77,18 +89,30 @@ const Footer = () => {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              <Link to="/copyright" className="hover:text-white transition-colors">
+              <Link
+                to="/copyright"
+                className="hover:text-white transition-colors"
+              >
                 © 2024 VAL-X. All rights reserved.
               </Link>
             </p>
             <div className="flex gap-6">
-              <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
+              <Link
+                to="/privacy-policy"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">
+              <Link
+                to="/terms"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Terms of Service
               </Link>
-              <Link to="/cookies" className="text-gray-400 hover:text-white transition-colors">
+              <Link
+                to="/cookies"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Cookie Policy
               </Link>
             </div>
@@ -96,7 +120,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

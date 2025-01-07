@@ -1,18 +1,18 @@
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import Stats from '../components/Stats';
-import Features from '../components/Features';
-import Technologies from '../components/Technologies';
-import Process from '../components/Process';
-import Achievements from '../components/Achievements';
-import Testimonials from '../components/Testimonials';
-import Team from '../components/Team';
-import Pricing from '../components/Pricing';
-import FAQ from '../components/FAQ';
-import CTA from '../components/CTA';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
-import { features, stats, testimonials } from '../data/programs';
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import Stats from "../components/Stats";
+import Features from "../components/Features";
+import Technologies from "../components/Technologies";
+import Process from "../components/Process";
+import Achievements from "../components/Achievements";
+import Testimonials from "../components/Testimonials";
+import Team from "../components/Team";
+import Pricing from "../components/Pricing";
+import FAQ from "../components/FAQ";
+import CTA from "../components/CTA";
+import Contact from "../components/Contact";
+import Footer from "../components/Footer";
+import { features, stats, testimonials } from "../data/programs";
 
 const Home = () => {
   return (
@@ -20,10 +20,10 @@ const Home = () => {
       <Navbar />
       <Hero />
       <Features />
-      <Pricing />
       <Technologies />
       <Process />
       <Achievements />
+      <Pricing />
       <Testimonials />
       <Team />
       <FAQ />
@@ -34,4 +34,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;
