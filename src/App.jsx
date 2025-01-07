@@ -47,6 +47,9 @@ import VideoBlogPost from "./pages/VideoBlogPost";
 import PodcastBlogPost from "./pages/PodcastBlogPost";
 import { blogPosts } from "./data/blogData";
 import Pitch from "./pages/Pitch";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ResetPassword from "./pages/ResetPassword";
+import AuthCallback from "./pages/AuthCallback";
 
 const VideoBlogWrapper = () => {
   const { slug } = useParams();
@@ -119,7 +122,16 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/new-project" element={<NewProject />} />

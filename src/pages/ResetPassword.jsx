@@ -4,107 +4,75 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { supabase } from "../lib/supabase";
 
-const Login = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  });
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
+  // Password strength requirements
+  const passwordRequirements = [
+    { regex: /.{8,}/, text: "At least 8 characters" },
+    { regex: /[A-Z]/, text: "At least one uppercase letter" },
+    { regex: /[a-z]/, text: "At least one lowercase letter" },
+    { regex: /[0-9]/, text: "At least one number" },
+    { regex: /[^A-Za-z0-9]/, text: "At least one special character" },
+  ];
+
+  // Check password strength
   useEffect(() => {
-    // Check if user is already logged in
-    const checkUser = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
-        navigate("/dashboard");
-      }
-    };
-    checkUser();
-  }, [navigate]);
+    const strength = passwordRequirements.reduce((score, requirement) => {
+      return score + (requirement.regex.test(password) ? 1 : 0);
+    }, 0);
+    setPasswordStrength((strength / passwordRequirements.length) * 100);
+  }, [password]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  // Check if user has gone through the PIN verification
+  useEffect(() => {
+    const resetToken = sessionStorage.getItem("resetToken");
+    if (!resetToken) {
+      toast.error("Please complete the password reset process");
+      navigate("/forgot-password");
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate password strength
+    if (passwordStrength < 60) {
+      toast.error("Password is too weak");
+      return;
+    }
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
+      const { error } = await supabase.auth.updateUser({
+        password: password,
       });
 
       if (error) throw error;
 
-      toast.success("Welcome back!");
-      navigate("/dashboard");
+      // Clear the stored token
+      sessionStorage.removeItem("resetToken");
+
+      toast.success("Password updated successfully");
+      navigate("/login");
     } catch (error) {
-      toast.error(error.message || "Failed to sign in");
+      toast.error(error.message || "Failed to update password");
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleGitHubLogin = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: `${window.location.origin}/learn`,
-        },
-      });
-
-      if (error) throw error;
-    } catch (error) {
-      toast.error("Failed to sign in with GitHub");
-    }
-  };
-
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: "demo@valx.com",
-        password: "demo123456",
-      });
-
-      if (error) throw error;
-
-      toast.success("Logged in as demo user");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error("Failed to login as demo user");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const socialLogins = [
-    {
-      name: "GitHub",
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"
-          />
-        </svg>
-      ),
-      onClick: handleGitHubLogin,
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-black">
@@ -126,7 +94,7 @@ const Login = () => {
               className="text-3xl font-bold"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400">
-                Welcome Back
+                Set New Password
               </span>
             </motion.h2>
             <motion.p
@@ -135,11 +103,11 @@ const Login = () => {
               transition={{ delay: 0.1 }}
               className="mt-2 text-gray-400"
             >
-              Sign in to continue your journey
+              Enter your new password below
             </motion.p>
           </div>
 
-          {/* Login Form Card */}
+          {/* Form Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -157,38 +125,20 @@ const Login = () => {
               shadow-2xl shadow-violet-500/10"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email Field */}
+                {/* New Password Field */}
                 <div>
                   <label className="block text-gray-400 text-sm mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white 
-                      placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                    placeholder="Enter your email"
-                  />
-                </div>
-
-                {/* Password Field */}
-                <div>
-                  <label className="block text-gray-400 text-sm mb-2">
-                    Password
+                    New Password
                   </label>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       required
                       className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white 
                         placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                      placeholder="Enter your password"
+                      placeholder="Enter new password"
                     />
                     <button
                       type="button"
@@ -232,27 +182,74 @@ const Login = () => {
                       )}
                     </button>
                   </div>
+
+                  {/* Password Strength Indicator */}
+                  <div className="mt-2">
+                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${
+                          passwordStrength >= 80
+                            ? "bg-green-500"
+                            : passwordStrength >= 60
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                        }`}
+                        style={{ width: `${passwordStrength}%` }}
+                      />
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {passwordRequirements.map((requirement, index) => (
+                        <div
+                          key={index}
+                          className={`flex items-center space-x-2 text-sm ${
+                            requirement.regex.test(password)
+                              ? "text-green-400"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            {requirement.regex.test(password) ? (
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            ) : (
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            )}
+                          </svg>
+                          <span>{requirement.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleChange}
-                      className="rounded bg-white/5 border-white/10 text-violet-500 
-                        focus:ring-violet-500 focus:ring-offset-0"
-                    />
-                    <span className="text-sm text-gray-400">Remember me</span>
+                {/* Confirm Password Field */}
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">
+                    Confirm Password
                   </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
-                  >
-                    Forgot password?
-                  </Link>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white 
+                      placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    placeholder="Confirm new password"
+                  />
                 </div>
 
                 {/* Submit Button */}
@@ -279,74 +276,17 @@ const Login = () => {
                         animate-spin mx-auto"
                       />
                     ) : (
-                      "Sign In"
+                      "Update Password"
                     )}
                   </span>
                 </motion.button>
-
-                {/* Social Login Divider */}
-                <div className="relative my-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-black/40 text-gray-400">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                {/* Social Login Buttons */}
-                <div className="grid grid-cols-1 gap-4">
-                  {socialLogins.map((social) => (
-                    <motion.button
-                      key={social.name}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="button"
-                      onClick={social.onClick}
-                      className="flex items-center justify-center px-4 py-2 rounded-lg bg-white/5 
-                        border border-white/10 text-gray-100 hover:bg-white/10 transition-colors"
-                    >
-                      {social.icon}
-                      <span className="ml-2">Continue with {social.name}</span>
-                    </motion.button>
-                  ))}
-                </div>
-
-                {/* Demo Login */}
-                <button
-                  type="button"
-                  onClick={handleDemoLogin}
-                  className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 
-                    text-gray-100 hover:bg-white/10 transition-colors text-sm"
-                >
-                  Try Demo Account
-                </button>
               </form>
             </div>
           </motion.div>
-
-          {/* Sign Up Link */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-8 text-center text-gray-400"
-          >
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 
-                to-fuchsia-400 hover:opacity-80 transition-opacity"
-            >
-              Sign up
-            </Link>
-          </motion.p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default ResetPassword;

@@ -24,6 +24,7 @@
     "@react-three/postprocessing": "^2.16.3",
     "@sentry/react": "^7.106.0",
     "@sentry/vite-plugin": "^2.14.3",
+    "@supabase/supabase-js": "^2.47.10",
     "apple_website": "file:",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
