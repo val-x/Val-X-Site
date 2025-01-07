@@ -1,203 +1,222 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useState } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { toast } from "react-hot-toast";
+import { supabase } from "../lib/supabase";
 
 const Register = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
-    phone: "",
     company: "",
-    referralType: "",
-    expectedReferrals: "",
-    message: ""
+    phone: "",
+    website: "",
+    referralCode: "",
   });
 
-  const referralTypes = [
-    "Technology Companies",
-    "Business Consultants",
-    "Marketing Agencies",
-    "Freelance Developers",
-    "Industry Partners",
-    "Other"
-  ];
-
-  const expectedReferralRanges = [
-    "1-5 referrals per year",
-    "6-10 referrals per year",
-    "11-20 referrals per year",
-    "20+ referrals per year"
-  ];
-
-  useGSAP(() => {
-    gsap.from(".register-content", {
-      scrollTrigger: {
-        trigger: ".register-section",
-        start: "top center+=100",
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8
-    });
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Validate form data
+      if (!formData.name.trim() || !formData.email.trim()) {
+        throw new Error("Please fill in all required fields");
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Submit to Supabase
+      const { error } = await supabase.from("partner_registrations").insert([
+        {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          company: formData.company?.trim() || null,
+          phone: formData.phone?.trim() || null,
+          website: formData.website?.trim() || null,
+          referral_code: formData.referralCode?.trim() || null,
+        },
+      ]);
+
+      if (error) throw error;
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        website: "",
+        referralCode: "",
+      });
+
+      toast.success("Partner registration submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(error.message || "Failed to submit registration");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className="register-section" id="register">
-      <div className="register-content">
-        <div className="max-w-3xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-400 mb-2">First Name</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-400 mb-2">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-2">Phone</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-2">Company</label>
-              <input
-                type="text"
-                id="company"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <label htmlFor="referralType" className="block text-sm font-medium text-gray-400 mb-2">
-                  Referral Network Type
-                </label>
-                <select
-                  id="referralType"
-                  name="referralType"
-                  value={formData.referralType}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                  required
-                >
-                  <option value="">Select your network type</option>
-                  {referralTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="expectedReferrals" className="block text-sm font-medium text-gray-400 mb-2">
-                  Expected Referrals
-                </label>
-                <select
-                  id="expectedReferrals"
-                  name="expectedReferrals"
-                  value={formData.expectedReferrals}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                  required
-                >
-                  <option value="">Select expected range</option>
-                  {expectedReferralRanges.map((range) => (
-                    <option key={range} value={range}>{range}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">
-                Additional Information
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={6}
-                placeholder="Tell us about your network and how you plan to refer clients"
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                required
-              ></textarea>
-            </div>
-
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                className="px-8 py-4 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Join Referral Program
-              </button>
-            </div>
-          </form>
+    <div>
+      <h3 className="text-2xl font-bold text-white mb-6">
+        Register as Partner
+      </h3>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Name */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="Enter your full name"
+          />
         </div>
-      </div>
-    </section>
+
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="your@email.com"
+          />
+        </div>
+
+        {/* Company */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Company Name
+          </label>
+          <input
+            type="text"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="Your company name"
+          />
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="Your phone number"
+          />
+        </div>
+
+        {/* Website */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Website
+          </label>
+          <input
+            type="url"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="https://your-website.com"
+          />
+        </div>
+
+        {/* Referral Code */}
+        <div>
+          <label className="block text-sm font-medium text-gray-100 mb-2">
+            Referral Code
+          </label>
+          <input
+            type="text"
+            name="referralCode"
+            value={formData.referralCode}
+            onChange={handleChange}
+            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 
+              focus:ring-blue-500/50 focus:border-blue-500 text-white transition-all duration-300"
+            placeholder="Enter referral code if you have one"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl 
+            text-lg font-semibold transition-all duration-300 hover:opacity-90 hover:scale-[1.02] 
+            hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed 
+            disabled:hover:scale-100"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Processing...
+            </span>
+          ) : (
+            "Join Partner Network"
+          )}
+        </button>
+
+        <p className="text-sm text-gray-400 text-center">
+          By registering, you agree to our partner program terms and conditions.
+        </p>
+      </form>
+    </div>
   );
 };
 
