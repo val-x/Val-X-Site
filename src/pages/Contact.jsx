@@ -1,27 +1,71 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { motion } from "framer-motion";
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import { supabase } from "../lib/supabase";
+import { toast } from "react-hot-toast";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+    setIsLoading(true);
+
+    try {
+      // Validate form data
+      if (
+        !formData.name.trim() ||
+        !formData.email.trim() ||
+        !formData.message.trim()
+      ) {
+        throw new Error("Please fill in all fields");
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Submit to Supabase
+      const { error } = await supabase.from("contact_submissions").insert([
+        {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+          status: "pending",
+        },
+      ]);
+
+      if (error) throw error;
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+      toast.success("Message sent successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(error.message || "Failed to send message");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -42,7 +86,8 @@ const Contact = () => {
                 Get in Touch
               </h1>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Have a question or want to work together? We'd love to hear from you.
+                Have a question or want to work together? We'd love to hear from
+                you.
               </p>
             </motion.div>
           </div>
@@ -60,56 +105,69 @@ const Contact = () => {
                 className="space-y-8"
               >
                 <div>
-                  <h2 className="text-3xl font-bold mb-6">Contact Information</h2>
+                  <h2 className="text-3xl font-bold mb-6">
+                    Contact Information
+                  </h2>
                   <p className="text-gray-400">
-                    Reach out to us through any of these channels. We're here to help!
+                    Reach out to us through any of these channels. We're here to
+                    help!
                   </p>
                 </div>
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
-                      rounded-lg border border-white/10">
+                    <div
+                      className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
+                      rounded-lg border border-white/10"
+                    >
                       <FaMapMarkerAlt className="text-cyan-400" size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Our Location</h3>
-                      <p className="text-gray-400">123 Innovation Street, Tech Valley, Kerala, India</p>
+                      <p className="text-gray-400">
+                        Veda, Mavoor Kozhikode, Kerala, India
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
-                      rounded-lg border border-white/10">
+                    <div
+                      className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
+                      rounded-lg border border-white/10"
+                    >
                       <FaPhone className="text-violet-400" size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Phone Number</h3>
-                      <p className="text-gray-400">+91 (123) 456-7890</p>
+                      <p className="text-gray-400">+91 8078447125</p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
-                      rounded-lg border border-white/10">
+                    <div
+                      className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
+                      rounded-lg border border-white/10"
+                    >
                       <FaEnvelope className="text-fuchsia-400" size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email Address</h3>
-                      <p className="text-gray-400">contact@val-x.com</p>
+                      <p className="text-gray-400">cto@val-x.com</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Map or Additional Info */}
                 <div className="relative mt-8">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
-                    blur-3xl" />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
+                    blur-3xl"
+                  />
                   <div className="relative bg-gray-900 p-6 rounded-2xl border border-white/10">
                     <h3 className="font-semibold mb-3">Business Hours</h3>
                     <div className="space-y-2 text-gray-400">
                       <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                      <p>Saturday: 10:00 AM - 4:00 PM</p>
+                      <p>Saturday: 9:00 AM - 9:00 PM</p>
                       <p>Sunday: Closed</p>
                     </div>
                   </div>
@@ -123,14 +181,19 @@ const Contact = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
-                    blur-3xl" />
-                  <form 
+                  <div
+                    className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 
+                    blur-3xl"
+                  />
+                  <form
                     onSubmit={handleSubmit}
                     className="relative bg-gray-900 p-8 rounded-2xl border border-white/10 space-y-6"
                   >
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Name
                       </label>
                       <input
@@ -146,7 +209,10 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Email
                       </label>
                       <input
@@ -162,23 +228,10 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                        Subject
-                      </label>
-                      <input
-                        type="text"
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none 
-                          focus:ring-2 focus:ring-violet-500 text-white"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Message
                       </label>
                       <textarea
@@ -197,10 +250,15 @@ const Contact = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
+                      disabled={isLoading}
                       className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 
-                        text-white font-medium hover:opacity-90 transition-opacity"
+                        text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {isLoading ? (
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto" />
+                      ) : (
+                        "Send Message"
+                      )}
                     </motion.button>
                   </form>
                 </div>
@@ -214,4 +272,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;

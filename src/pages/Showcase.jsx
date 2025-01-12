@@ -1,23 +1,36 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ModelView from '../components/ModelView';
-import { 
-  modelProjects, 
-  clientProjects, 
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ModelView from "../components/ModelView";
+import {
+  modelProjects,
+  clientProjects,
   getAllProjects,
   getCategories,
-  getProjectStats 
-} from '../data/projects';
-import { useDebounce } from '../hooks/useDebounce';
-import { ErrorBoundary } from '../components/ErrorBoundary';
-import { useInView } from 'react-intersection-observer';
-import { ShareIcon, BookmarkIcon } from '@heroicons/react/24/outline';
-import { toast } from 'react-hot-toast';
+  getProjectStats,
+} from "../data/projects";
+import { useDebounce } from "../hooks/useDebounce";
+import { ErrorBoundary } from "../components/ErrorBoundary";
+import { useInView } from "react-intersection-observer";
+import { ShareIcon, BookmarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-hot-toast";
 
 // ProjectCard component
-const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus }) => {
+const ProjectCard = ({
+  project,
+  index,
+  isGridView,
+  isSelected,
+  onClick,
+  onFocus,
+}) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const handleShare = async (e) => {
@@ -26,35 +39,44 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
       await navigator.share({
         title: project.title,
         text: project.description,
-        url: window.location.href
+        url: window.location.href,
       });
     } catch (err) {
       // Fallback to copying link
       navigator.clipboard.writeText(window.location.href);
-      toast.success('Link copied to clipboard!');
+      toast.success("Link copied to clipboard!");
     }
   };
 
   const handleBookmark = (e) => {
     e.stopPropagation();
     setIsBookmarked(!isBookmarked);
-    toast.success(isBookmarked ? 'Project removed from bookmarks' : 'Project bookmarked!');
+    toast.success(
+      isBookmarked ? "Project removed from bookmarks" : "Project bookmarked!"
+    );
+  };
+
+  const handleVisitSite = (e) => {
+    e.stopPropagation();
+    if (project.url) {
+      window.open(project.url, "_blank");
+    }
   };
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 20 }}
-      animate={{ 
-        opacity: 1, 
+      animate={{
+        opacity: 1,
         y: 0,
         scale: isSelected ? 1.02 : 1,
-        boxShadow: isSelected ? '0 0 0 2px rgba(139, 92, 246, 0.5)' : 'none'
+        boxShadow: isSelected ? "0 0 0 2px rgba(139, 92, 246, 0.5)" : "none",
       }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className={`group relative rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 cursor-pointer
-        ${isGridView ? '' : 'flex gap-8'}`}
+        ${isGridView ? "" : "flex gap-8"}`}
       onClick={onClick}
       onFocus={onFocus}
       tabIndex={0}
@@ -62,8 +84,10 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
       aria-selected={isSelected}
     >
       {/* Project Image */}
-      <div className={`${isGridView ? 'aspect-video' : 'w-1/3'} overflow-hidden`}>
-        <img 
+      <div
+        className={`${isGridView ? "aspect-video" : "w-1/3"} overflow-hidden`}
+      >
+        <img
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
@@ -72,28 +96,42 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
       </div>
 
       {/* Project Info */}
-      <div className={`absolute inset-0 flex flex-col justify-end p-6 ${isGridView ? '' : 'relative w-2/3'}`}>
+      <div
+        className={`absolute inset-0 flex flex-col justify-end p-6 ${isGridView ? "" : "relative w-2/3"}`}
+      >
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${project.color}`}>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${project.color}`}
+            >
               {project.category}
             </span>
             <span className="text-gray-400 text-sm">{project.tech}</span>
           </div>
           <h3 className="text-xl font-bold text-white">{project.title}</h3>
           <p className="text-gray-300 text-sm">{project.description}</p>
-          
+
           {/* Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-cyan-400">{project.stats.users} Users</span>
             <span className="text-violet-400">⭐ {project.stats.rating}</span>
             <span className="text-fuchsia-400">↗ {project.stats.growth}</span>
           </div>
+
+          {/* Visit Site Button */}
+          {project.url && (
+            <button
+              onClick={handleVisitSite}
+              className="mt-4 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              Visit Site →
+            </button>
+          )}
         </div>
       </div>
 
       {/* Add action buttons */}
-      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" >
+      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleShare}
           className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
@@ -104,9 +142,13 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
         <button
           onClick={handleBookmark}
           className={`p-2 rounded-full transition-colors ${
-            isBookmarked ? 'bg-violet-500 text-white' : 'bg-white/10 hover:bg-white/20'
+            isBookmarked
+              ? "bg-violet-500 text-white"
+              : "bg-white/10 hover:bg-white/20"
           }`}
-          aria-label={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
+          aria-label={
+            isBookmarked ? "Remove from bookmarks" : "Add to bookmarks"
+          }
         >
           <BookmarkIcon className="w-5 h-5" />
         </button>
@@ -119,14 +161,14 @@ const ProjectCard = ({ project, index, isGridView, isSelected, onClick, onFocus 
 const ProjectModal = ({ project, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
   if (!project) return null;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -134,8 +176,8 @@ const ProjectModal = ({ project, onClose }) => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center px-4"
     >
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       />
       <motion.div
@@ -149,15 +191,25 @@ const ProjectModal = ({ project, onClose }) => {
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         <div className="space-y-6">
           {/* Project Image */}
           <div className="relative rounded-xl overflow-hidden">
-            <img 
+            <img
               src={project.image}
               alt={project.title}
               className="w-full h-64 object-cover"
@@ -168,12 +220,16 @@ const ProjectModal = ({ project, onClose }) => {
           {/* Project Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${project.color}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${project.color}`}
+              >
                 {project.category}
               </span>
               <span className="text-gray-400">{project.tech}</span>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {project.title}
+            </h3>
             <p className="text-gray-400">{project.description}</p>
           </div>
 
@@ -181,15 +237,21 @@ const ProjectModal = ({ project, onClose }) => {
           {project.details && (
             <div className="space-y-4">
               <div>
-                <h4 className="text-lg font-semibold text-white mb-2">Challenge</h4>
+                <h4 className="text-lg font-semibold text-white mb-2">
+                  Challenge
+                </h4>
                 <p className="text-gray-400">{project.details.challenge}</p>
               </div>
               <div>
-                <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
+                <h4 className="text-lg font-semibold text-white mb-2">
+                  Solution
+                </h4>
                 <p className="text-gray-400">{project.details.solution}</p>
               </div>
               <div>
-                <h4 className="text-lg font-semibold text-white mb-2">Impact</h4>
+                <h4 className="text-lg font-semibold text-white mb-2">
+                  Impact
+                </h4>
                 <p className="text-gray-400">{project.details.impact}</p>
               </div>
             </div>
@@ -199,15 +261,21 @@ const ProjectModal = ({ project, onClose }) => {
           <div className="grid grid-cols-3 gap-4 p-4 bg-white/5 rounded-xl">
             <div className="text-center">
               <p className="text-sm text-gray-400">Users</p>
-              <p className="text-lg font-bold text-cyan-400">{project.stats.users}</p>
+              <p className="text-lg font-bold text-cyan-400">
+                {project.stats.users}
+              </p>
             </div>
             <div className="text-center">
               <p className="text-sm text-gray-400">Rating</p>
-              <p className="text-lg font-bold text-violet-400">{project.stats.rating}</p>
+              <p className="text-lg font-bold text-violet-400">
+                {project.stats.rating}
+              </p>
             </div>
             <div className="text-center">
               <p className="text-sm text-gray-400">Growth</p>
-              <p className="text-lg font-bold text-fuchsia-400">{project.stats.growth}</p>
+              <p className="text-lg font-bold text-fuchsia-400">
+                {project.stats.growth}
+              </p>
             </div>
           </div>
         </div>
@@ -229,21 +297,23 @@ const ProjectGrid = ({ projects, isGridView, onSelectProject }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!gridRef.current) return;
-      
-      switch(e.key) {
-        case 'ArrowRight':
-          setSelectedIndex(prev => Math.min(prev + 1, projects.length - 1));
+
+      switch (e.key) {
+        case "ArrowRight":
+          setSelectedIndex((prev) => Math.min(prev + 1, projects.length - 1));
           break;
-        case 'ArrowLeft':
-          setSelectedIndex(prev => Math.max(prev - 1, 0));
+        case "ArrowLeft":
+          setSelectedIndex((prev) => Math.max(prev - 1, 0));
           break;
-        case 'ArrowDown':
-          setSelectedIndex(prev => Math.min(prev + (isGridView ? 3 : 1), projects.length - 1));
+        case "ArrowDown":
+          setSelectedIndex((prev) =>
+            Math.min(prev + (isGridView ? 3 : 1), projects.length - 1)
+          );
           break;
-        case 'ArrowUp':
-          setSelectedIndex(prev => Math.max(prev - (isGridView ? 3 : 1), 0));
+        case "ArrowUp":
+          setSelectedIndex((prev) => Math.max(prev - (isGridView ? 3 : 1), 0));
           break;
-        case 'Enter':
+        case "Enter":
           onSelectProject(projects[selectedIndex]);
           break;
         default:
@@ -252,15 +322,15 @@ const ProjectGrid = ({ projects, isGridView, onSelectProject }) => {
       e.preventDefault();
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, projects, isGridView, onSelectProject]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={gridRef}
       layout
-      className={`grid gap-8 ${isGridView ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
+      className={`grid gap-8 ${isGridView ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}
     >
       <AnimatePresence mode="popLayout">
         {projects.map((project, index) => (
@@ -281,18 +351,19 @@ const ProjectGrid = ({ projects, isGridView, onSelectProject }) => {
 
 // Add sorting options
 const SORT_OPTIONS = {
-  NEWEST: 'newest',
-  POPULAR: 'popular',
-  RATING: 'rating'
+  NEWEST: "newest",
+  POPULAR: "popular",
+  RATING: "rating",
 };
 
 const CategoryBadge = ({ category, count, isSelected, onClick }) => (
   <motion.button
     onClick={onClick}
     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2
-      ${isSelected 
-        ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white'
-        : 'bg-white/5 text-white/60 hover:bg-white/10'
+      ${
+        isSelected
+          ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white"
+          : "bg-white/5 text-white/60 hover:bg-white/10"
       }`}
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
@@ -303,9 +374,9 @@ const CategoryBadge = ({ category, count, isSelected, onClick }) => (
 );
 
 const Showcase = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isGridView, setIsGridView] = useState(true);
   const [showModel, setShowModel] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -313,10 +384,10 @@ const Showcase = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const ITEMS_PER_PAGE = 9;
-  
+
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0.5,
-    triggerOnce: false
+    triggerOnce: false,
   });
 
   const categories = useMemo(() => getCategories(), []);
@@ -325,12 +396,14 @@ const Showcase = () => {
 
   const filteredProjects = useMemo(() => {
     const projects = showModel ? modelProjects : clientProjects;
-    return projects.filter(project => {
-      const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
-      const matchesSearch = (
+    return projects.filter((project) => {
+      const matchesCategory =
+        selectedCategory === "all" || project.category === selectedCategory;
+      const matchesSearch =
         project.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        project.description.toLowerCase().includes(debouncedSearch.toLowerCase())
-      );
+        project.description
+          .toLowerCase()
+          .includes(debouncedSearch.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, debouncedSearch, showModel]);
@@ -341,7 +414,7 @@ const Showcase = () => {
 
   useEffect(() => {
     if (inView && hasMore) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   }, [inView, hasMore]);
 
@@ -353,16 +426,16 @@ const Showcase = () => {
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (selectedProject) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [selectedProject]);
 
   // Handle view transitions
   const handleViewChange = useCallback(() => {
     setIsLoading(true);
-    setShowModel(prev => !prev);
+    setShowModel((prev) => !prev);
     setTimeout(() => setIsLoading(false), 500);
   }, []);
 
@@ -379,26 +452,30 @@ const Showcase = () => {
   // Enhanced project filtering and sorting
   const filteredAndSortedProjects = useMemo(() => {
     let result = [...filteredProjects];
-    
+
     switch (sortBy) {
       case SORT_OPTIONS.POPULAR:
-        result.sort((a, b) => parseInt(b.stats.users) - parseInt(a.stats.users));
+        result.sort(
+          (a, b) => parseInt(b.stats.users) - parseInt(a.stats.users)
+        );
         break;
       case SORT_OPTIONS.RATING:
-        result.sort((a, b) => parseFloat(b.stats.rating) - parseFloat(a.stats.rating));
+        result.sort(
+          (a, b) => parseFloat(b.stats.rating) - parseFloat(a.stats.rating)
+        );
         break;
       case SORT_OPTIONS.NEWEST:
       default:
         result.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
-    
+
     return result;
   }, [filteredProjects, sortBy]);
 
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      
+
       <main className="pt-24">
         {/* Hero Section with 3D Model */}
         <section className="relative py-20 overflow-hidden">
@@ -408,7 +485,7 @@ const Showcase = () => {
           </div>
 
           <div className="relative max-w-7xl mx-auto px-6">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -416,7 +493,7 @@ const Showcase = () => {
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400">
-                  Projects 
+                  Projects
                 </span>
               </h1>
               <p className="text-xl text-gray-400 mb-8">
@@ -429,17 +506,17 @@ const Showcase = () => {
                   onClick={handleViewChange}
                   disabled={isLoading}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    ${showModel ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white' : 'bg-white/5 text-white/60 hover:bg-white/10'}
-                    ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    ${showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
+                    ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                  {isLoading ? <LoadingSpinner /> : 'Our Projects '}
+                  {isLoading ? <LoadingSpinner /> : "Our Projects "}
                 </button>
                 <button
                   onClick={() => setShowModel(!showModel)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    ${!showModel ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white' : 'bg-white/5 text-white/60 hover:bg-white/10'}`}
+                    ${!showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
                 >
-                  Client Projects 
+                  Client Projects
                 </button>
               </div>
             </motion.div>
@@ -459,8 +536,8 @@ const Showcase = () => {
                       <LoadingSpinner />
                     </div>
                   )}
-                  <ModelView 
-                    projects={modelProjects} 
+                  <ModelView
+                    projects={modelProjects}
                     onLoad={() => setModelLoading(false)}
                   />
                 </div>
@@ -480,8 +557,18 @@ const Showcase = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
                     />
-                    <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <svg
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -519,18 +606,38 @@ const Showcase = () => {
                 <div className="flex gap-2 bg-white/5 rounded-full p-1">
                   <button
                     onClick={() => setIsGridView(true)}
-                    className={`p-2 rounded-full transition-all ${isGridView ? 'bg-white/10 text-white' : 'text-gray-400'}`}
+                    className={`p-2 rounded-full transition-all ${isGridView ? "bg-white/10 text-white" : "text-gray-400"}`}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      />
                     </svg>
                   </button>
                   <button
                     onClick={() => setIsGridView(false)}
-                    className={`p-2 rounded-full transition-all ${!isGridView ? 'bg-white/10 text-white' : 'text-gray-400'}`}
+                    className={`p-2 rounded-full transition-all ${!isGridView ? "bg-white/10 text-white" : "text-gray-400"}`}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -549,14 +656,14 @@ const Showcase = () => {
                   isGridView={isGridView}
                   onSelectProject={setSelectedProject}
                 />
-                
+
                 {/* Infinite Scroll Trigger */}
                 {hasMore && (
                   <div ref={loadMoreRef} className="py-8 text-center">
                     <LoadingSpinner />
                   </div>
                 )}
-                
+
                 {/* Empty State */}
                 {filteredProjects.length === 0 && (
                   <motion.div
@@ -564,11 +671,13 @@ const Showcase = () => {
                     animate={{ opacity: 1 }}
                     className="col-span-full text-center py-12"
                   >
-                    <p className="text-gray-400 mb-4">No projects found matching your criteria</p>
+                    <p className="text-gray-400 mb-4">
+                      No projects found matching your criteria
+                    </p>
                     <button
                       onClick={() => {
-                        setSelectedCategory('all');
-                        setSearchQuery('');
+                        setSelectedCategory("all");
+                        setSearchQuery("");
                       }}
                       className="text-violet-400 hover:text-violet-300 transition-colors"
                     >
@@ -597,4 +706,4 @@ const Showcase = () => {
   );
 };
 
-export default Showcase; 
+export default Showcase;

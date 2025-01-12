@@ -23,15 +23,16 @@ const teamCategories = {
       {
         name: "Joel",
         role: "CTO",
-        image: "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
+        image:
+          "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
         bio: "a full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
         expertise: ["Full Stack Development", "AI/ML", "Web3"],
         achievements: ["78+ Projects Delivered", "3 Patents"],
         socials: {
           linkedin: "https://github.com/JJ-Dynamite",
           twitter: "#",
-          dribbble: "#"
-        }
+          dribbble: "#",
+        },
       },
       // {
       //   name: "Arjun Chandran",
@@ -46,7 +47,7 @@ const teamCategories = {
       //     github: "https://github.com/MrUnwonted"
       //   }
       // }
-    ]
+    ],
   },
   // advisors: {
   //   title: "Advisory Board",
@@ -82,15 +83,20 @@ const teamCategories = {
 
 const Team = () => {
   useGSAP(() => {
-    gsap.from(".team-member", {
-      scrollTrigger: {
-        trigger: ".team-grid",
-        start: "top center+=100",
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2
+    // Animate each team grid section
+    const teamGrids = document.querySelectorAll(".team-grid");
+    teamGrids.forEach((grid) => {
+      gsap.from(grid.querySelectorAll(".team-member"), {
+        scrollTrigger: {
+          trigger: grid,
+          start: "top center+=100",
+          toggleActions: "play none none reverse",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+      });
     });
   }, []);
 
@@ -110,66 +116,84 @@ const Team = () => {
         {Object.entries(teamCategories).map(([category, data]) => (
           <div key={category} className="mb-20">
             <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
-              <span className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 
-                px-4 py-2 rounded-lg border border-blue-500/20">
+              <span
+                className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 
+                px-4 py-2 rounded-lg border border-blue-500/20"
+              >
                 {data.title}
               </span>
             </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 team-grid">
               {data.members.map((member, index) => (
                 <div key={index} className="team-member group">
-                  <div className="relative overflow-hidden rounded-xl bg-gray-800/50 
-                    border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300">
+                  <div
+                    className="relative overflow-hidden rounded-xl bg-gray-800/50 
+                    border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
+                  >
                     <div className="aspect-square overflow-hidden">
-                      <img 
-                        src={member.image} 
+                      <img
+                        src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     </div>
-                    
+
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                      <h3 className="text-xl font-bold text-white mb-1">
+                        {member.name}
+                      </h3>
                       <p className="text-blue-400 mb-3">{member.role}</p>
                       <p className="text-gray-400 text-sm mb-4">{member.bio}</p>
-                      
+
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-100 mb-2">Expertise</h4>
+                        <h4 className="text-sm font-semibold text-gray-100 mb-2">
+                          Expertise
+                        </h4>
                         <div className="flex flex-wrap gap-2">
                           {member.expertise.map((skill, i) => (
-                            <span key={i} className="text-xs px-2 py-1 rounded-full 
-                              bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                            <span
+                              key={i}
+                              className="text-xs px-2 py-1 rounded-full 
+                              bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                            >
                               {skill}
                             </span>
                           ))}
                         </div>
                       </div>
-                      
+
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-100 mb-2">Achievements</h4>
+                        <h4 className="text-sm font-semibold text-gray-100 mb-2">
+                          Achievements
+                        </h4>
                         <div className="space-y-1">
                           {member.achievements.map((achievement, i) => (
-                            <p key={i} className="text-xs text-gray-400 flex items-center">
+                            <p
+                              key={i}
+                              className="text-xs text-gray-400 flex items-center"
+                            >
                               <span className="w-1 h-1 rounded-full bg-purple-400 mr-2"></span>
                               {achievement}
                             </p>
                           ))}
                         </div>
                       </div>
-                      
+
                       <div className="flex gap-4">
-                        {Object.entries(member.socials).map(([platform, link]) => (
-                          <a
-                            key={platform}
-                            href={link}
-                            className="text-gray-400 hover:text-white transition-colors"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <i className={`fab fa-${platform}`}></i>
-                          </a>
-                        ))}
+                        {Object.entries(member.socials).map(
+                          ([platform, link]) => (
+                            <a
+                              key={platform}
+                              href={link}
+                              className="text-gray-400 hover:text-white transition-colors"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <i className={`fab fa-${platform}`}></i>
+                            </a>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -183,4 +207,4 @@ const Team = () => {
   );
 };
 
-export default Team; 
+export default Team;

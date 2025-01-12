@@ -163,11 +163,11 @@ const Contact = () => {
                   Office Location
                 </h3>
                 <p className="text-gray-400">
-                  123 Startup Hub
+                  Veda  
                   <br />
-                  Innovation District
+                  Mavoor, Kozhikode
                   <br />
-                  Bangalore, India
+                  Kerala, India
                 </p>
               </div>
               <div>
@@ -175,9 +175,9 @@ const Contact = () => {
                   Contact Details
                 </h3>
                 <p className="text-gray-400">
-                  Email: hello@yourstartup.com
+                  Email: cto@val-x.com
                   <br />
-                  Phone: +91 (123) 456-7890
+                  Phone: +91 8078447125
                 </p>
               </div>
               <div>
@@ -185,7 +185,7 @@ const Contact = () => {
                   Office Hours
                 </h3>
                 <p className="text-gray-400">
-                  Monday - Friday: 9:00 AM - 6:00 PM
+                  Monday - Friday: 9:00 AM - 9:00 PM
                   <br />
                   Saturday: By appointment only
                   <br />
