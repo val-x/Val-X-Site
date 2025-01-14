@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import ChatBox from "../components/ChatBox";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
 
@@ -111,13 +112,8 @@ const Support = () => {
 
   // Function to handle live chat
   const handleStartChat = () => {
-    if (window.Tawk_API && typeof window.Tawk_API.toggle === "function") {
-      window.Tawk_API.toggle();
-      setShowChatWidget(!showChatWidget);
-    } else {
-      console.warn("Tawk.to widget is not available");
-      setChatLoadError("Chat widget is not available");
-    }
+    // Just open the ChatBox
+    setShowChatWidget(true);
   };
 
   // Monitor Tawk.to availability
@@ -520,6 +516,9 @@ const Support = () => {
             </form>
           </div>
         </div>
+
+        {/* Add ChatBox component */}
+        <ChatBox />
 
         <Footer />
       </div>

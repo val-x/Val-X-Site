@@ -1,11 +1,13 @@
+import { generateInvoiceContent as generateInvoice } from "./invoiceTemplate";
+
 export const DOCUMENT_TYPES = {
-  BUSINESS_PROPOSAL: 'Business Proposal',
-  OFFER_LETTER: 'Offer Letter',
-  INVOICE: 'Invoice',
-  TERMINATION_LETTER: 'Termination Letter',
-  DOCUMENTATION: 'Documentation',
-  PAGE: 'Page',
-  BLOG: 'Blog'
+  BUSINESS_PROPOSAL: "Business Proposal",
+  OFFER_LETTER: "Offer Letter",
+  INVOICE: "Invoice",
+  TERMINATION_LETTER: "Termination Letter",
+  DOCUMENTATION: "Documentation",
+  PAGE: "Page",
+  BLOG: "Blog",
 };
 
 // CSS styles
@@ -134,10 +136,10 @@ const generateIntroductionSection = (data) => `
         </div>
         
         <div class="proposal-info mb-8">
-          <h2 class="text-2xl mb-4 gradient-text">${data.projectName || '[Project Name]'}</h2>
+          <h2 class="text-2xl mb-4 gradient-text">${data.projectName || "[Project Name]"}</h2>
           <p class="text-lg mb-2 text-gray-400">Prepared for:</p>
-          <p class="text-xl">${data.clientCompany || '[Client Company Name]'}</p>
-          <p class="text-gray-400">${data.clientAddress || '[Client Address]'}</p>
+          <p class="text-xl">${data.clientCompany || "[Client Company Name]"}</p>
+          <p class="text-gray-400">${data.clientAddress || "[Client Address]"}</p>
         </div>
 
         <div class="our-info glass-card p-6">
@@ -149,9 +151,9 @@ const generateIntroductionSection = (data) => `
         </div>
 
         <div class="proposal-meta mt-8 flex justify-between text-gray-400">
-          <p>Proposal #: ${data.proposalId || 'BP-' + new Date().getFullYear() + '-001'}</p>
+          <p>Proposal #: ${data.proposalId || "BP-" + new Date().getFullYear() + "-001"}</p>
           <p>Date: ${new Date().toLocaleDateString()}</p>
-          <p>Valid Until: ${data.validUntil || new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString()}</p>
+          <p>Valid Until: ${data.validUntil || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
         </div>
       </div>
     </div>
@@ -354,18 +356,18 @@ const generateIntroductionSection = (data) => `
     <div class="glass-card p-8">
       <div class="letter-header mb-8">
         <p class="text-gray-400 mb-4">${new Date().toLocaleDateString()}</p>
-        <p class="mb-2">${data.clientContact?.name || '[Client Name]'}</p>
-        <p class="mb-2">${data.clientContact?.title || '[Title]'}</p>
-        <p class="mb-2">${data.clientCompany || '[Company Name]'}</p>
-        <p>${data.clientAddress || '[Address]'}</p>
+        <p class="mb-2">${data.clientContact?.name || "[Client Name]"}</p>
+        <p class="mb-2">${data.clientContact?.title || "[Title]"}</p>
+        <p class="mb-2">${data.clientCompany || "[Company Name]"}</p>
+        <p>${data.clientAddress || "[Address]"}</p>
       </div>
 
       <div class="letter-content space-y-4">
-        <p>Dear ${data.clientContact?.name || '[Client Name]'},</p>
+        <p>Dear ${data.clientContact?.name || "[Client Name]"},</p>
         
-        <p>Thank you for the opportunity to present our comprehensive proposal for ${data.projectName || 'your project'}. 
+        <p>Thank you for the opportunity to present our comprehensive proposal for ${data.projectName || "your project"}. 
         At Val-X Technologies, we understand the unique challenges and opportunities in your industry, and we are excited 
-        to potentially partner with ${data.clientCompany || 'your organization'} on this transformative journey.</p>
+        to potentially partner with ${data.clientCompany || "your organization"} on this transformative journey.</p>
         
         <p>Based on our detailed analysis of your requirements and our extensive experience in delivering similar solutions, 
         we are confident in our ability to exceed your expectations and deliver exceptional value to your organization.</p>
@@ -395,15 +397,15 @@ const generateIntroductionSection = (data) => `
         <div class="stat-grid">
           <div class="stat-card">
             <p class="text-gray-400 mb-2">Duration</p>
-            <p class="stat-value">${data.duration || '6'} months</p>
+            <p class="stat-value">${data.duration || "6"} months</p>
           </div>
           <div class="stat-card">
             <p class="text-gray-400 mb-2">Team Size</p>
-            <p class="stat-value">${data.teamSize || '12'} experts</p>
+            <p class="stat-value">${data.teamSize || "12"} experts</p>
           </div>
           <div class="stat-card">
             <p class="text-gray-400 mb-2">Budget</p>
-            <p class="stat-value">$${data.budget?.toLocaleString() || '250,000'}</p>
+            <p class="stat-value">$${data.budget?.toLocaleString() || "250,000"}</p>
           </div>
         </div>
       </div>
@@ -448,19 +450,19 @@ const generateIntroductionSection = (data) => `
         <div class="company-metrics grid grid-cols-2 gap-4 mt-8">
           <div class="metric-card p-4 bg-white/5 rounded-lg">
             <h4 class="font-semibold mb-2">Company Size</h4>
-            <p class="text-gray-400">${data.clientSize || '1000+'} employees</p>
+            <p class="text-gray-400">${data.clientSize || "1000+"} employees</p>
           </div>
           <div class="metric-card p-4 bg-white/5 rounded-lg">
             <h4 class="font-semibold mb-2">Annual Revenue</h4>
-            <p class="text-gray-400">$${data.clientRevenue || '100M+'}</p>
+            <p class="text-gray-400">$${data.clientRevenue || "100M+"}</p>
           </div>
           <div class="metric-card p-4 bg-white/5 rounded-lg">
             <h4 class="font-semibold mb-2">Global Presence</h4>
-            <p class="text-gray-400">${data.clientLocations || '10+'} countries</p>
+            <p class="text-gray-400">${data.clientLocations || "10+"} countries</p>
           </div>
           <div class="metric-card p-4 bg-white/5 rounded-lg">
             <h4 class="font-semibold mb-2">Industry Position</h4>
-            <p class="text-gray-400">${data.clientPosition || 'Market Leader'}</p>
+            <p class="text-gray-400">${data.clientPosition || "Market Leader"}</p>
           </div>
         </div>
       </div>
@@ -705,21 +707,21 @@ const generateExecutiveSummarySection = (data) => `
           <div class="mb-6">
             <h3 class="text-xl font-semibold mb-3">Industry Overview</h3>
             <p class="text-gray-700 leading-relaxed">
-              ${data.industryOverview || 'The industry is experiencing rapid digital transformation...'}
+              ${data.industryOverview || "The industry is experiencing rapid digital transformation..."}
             </p>
           </div>
           
           <div class="mb-6">
             <h3 class="text-xl font-semibold mb-3">Business Challenges</h3>
             <p class="text-gray-700 leading-relaxed">
-              ${data.businessChallenges || 'Current challenges include...'}
+              ${data.businessChallenges || "Current challenges include..."}
             </p>
           </div>
           
           <div class="mb-6">
             <h3 class="text-xl font-semibold mb-3">Opportunity Analysis</h3>
             <p class="text-gray-700 leading-relaxed">
-              ${data.opportunityAnalysis || 'Key opportunities identified include...'}
+              ${data.opportunityAnalysis || "Key opportunities identified include..."}
             </p>
           </div>
         </div>
@@ -1449,8 +1451,8 @@ const generateProjectDetailsSection = (data) => `
           <div class="p-6 border rounded-lg">
             <h3 class="text-lg font-semibold mb-3">Constraints</h3>
             <ul class="list-disc pl-4 space-y-2 text-gray-700">
-              <li>Timeline: ${data.timeline || '6 months'}</li>
-              <li>Budget: $${data.budget?.toLocaleString() || '250,000'}</li>
+              <li>Timeline: ${data.timeline || "6 months"}</li>
+              <li>Budget: $${data.budget?.toLocaleString() || "250,000"}</li>
               <li>Technology Stack</li>
               <li>Compliance Requirements</li>
             </ul>
@@ -2577,15 +2579,15 @@ const generateInvestmentSection = (data) => `
             <ul class="space-y-2">
               <li class="flex justify-between">
                 <span>Development</span>
-                <span class="font-mono">$${data.costs?.development || '200,000'}</span>
+                <span class="font-mono">$${data.costs?.development || "200,000"}</span>
               </li>
               <li class="flex justify-between">
                 <span>Infrastructure</span>
-                <span class="font-mono">$${data.costs?.infrastructure || '125,000'}</span>
+                <span class="font-mono">$${data.costs?.infrastructure || "125,000"}</span>
               </li>
               <li class="flex justify-between">
                 <span>Implementation</span>
-                <span class="font-mono">$${data.costs?.implementation || '100,000'}</span>
+                <span class="font-mono">$${data.costs?.implementation || "100,000"}</span>
               </li>
             </ul>
           </div>
@@ -2594,15 +2596,15 @@ const generateInvestmentSection = (data) => `
             <ul class="space-y-2">
               <li class="flex justify-between">
                 <span>Maintenance</span>
-                <span class="font-mono">$${data.costs?.maintenance || '50,000'}/year</span>
+                <span class="font-mono">$${data.costs?.maintenance || "50,000"}/year</span>
               </li>
               <li class="flex justify-between">
                 <span>Support</span>
-                <span class="font-mono">$${data.costs?.support || '25,000'}/year</span>
+                <span class="font-mono">$${data.costs?.support || "25,000"}/year</span>
               </li>
               <li class="flex justify-between">
                 <span>Training</span>
-                <span class="font-mono">$${data.costs?.training || '50,000'}/year</span>
+                <span class="font-mono">$${data.costs?.training || "50,000"}/year</span>
               </li>
             </ul>
           </div>
@@ -3532,19 +3534,23 @@ const generateTermsAndAppendicesSection = (data) => `
 export const DOCUMENT_TEMPLATES = {
   [DOCUMENT_TYPES.BUSINESS_PROPOSAL]: {
     sections: [
-      'Introduction',
-      'Executive Summary',
-      'Company Profile',
-      'Project Details',
-      'Technical Solution',
-      'Implementation Plan',
-      'Timeline & Milestones',
-      'Investment & ROI',
-      'Risk Management',
-      'Terms & Appendices'
+      "Introduction",
+      "Executive Summary",
+      "Company Profile",
+      "Project Details",
+      "Technical Solution",
+      "Implementation Plan",
+      "Timeline & Milestones",
+      "Investment & ROI",
+      "Risk Management",
+      "Terms & Appendices",
     ],
-    defaultContent: generateProposalContent({})
-  }
+    defaultContent: generateProposalContent({}),
+  },
+  [DOCUMENT_TYPES.INVOICE]: {
+    sections: ["Service Details", "Payment Terms", "Company Information"],
+    defaultContent: generateInvoice({}),
+  },
 };
 
 // Export other document generators
@@ -3552,10 +3558,8 @@ export const generateOfferLetterContent = (data) => {
   // Implementation for offer letter
 };
 
-export const generateInvoiceContent = (data) => {
-  // Implementation for invoice
-};
+export { generateInvoiceContent } from "./invoiceTemplate";
 
 export const generateTerminationLetterContent = (data) => {
   // Implementation for termination letter
-}; 
+};
