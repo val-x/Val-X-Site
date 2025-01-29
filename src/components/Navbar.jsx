@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const navItems = [
     { label: "Home", path: "/" },
-    { label: "Chat", path: "https://valenclient.pages.dev/" },
+    { label: "Chat", path: "https://chat.val-x.com" },
     { label: "Showcase", path: "/showcase" },
     { label: "Community", path: "/blog" },
     { label: "Learn", path: "/learn-with-us" },
