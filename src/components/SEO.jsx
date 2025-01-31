@@ -7,10 +7,35 @@ const SEO = ({
   url = "https://www.val-x.in",
   keywords = "IT services, software development, digital solutions, technology consulting, web development, mobile apps, cloud solutions, India, Kerala",
 }) => {
+  const domains = {
+    main: "https://www.val-x.in",
+    com: "https://www.val-x.com",
+    dev: "https://www.val-x.dev",
+  };
+
   return (
     <Helmet>
       {/* Add canonical URL */}
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={domains.main} />
+
+      {/* Add alternate domain links */}
+      <link rel="alternate" href={domains.com} hreflang="en" />
+      <link rel="alternate" href={domains.dev} hreflang="en" />
+      <link rel="alternate" href={domains.main} hreflang="x-default" />
+
+      {/* DNS Prefetch for Performance */}
+      <link rel="dns-prefetch" href="//www.val-x.com" />
+      <link rel="dns-prefetch" href="//www.val-x.dev" />
+      <link
+        rel="preconnect"
+        href="https://www.val-x.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preconnect"
+        href="https://www.val-x.dev"
+        crossOrigin="anonymous"
+      />
 
       {/* Add favicon links */}
       <link
@@ -55,7 +80,7 @@ const SEO = ({
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={domains.main} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
@@ -69,7 +94,7 @@ const SEO = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@valx" />
       <meta name="twitter:creator" content="@joeljmathew_" />
-      <meta name="twitter:url" content={url} />
+      <meta name="twitter:url" content={domains.main} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
@@ -80,7 +105,7 @@ const SEO = ({
       <meta property="og:locale" content="en_US" />
       <meta property="og:image:aspect_ratio" content="1" />
 
-      {/* Enhanced JSON-LD with more details */}
+      {/* Enhanced JSON-LD with multiple domains */}
       <script type="application/ld+json">
         {JSON.stringify([
           {
@@ -88,7 +113,7 @@ const SEO = ({
             "@type": "Organization",
             name: "VAL-X",
             legalName: "VAL-X Technologies",
-            url: "https://www.val-x.in",
+            url: domains.main,
             logo: "https://www.val-x.in/assets/images/logo.png",
             foundingDate: "2024",
             slogan: "Innovate Beyond Limits",
@@ -109,6 +134,8 @@ const SEO = ({
               addressLocality: "Alappuzha",
             },
             sameAs: [
+              domains.com,
+              domains.dev,
               "https://www.linkedin.com/company/val-x",
               "https://twitter.com/valx",
               "https://www.facebook.com/valx",
@@ -201,6 +228,10 @@ const SEO = ({
           },
         ])}
       </script>
+
+      {/* Additional Open Graph Tags for Multiple Domains */}
+      <meta property="og:see_also" content={domains.com} />
+      <meta property="og:see_also" content={domains.dev} />
     </Helmet>
   );
 };
