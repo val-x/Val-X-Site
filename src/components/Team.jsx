@@ -1,6 +1,15 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  FaLinkedin,
+  FaTwitter,
+  FaGithub,
+  FaGlobe,
+  FaInstagram,
+} from "react-icons/fa";
+import { SiThreads } from "react-icons/si";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -8,77 +17,59 @@ const teamCategories = {
   leadership: {
     title: "Leadership Team",
     members: [
-      // {
-      //   name: "Althuaf S",
-      //   role: "CEO",
-      //   image: "https://avatars.githubusercontent.com/u/118532237?v=4",
-      //   bio: "a leader with a passion for building and scaling businesses",
-      //   expertise: ["Business Strategy", "Startup Growth", "Team Building"],
-      //   achievements: ["10+ Years Experience", "5 Successful Exits"],
-      //   socials: {
-      //     linkedin: "#",
-      //     github: "https://github.com/Althuaf123"
-      //   }
-      // },
       {
         name: "Joel",
         role: "CTO",
         image:
           "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
-        bio: "a full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
+        bio: "A full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
         expertise: ["Full Stack Development", "AI/ML", "Web3"],
-        achievements: ["78+ Projects Delivered", "3 Patents"],
+        achievements: ["200+ Projects Delivered", "3 Patents"],
         socials: {
-          linkedin: "https://github.com/JJ-Dynamite",
-          twitter: "#",
-          dribbble: "#",
+          github: "https://github.com/JJ-Dynamite",
+          linkedin: "https://www.linkedin.com/in/joel-j-mathew-71393a210/",
+          portfolio:
+            "https://64f1618cc38df21ea31b3961--funny-faun-e09034.netlify.app/",
+          twitter: "https://x.com/joeljmathew_",
+          instagram: "https://www.instagram.com/joeljmathew_/",
+          threads: "https://www.threads.net/@joeljmathew_",
         },
       },
-      // {
-      //   name: "Arjun Chandran",
-      //   role: "CMO",
-      //   image: "https://avatars.githubusercontent.com/u/86820656?v=4",
-      //   bio: "an aspiring entrepreneur with experience in sales and marketing",
-      //   expertise: ["Digital Marketing", "Growth Strategy", "Brand Building"],
-      //   achievements: ["200% Avg. Growth Rate", "15+ Major Campaigns"],
-      //   socials: {
-      //     linkedin: "#",
-      //     twitter: "#",
-      //     github: "https://github.com/MrUnwonted"
-      //   }
-      // }
     ],
   },
-  // advisors: {
-  //   title: "Advisory Board",
-  //   members: [
-  //     {
-  //       name: "Dr. Sarah Miller",
-  //       role: "Tech Advisor",
-  //       image: "/team/advisor1.jpg",
-  //       bio: "Former CTO of TechGiant, specializing in scalable architectures",
-  //       expertise: ["Enterprise Architecture", "Cloud Computing", "AI Systems"],
-  //       achievements: ["2 IPOs", "Tech Advisor to 30+ Startups"],
-  //       socials: { linkedin: "#" }
-  //     },
-  //     // Add more advisors...
-  //   ]
-  // },
-  // mentors: {
-  //   title: "Startup Mentors",
-  //   members: [
-  //     {
-  //       name: "Michael Chang",
-  //       role: "Growth Mentor",
-  //       image: "/team/mentor1.jpg",
-  //       bio: "Serial entrepreneur with expertise in scaling startups",
-  //       expertise: ["Growth Hacking", "Market Entry", "Fund Raising"],
-  //       achievements: ["3 Successful Exits", "$50M+ Raised"],
-  //       socials: { linkedin: "#", twitter: "#" }
-  //     },
-  //     // Add more mentors...
-  //   ]
-  // }
+};
+
+const SocialIcon = ({ platform, link }) => {
+  const getIcon = (platform) => {
+    switch (platform) {
+      case "linkedin":
+        return <FaLinkedin size={24} />;
+      case "twitter":
+        return <FaTwitter size={24} />;
+      case "github":
+        return <FaGithub size={24} />;
+      case "portfolio":
+        return <FaGlobe size={24} />;
+      case "instagram":
+        return <FaInstagram size={24} />;
+      case "threads":
+        return <SiThreads size={24} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <motion.a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+      whileHover={{ scale: 1.2 }}
+    >
+      {getIcon(platform)}
+    </motion.a>
+  );
 };
 
 const Team = () => {
@@ -89,13 +80,15 @@ const Team = () => {
       gsap.from(grid.querySelectorAll(".team-member"), {
         scrollTrigger: {
           trigger: grid,
-          start: "top center+=100",
-          toggleActions: "play none none reverse",
+          start: "top bottom",
+          toggleActions: "play none none none",
         },
         y: 50,
         opacity: 0,
-        duration: 0.8,
+        duration: 1.2,
+        delay: 0.2,
         stagger: 0.2,
+        ease: "power2.out",
       });
     });
   }, []);
@@ -126,7 +119,7 @@ const Team = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 team-grid">
               {data.members.map((member, index) => (
-                <div key={index} className="team-member group">
+                <div key={index} className="team-member opacity-100">
                   <div
                     className="relative overflow-hidden rounded-xl bg-gray-800/50 
                     border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
@@ -183,15 +176,11 @@ const Team = () => {
                       <div className="flex gap-4">
                         {Object.entries(member.socials).map(
                           ([platform, link]) => (
-                            <a
+                            <SocialIcon
                               key={platform}
-                              href={link}
-                              className="text-gray-400 hover:text-white transition-colors"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <i className={`fab fa-${platform}`}></i>
-                            </a>
+                              platform={platform}
+                              link={link}
+                            />
                           )
                         )}
                       </div>

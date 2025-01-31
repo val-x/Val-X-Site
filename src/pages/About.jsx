@@ -1,18 +1,58 @@
-import { motion } from 'framer-motion';
-import { FaLinkedin, FaTwitter, FaGithub, FaLightbulb, FaHandshake, FaRocket, FaChartLine, FaReact, FaNodeJs, FaPython, FaAws, FaMobile, FaMicrosoft, FaCloud } from 'react-icons/fa';
-import { FiDribbble } from 'react-icons/fi';
-import { SiTensorflow, SiMongodb, SiDocker, SiNextdotjs, SiExpress, SiPostgresql, SiCapacitor, SiBun, SiAppwrite, SiSupabase, SiGraphql, SiPrisma, SiTailwindcss, SiTypescript, SiExpo, SiFlutter, SiKotlin, SiSwift, SiFirebase, SiAndroid, SiIos } from 'react-icons/si';
-import { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Contact from '../components/Contact';
+import { motion } from "framer-motion";
+import {
+  FaLinkedin,
+  FaTwitter,
+  FaGithub,
+  FaLightbulb,
+  FaHandshake,
+  FaRocket,
+  FaChartLine,
+  FaReact,
+  FaNodeJs,
+  FaPython,
+  FaAws,
+  FaMobile,
+  FaMicrosoft,
+  FaCloud,
+  FaGlobe,
+  FaInstagram,
+} from "react-icons/fa";
+import { FiDribbble } from "react-icons/fi";
+import {
+  SiTensorflow,
+  SiMongodb,
+  SiDocker,
+  SiNextdotjs,
+  SiExpress,
+  SiPostgresql,
+  SiCapacitor,
+  SiBun,
+  SiAppwrite,
+  SiSupabase,
+  SiGraphql,
+  SiPrisma,
+  SiTailwindcss,
+  SiTypescript,
+  SiExpo,
+  SiFlutter,
+  SiKotlin,
+  SiSwift,
+  SiFirebase,
+  SiAndroid,
+  SiIos,
+  SiThreads,
+} from "react-icons/si";
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Contact from "../components/Contact";
 
 // Define stats array that was missing
 const stats = [
-  { value: '100+', label: 'Projects Completed' },
-  { value: '50+', label: 'Happy Clients' },
-  { value: '24/7', label: 'Support' },
-  { value: '99%', label: 'Satisfaction Rate' }
+  { value: "100+", label: "Projects Completed" },
+  { value: "50+", label: "Happy Clients" },
+  { value: "24/7", label: "Support" },
+  { value: "99%", label: "Satisfaction Rate" },
 ];
 
 const team = [
@@ -30,13 +70,18 @@ const team = [
   {
     name: "Joel",
     role: "CTO",
-    image: "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
+    image:
+      "https://avatars.githubusercontent.com/u/45507367?s=400&u=87eab888ace4284d9345a551c8db0963ba714213&v=4",
     bio: "A full stack developer with a passion for building scalable and efficient solutions in AI and Web3",
     socials: {
-      linkedin: "https://github.com/JJ-Dynamite",
-      twitter: "#",
-      dribbble: "#"
-    }
+      linkedin: "https://www.linkedin.com/in/joel-j-mathew-71393a210/",
+      twitter: "https://x.com/joeljmathew_",
+      github: "https://github.com/JJ-Dynamite",
+      portfolio:
+        "https://64f1618cc38df21ea31b3961--funny-faun-e09034.netlify.app/",
+      instagram: "https://www.instagram.com/joeljmathew_/",
+      threads: "https://www.threads.net/@joeljmathew_",
+    },
   },
   // {
   //   name: "Althuaf S",
@@ -54,23 +99,23 @@ const coreValues = [
   {
     icon: <FaLightbulb className="w-8 h-8" />,
     title: "Innovation",
-    description: "Constantly pushing boundaries and embracing new technologies"
+    description: "Constantly pushing boundaries and embracing new technologies",
   },
   {
     icon: <FaHandshake className="w-8 h-8" />,
     title: "Collaboration",
-    description: "Working together to achieve exceptional results"
+    description: "Working together to achieve exceptional results",
   },
   {
     icon: <FaRocket className="w-8 h-8" />,
     title: "Excellence",
-    description: "Delivering the highest quality in everything we do"
+    description: "Delivering the highest quality in everything we do",
   },
   {
     icon: <FaChartLine className="w-8 h-8" />,
     title: "Growth",
-    description: "Committed to continuous learning and improvement"
-  }
+    description: "Committed to continuous learning and improvement",
+  },
 ];
 
 const techStacks = [
@@ -80,8 +125,8 @@ const techStacks = [
       { icon: <FaReact className="w-12 h-12" />, name: "React" },
       { icon: <SiExpress className="w-12 h-12" />, name: "Express.js" },
       { icon: <SiMongodb className="w-12 h-12" />, name: "MongoDB" },
-      { icon: <FaNodeJs className="w-12 h-12" />, name: "Node.js" }
-    ]
+      { icon: <FaNodeJs className="w-12 h-12" />, name: "Node.js" },
+    ],
   },
   {
     title: "PERN Stack",
@@ -89,8 +134,8 @@ const techStacks = [
       { icon: <FaReact className="w-12 h-12" />, name: "React" },
       { icon: <SiExpress className="w-12 h-12" />, name: "Express.js" },
       { icon: <SiPostgresql className="w-12 h-12" />, name: "PostgreSQL" },
-      { icon: <FaNodeJs className="w-12 h-12" />, name: "Node.js" }
-    ]
+      { icon: <FaNodeJs className="w-12 h-12" />, name: "Node.js" },
+    ],
   },
   {
     title: "Next.js PWA",
@@ -98,8 +143,8 @@ const techStacks = [
       { icon: <SiNextdotjs className="w-12 h-12" />, name: "Next.js" },
       { icon: <SiCapacitor className="w-12 h-12" />, name: "Capacitor" },
       { icon: <SiPrisma className="w-12 h-12" />, name: "Prisma" },
-      { icon: <SiTypescript className="w-12 h-12" />, name: "TypeScript" }
-    ]
+      { icon: <SiTypescript className="w-12 h-12" />, name: "TypeScript" },
+    ],
   },
   {
     title: "Cross-Platform Mobile",
@@ -107,8 +152,8 @@ const techStacks = [
       { icon: <FaMobile className="w-12 h-12" />, name: "React Native" },
       { icon: <SiExpo className="w-12 h-12" />, name: "Expo" },
       { icon: <SiFlutter className="w-12 h-12" />, name: "Flutter" },
-      { icon: <SiFirebase className="w-12 h-12" />, name: "Firebase" }
-    ]
+      { icon: <SiFirebase className="w-12 h-12" />, name: "Firebase" },
+    ],
   },
   {
     title: "Native Mobile",
@@ -116,8 +161,8 @@ const techStacks = [
       { icon: <SiAndroid className="w-12 h-12" />, name: "Android" },
       { icon: <SiIos className="w-12 h-12" />, name: "iOS" },
       { icon: <SiKotlin className="w-12 h-12" />, name: "Kotlin" },
-      { icon: <SiSwift className="w-12 h-12" />, name: "Swift" }
-    ]
+      { icon: <SiSwift className="w-12 h-12" />, name: "Swift" },
+    ],
   },
   {
     title: "Backend Solutions",
@@ -125,8 +170,8 @@ const techStacks = [
       { icon: <FaPython className="w-12 h-12" />, name: "Python" },
       { icon: <FaNodeJs className="w-12 h-12" />, name: "Node.js" },
       { icon: <SiBun className="w-12 h-12" />, name: "Bun" },
-      { icon: <SiGraphql className="w-12 h-12" />, name: "GraphQL" }
-    ]
+      { icon: <SiGraphql className="w-12 h-12" />, name: "GraphQL" },
+    ],
   },
   {
     title: "Cloud Services",
@@ -134,57 +179,92 @@ const techStacks = [
       { icon: <SiAppwrite className="w-12 h-12" />, name: "Appwrite" },
       { icon: <SiSupabase className="w-12 h-12" />, name: "Supabase" },
       { icon: <FaAws className="w-12 h-12" />, name: "AWS" },
-      { icon: <FaMicrosoft className="w-12 h-12" />, name: "Azure" }
-    ]
-  }
+      { icon: <FaMicrosoft className="w-12 h-12" />, name: "Azure" },
+    ],
+  },
 ];
 
 const testimonials = [
   {
     name: "Sarah Johnson",
     role: "CEO, TechStart",
-    content: "VAL-X transformed our business with their innovative AI solutions. Their team's expertise and dedication are unmatched.",
-    image: "https://randomuser.me/api/portraits/women/1.jpg"
+    content:
+      "VAL-X transformed our business with their innovative AI solutions. Their team's expertise and dedication are unmatched.",
+    image: "https://randomuser.me/api/portraits/women/1.jpg",
   },
   {
     name: "Michael Chen",
     role: "CTO, DataFlow",
-    content: "Working with VAL-X has been incredible. They delivered beyond our expectations and provided exceptional support.",
-    image: "https://randomuser.me/api/portraits/men/2.jpg"
+    content:
+      "Working with VAL-X has been incredible. They delivered beyond our expectations and provided exceptional support.",
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
   },
   {
     name: "Emma Davis",
     role: "Founder, InnovateLab",
-    content: "The team at VAL-X brings both technical excellence and creative innovation to every project.",
-    image: "https://randomuser.me/api/portraits/women/3.jpg"
-  }
+    content:
+      "The team at VAL-X brings both technical excellence and creative innovation to every project.",
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
+  },
 ];
+
+const SocialIcon = ({ platform, link }) => {
+  const getIcon = (platform) => {
+    switch (platform) {
+      case "linkedin":
+        return <FaLinkedin className="w-6 h-6" />;
+      case "twitter":
+        return <FaTwitter className="w-6 h-6" />;
+      case "github":
+        return <FaGithub className="w-6 h-6" />;
+      case "portfolio":
+        return <FaGlobe className="w-6 h-6" />;
+      case "instagram":
+        return <FaInstagram className="w-6 h-6" />;
+      case "threads":
+        return <SiThreads className="w-6 h-6" />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-gray-400 hover:text-white transition-colors duration-300"
+    >
+      {getIcon(platform)}
+    </a>
+  );
+};
 
 const About = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-900 text-white">
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -195,13 +275,14 @@ const About = () => {
               Transforming Ideas Into Digital Reality
             </h1>
             <p className="text-gray-400 text-xl max-w-3xl">
-              At VAL-X, we're passionate about pushing the boundaries of what's possible in technology.
+              At VAL-X, we're passionate about pushing the boundaries of what's
+              possible in technology.
             </p>
           </div>
         </motion.section>
 
         {/* Mission & Vision Section */}
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -214,7 +295,8 @@ const About = () => {
                   Our Mission
                 </h2>
                 <p className="text-gray-100 leading-relaxed">
-                  To empower businesses with cutting-edge technology solutions that drive growth and innovation in the digital age.
+                  To empower businesses with cutting-edge technology solutions
+                  that drive growth and innovation in the digital age.
                 </p>
               </div>
               <div className="space-y-6">
@@ -222,14 +304,15 @@ const About = () => {
                   Our Vision
                 </h2>
                 <p className="text-gray-100 leading-relaxed">
-                  To be the leading force in digital transformation, creating solutions that shape the future of technology and business.
+                  To be the leading force in digital transformation, creating
+                  solutions that shape the future of technology and business.
                 </p>
               </div>
             </div>
           </div>
         </motion.section>
 
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -238,8 +321,8 @@ const About = () => {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat) => (
-                <motion.div 
-                  key={stat.label} 
+                <motion.div
+                  key={stat.label}
                   className="text-center p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -322,7 +405,9 @@ const About = () => {
                           <div className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">
                             {tech.icon}
                           </div>
-                          <p className="mt-2 text-gray-400 text-sm">{tech.name}</p>
+                          <p className="mt-2 text-gray-400 text-sm">
+                            {tech.name}
+                          </p>
                         </motion.div>
                       ))}
                     </div>
@@ -374,10 +459,14 @@ const About = () => {
                       <h3 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">
                         {testimonial.name}
                       </h3>
-                      <p className="text-gray-400 text-sm">{testimonial.role}</p>
+                      <p className="text-gray-400 text-sm">
+                        {testimonial.role}
+                      </p>
                     </div>
                   </div>
-                  <p className="text-gray-100 italic">"{testimonial.content}"</p>
+                  <p className="text-gray-100 italic">
+                    "{testimonial.content}"
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -413,52 +502,48 @@ const About = () => {
                   <h3 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">
                     {member.name}
                   </h3>
-                  <p className="text-gray-400 text-center font-medium">{member.role}</p>
-                  <p className="text-gray-500 text-center mt-4 leading-relaxed">{member.bio}</p>
+                  <p className="text-gray-400 text-center font-medium">
+                    {member.role}
+                  </p>
+                  <p className="text-gray-500 text-center mt-4 leading-relaxed">
+                    {member.bio}
+                  </p>
                   <div className="flex justify-center gap-4 mt-6">
                     {member.socials.linkedin && (
-                      <motion.a
-                        href={member.socials.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        <FaLinkedin size={24} />
-                      </motion.a>
+                      <SocialIcon
+                        platform="linkedin"
+                        link={member.socials.linkedin}
+                      />
                     )}
                     {member.socials.twitter && (
-                      <motion.a
-                        href={member.socials.twitter}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        <FaTwitter size={24} />
-                      </motion.a>
+                      <SocialIcon
+                        platform="twitter"
+                        link={member.socials.twitter}
+                      />
                     )}
                     {member.socials.github && (
-                      <motion.a
-                        href={member.socials.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        <FaGithub size={24} />
-                      </motion.a>
+                      <SocialIcon
+                        platform="github"
+                        link={member.socials.github}
+                      />
                     )}
-                    {member.socials.dribbble && (
-                      <motion.a
-                        href={member.socials.dribbble}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                        whileHover={{ scale: 1.2 }}
-                      >
-                        <FiDribbble size={24} />
-                      </motion.a>
+                    {member.socials.portfolio && (
+                      <SocialIcon
+                        platform="portfolio"
+                        link={member.socials.portfolio}
+                      />
+                    )}
+                    {member.socials.instagram && (
+                      <SocialIcon
+                        platform="instagram"
+                        link={member.socials.instagram}
+                      />
+                    )}
+                    {member.socials.threads && (
+                      <SocialIcon
+                        platform="threads"
+                        link={member.socials.threads}
+                      />
                     )}
                   </div>
                 </motion.div>
@@ -480,4 +565,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;
