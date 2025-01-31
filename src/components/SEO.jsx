@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SEO = ({
   title = "VAL-X - IT Services & Solutions",
   description = "Professional IT services, software development, and digital solutions for businesses. Expert consulting, custom development, and innovative technology solutions.",
-  image = "/assets/images/logo.png",
+  image = "https://www.val-x.in/assets/images/logo.png",
   url = "https://www.val-x.in",
   keywords = "IT services, software development, digital solutions, technology consulting, web development, mobile apps, cloud solutions, India, Kerala",
 }) => {
@@ -59,13 +59,26 @@ const SEO = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:width" content="1600" />
+      <meta property="og:image:height" content="1600" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:alt" content="VAL-X Logo" />
+      <meta property="og:site_name" content="VAL-X" />
 
       {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={url} />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@valx" />
+      <meta name="twitter:creator" content="@joeljmathew_" />
+      <meta name="twitter:url" content={url} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image:alt" content="VAL-X Logo" />
+
+      {/* WhatsApp specific */}
+      <meta property="og:image:secure_url" content={image} />
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:image:aspect_ratio" content="1" />
 
       {/* Enhanced JSON-LD with more details */}
       <script type="application/ld+json">
