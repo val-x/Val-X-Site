@@ -849,6 +849,343 @@ export const budgetEstimates = [
       },
     ],
   },
+  {
+    category: "Investment & Funding",
+    items: [
+      {
+        title: "Investor Matchmaking",
+        estimates: [
+          {
+            level: "Angel Investor Connect",
+            price: "₹3-5 lakhs",
+            usd: "$25,000-40,000",
+            gcc: "AED 92,000-147,000",
+          },
+          {
+            level: "VC Network Access",
+            price: "₹5-10 lakhs",
+            usd: "$40,000-80,000",
+            gcc: "AED 147,000-294,000",
+          },
+          {
+            level: "Global Investor Network",
+            price: "₹10-20 lakhs",
+            usd: "$80,000-160,000",
+            gcc: "AED 294,000-588,000",
+          },
+        ],
+      },
+      {
+        title: "Pitch Deck & Materials",
+        estimates: [
+          {
+            level: "Basic Pitch Package",
+            price: "₹1.5-3 lakhs",
+            usd: "$12,000-25,000",
+            gcc: "AED 44,000-92,000",
+          },
+          {
+            level: "Professional Package",
+            price: "₹3-6 lakhs",
+            usd: "$25,000-45,000",
+            gcc: "AED 92,000-165,000",
+          },
+          {
+            level: "Premium Package",
+            price: "₹6-12 lakhs",
+            usd: "$45,000-90,000",
+            gcc: "AED 165,000-330,000",
+          },
+        ],
+      },
+      {
+        title: "Due Diligence Support",
+        estimates: [
+          {
+            level: "Basic Assessment",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Comprehensive Review",
+            price: "₹4-8 lakhs",
+            usd: "$30,000-60,000",
+            gcc: "AED 110,000-220,000",
+          },
+          {
+            level: "Full Due Diligence",
+            price: "₹8-15 lakhs",
+            usd: "$60,000-120,000",
+            gcc: "AED 220,000-440,000",
+          },
+        ],
+      },
+      {
+        title: "Financial Modeling",
+        estimates: [
+          {
+            level: "Startup Model",
+            price: "₹1-2 lakhs",
+            usd: "$8,000-15,000",
+            gcc: "AED 30,000-55,000",
+          },
+          {
+            level: "Growth Stage Model",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Enterprise Valuation",
+            price: "₹4-8 lakhs",
+            usd: "$30,000-60,000",
+            gcc: "AED 110,000-220,000",
+          },
+        ],
+      },
+      {
+        title: "Investment Strategy",
+        estimates: [
+          {
+            level: "Market Entry Strategy",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Growth Strategy",
+            price: "₹4-8 lakhs",
+            usd: "$30,000-60,000",
+            gcc: "AED 110,000-220,000",
+          },
+          {
+            level: "Exit Strategy",
+            price: "₹8-15 lakhs",
+            usd: "$60,000-120,000",
+            gcc: "AED 220,000-440,000",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    category: "Startup Accounting",
+    items: [
+      {
+        title: "Bookkeeping Services",
+        estimates: [
+          {
+            level: "Basic Monthly Package",
+            price: "₹15,000-30,000",
+            usd: "$2,000-4,000",
+            gcc: "AED 7,500-15,000",
+          },
+          {
+            level: "Standard Monthly Package",
+            price: "₹30,000-60,000",
+            usd: "$4,000-8,000",
+            gcc: "AED 15,000-30,000",
+          },
+          {
+            level: "Premium Monthly Package",
+            price: "₹60,000-1.2 lakhs",
+            usd: "$8,000-15,000",
+            gcc: "AED 30,000-55,000",
+          },
+        ],
+      },
+      {
+        title: "Tax Planning & Filing",
+        estimates: [
+          {
+            level: "Basic Tax Package",
+            price: "₹50,000-1 lakh",
+            usd: "$6,000-12,000",
+            gcc: "AED 22,000-44,000",
+          },
+          {
+            level: "Comprehensive Tax Service",
+            price: "₹1-2 lakhs",
+            usd: "$12,000-24,000",
+            gcc: "AED 44,000-88,000",
+          },
+          {
+            level: "International Tax Planning",
+            price: "₹2-4 lakhs",
+            usd: "$24,000-48,000",
+            gcc: "AED 88,000-176,000",
+          },
+        ],
+      },
+      {
+        title: "Financial Compliance",
+        estimates: [
+          {
+            level: "Basic Compliance",
+            price: "₹75,000-1.5 lakhs",
+            usd: "$9,000-18,000",
+            gcc: "AED 33,000-66,000",
+          },
+          {
+            level: "Standard Compliance",
+            price: "₹1.5-3 lakhs",
+            usd: "$18,000-36,000",
+            gcc: "AED 66,000-132,000",
+          },
+          {
+            level: "Multi-jurisdiction Compliance",
+            price: "₹3-6 lakhs",
+            usd: "$36,000-72,000",
+            gcc: "AED 132,000-264,000",
+          },
+        ],
+      },
+      {
+        title: "CFO Services",
+        estimates: [
+          {
+            level: "Part-time CFO",
+            price: "₹1-2 lakhs",
+            usd: "$12,000-24,000",
+            gcc: "AED 44,000-88,000",
+          },
+          {
+            level: "Dedicated CFO",
+            price: "₹2-4 lakhs",
+            usd: "$24,000-48,000",
+            gcc: "AED 88,000-176,000",
+          },
+          {
+            level: "Strategic CFO Team",
+            price: "₹4-8 lakhs",
+            usd: "$48,000-96,000",
+            gcc: "AED 176,000-352,000",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    category: "Business Registration & Compliance",
+    items: [
+      {
+        title: "India Registration",
+        estimates: [
+          {
+            level: "Private Limited Company",
+            price: "₹15,000-30,000",
+            usd: "$2,000-4,000",
+            gcc: "AED 7,500-15,000",
+          },
+          {
+            level: "LLP Registration",
+            price: "₹10,000-20,000",
+            usd: "$1,500-3,000",
+            gcc: "AED 5,500-11,000",
+          },
+          {
+            level: "One Person Company",
+            price: "₹12,000-25,000",
+            usd: "$1,800-3,500",
+            gcc: "AED 6,600-13,000",
+          },
+        ],
+      },
+      {
+        title: "UAE Registration",
+        estimates: [
+          {
+            level: "Mainland Company",
+            price: "₹3-5 lakhs",
+            usd: "$25,000-40,000",
+            gcc: "AED 92,000-147,000",
+          },
+          {
+            level: "Free Zone Company",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Offshore Company",
+            price: "₹1.5-3 lakhs",
+            usd: "$12,000-25,000",
+            gcc: "AED 44,000-92,000",
+          },
+        ],
+      },
+      {
+        title: "US Registration",
+        estimates: [
+          {
+            level: "C-Corporation",
+            price: "₹1-2 lakhs",
+            usd: "$8,000-15,000",
+            gcc: "AED 30,000-55,000",
+          },
+          {
+            level: "LLC Registration",
+            price: "₹75,000-1.5 lakhs",
+            usd: "$6,000-12,000",
+            gcc: "AED 22,000-44,000",
+          },
+          {
+            level: "Delaware Corporation",
+            price: "₹1.2-2.5 lakhs",
+            usd: "$10,000-20,000",
+            gcc: "AED 37,000-74,000",
+          },
+        ],
+      },
+      {
+        title: "Singapore Registration",
+        estimates: [
+          {
+            level: "Private Limited Company",
+            price: "₹1.5-3 lakhs",
+            usd: "$12,000-25,000",
+            gcc: "AED 44,000-92,000",
+          },
+          {
+            level: "Branch Office",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Representative Office",
+            price: "₹1-2 lakhs",
+            usd: "$8,000-15,000",
+            gcc: "AED 30,000-55,000",
+          },
+        ],
+      },
+      {
+        title: "Global Compliance",
+        estimates: [
+          {
+            level: "Basic Compliance Package",
+            price: "₹2-4 lakhs",
+            usd: "$15,000-30,000",
+            gcc: "AED 55,000-110,000",
+          },
+          {
+            level: "Multi-country Compliance",
+            price: "₹4-8 lakhs",
+            usd: "$30,000-60,000",
+            gcc: "AED 110,000-220,000",
+          },
+          {
+            level: "Global Enterprise Package",
+            price: "₹8-15 lakhs",
+            usd: "$60,000-120,000",
+            gcc: "AED 220,000-440,000",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export const currencies = [
