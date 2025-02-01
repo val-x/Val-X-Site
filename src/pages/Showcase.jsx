@@ -19,8 +19,19 @@ import {
 import { useDebounce } from "../hooks/useDebounce";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { useInView } from "react-intersection-observer";
-import { ShareIcon, BookmarkIcon } from "@heroicons/react/24/outline";
+import {
+  ShareIcon,
+  BookmarkIcon,
+  MagnifyingGlassIcon,
+  FunnelIcon,
+} from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+import {
+  budgetEstimates,
+  currencies,
+  sortOptions,
+} from "../data/budgetEstimates";
+import BudgetEstimates from "../components/BudgetEstimates";
 
 // ProjectCard component
 const ProjectCard = ({
@@ -383,6 +394,7 @@ const Showcase = () => {
   const [modelLoading, setModelLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [activeTab, setActiveTab] = useState("projects");
   const ITEMS_PER_PAGE = 9;
 
   const { ref: loadMoreRef, inView } = useInView({
@@ -500,195 +512,122 @@ const Showcase = () => {
                 Explore our innovative solutions and success stories
               </p>
 
-              {/* View Controls */}
+              {/* Tab Controls */}
               <div className="flex justify-center gap-4 mb-8">
                 <button
-                  onClick={handleViewChange}
-                  disabled={isLoading}
+                  onClick={() => setActiveTab("projects")}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    ${showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
-                    ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    ${activeTab === "projects" ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
                 >
-                  {isLoading ? <LoadingSpinner /> : "Our Projects "}
+                  Projects
                 </button>
                 <button
-                  onClick={() => setShowModel(!showModel)}
+                  onClick={() => setActiveTab("budgetEstimates")}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    ${!showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
+                    ${activeTab === "budgetEstimates" ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
                 >
-                  Client Projects
+                  Budget Estimates
                 </button>
               </div>
+
+              {/* Project Type Controls - Only show when projects tab is active */}
+              {activeTab === "projects" && (
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={handleViewChange}
+                    disabled={isLoading}
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                      ${showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
+                      ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    {isLoading ? <LoadingSpinner /> : "Our Projects"}
+                  </button>
+                  <button
+                    onClick={() => setShowModel(!showModel)}
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                        ${!showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
+                  >
+                    Client Projects
+                  </button>
+                </div>
+              )}
             </motion.div>
 
-            {/* 3D Model View */}
-            {showModel && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative rounded-2xl overflow-hidden backdrop-blur-sm border border-white/10 mb-20"
-              >
-                <div className="aspect-[16/9] relative">
-                  {modelLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                      <LoadingSpinner />
+            {/* Tab Content */}
+            {activeTab === "projects" ? (
+              <>
+                {/* 3D Model View */}
+                {showModel && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="relative rounded-2xl overflow-hidden backdrop-blur-sm border border-white/10 mb-20"
+                  >
+                    <div className="aspect-[16/9] relative">
+                      {modelLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                          <LoadingSpinner />
+                        </div>
+                      )}
+                      <ModelView
+                        projects={modelProjects}
+                        onLoad={() => setModelLoading(false)}
+                      />
                     </div>
-                  )}
-                  <ModelView
-                    projects={modelProjects}
-                    onLoad={() => setModelLoading(false)}
-                  />
-                </div>
-              </motion.div>
-            )}
+                  </motion.div>
+                )}
 
-            {/* Gallery Controls */}
-            {!showModel && (
-              <div className="mb-12 space-y-6">
-                {/* Search Bar */}
-                <div className="max-w-md mx-auto">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Search projects..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
-                    />
-                    <svg
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                {/* Projects Grid Section */}
+                {!showModel && (
+                  <ErrorBoundary>
+                    <section className="py-20 relative">
+                      <div className="max-w-7xl mx-auto px-6">
+                        <ProjectGrid
+                          projects={paginatedProjects}
+                          isGridView={isGridView}
+                          onSelectProject={setSelectedProject}
+                        />
 
-                {/* Category Filter and Sort Controls */}
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(categoryStats).map(([category, count]) => (
-                      <CategoryBadge
-                        key={category}
-                        category={category}
-                        count={count}
-                        isSelected={selectedCategory === category}
-                        onClick={() => setSelectedCategory(category)}
-                      />
-                    ))}
-                  </div>
+                        {/* Infinite Scroll Trigger */}
+                        {hasMore && (
+                          <div ref={loadMoreRef} className="py-8 text-center">
+                            <LoadingSpinner />
+                          </div>
+                        )}
 
-                  {/* Sort Controls */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">Sort by:</span>
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white"
-                    >
-                      <option value={SORT_OPTIONS.NEWEST}>Newest</option>
-                      <option value={SORT_OPTIONS.POPULAR}>Most Popular</option>
-                      <option value={SORT_OPTIONS.RATING}>Highest Rated</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* View Toggle */}
-                <div className="flex gap-2 bg-white/5 rounded-full p-1">
-                  <button
-                    onClick={() => setIsGridView(true)}
-                    className={`p-2 rounded-full transition-all ${isGridView ? "bg-white/10 text-white" : "text-gray-400"}`}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setIsGridView(false)}
-                    className={`p-2 rounded-full transition-all ${!isGridView ? "bg-white/10 text-white" : "text-gray-400"}`}
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+                        {/* Empty State */}
+                        {filteredProjects.length === 0 && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="col-span-full text-center py-12"
+                          >
+                            <p className="text-gray-400 mb-4">
+                              No projects found matching your criteria
+                            </p>
+                            <button
+                              onClick={() => {
+                                setSelectedCategory("all");
+                                setSearchQuery("");
+                              }}
+                              className="text-violet-400 hover:text-violet-300 transition-colors"
+                            >
+                              Clear filters
+                            </button>
+                          </motion.div>
+                        )}
+                      </div>
+                    </section>
+                  </ErrorBoundary>
+                )}
+              </>
+            ) : (
+              <BudgetEstimates />
             )}
           </div>
         </section>
-
-        {/* Projects Grid Section */}
-        {!showModel && (
-          <ErrorBoundary>
-            <section className="py-20 relative">
-              <div className="max-w-7xl mx-auto px-6">
-                <ProjectGrid
-                  projects={paginatedProjects}
-                  isGridView={isGridView}
-                  onSelectProject={setSelectedProject}
-                />
-
-                {/* Infinite Scroll Trigger */}
-                {hasMore && (
-                  <div ref={loadMoreRef} className="py-8 text-center">
-                    <LoadingSpinner />
-                  </div>
-                )}
-
-                {/* Empty State */}
-                {filteredProjects.length === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="col-span-full text-center py-12"
-                  >
-                    <p className="text-gray-400 mb-4">
-                      No projects found matching your criteria
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSelectedCategory("all");
-                        setSearchQuery("");
-                      }}
-                      className="text-violet-400 hover:text-violet-300 transition-colors"
-                    >
-                      Clear filters
-                    </button>
-                  </motion.div>
-                )}
-              </div>
-            </section>
-          </ErrorBoundary>
-        )}
       </main>
 
       {/* Project Modal */}
