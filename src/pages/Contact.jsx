@@ -2,7 +2,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaBuilding,
+} from "react-icons/fa";
 import { supabase } from "../lib/supabase";
 import { toast } from "react-hot-toast";
 
@@ -120,12 +125,31 @@ const Contact = () => {
                       className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
                       rounded-lg border border-white/10"
                     >
+                      <img
+                        src="/assets/images/logo.png"
+                        alt="VAL-X Logo"
+                        className="w-6 h-6 object-contain"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-1">Company Name</h3>
+                      <p className="text-gray-400">
+                        VAL-X INTERNATIONAL TECHNOLOGIES PRIVATE LIMITED
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="p-3 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 
+                      rounded-lg border border-white/10"
+                    >
                       <FaMapMarkerAlt className="text-cyan-400" size={24} />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Our Location</h3>
                       <p className="text-gray-400">
-                        Veda, Mavoor Kozhikode, Kerala, India
+                        Veda, 673661 Mavoor Kozhikode, Kerala, India
                       </p>
                     </div>
                   </div>

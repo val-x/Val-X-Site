@@ -182,6 +182,12 @@ const techStacks = [
       { icon: <FaMicrosoft className="w-12 h-12" />, name: "Azure" },
     ],
   },
+  {
+    title: "Tailwind CSS",
+    technologies: [
+      { icon: <SiTailwindcss className="w-12 h-12" />, name: "Tailwind CSS" },
+    ],
+  },
 ];
 
 const testimonials = [

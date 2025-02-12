@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ModelView from "../components/ModelView";
+import ProjectDisplay from "../components/ProjectDisplay";
 import {
   modelProjects,
   clientProjects,
@@ -484,6 +485,13 @@ const Showcase = () => {
     return result;
   }, [filteredProjects, sortBy]);
 
+  const [activeView, setActiveView] = useState("seductor");
+  const seductorProject = modelProjects.find((p) => p.title === "Seductor");
+  const otherProjects = modelProjects.filter((p) => p.title !== "Seductor");
+
+  // Add new state for view mode
+  const [viewMode, setViewMode] = useState("grid");
+
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
@@ -515,122 +523,548 @@ const Showcase = () => {
               {/* Tab Controls */}
               <div className="flex justify-center gap-4 mb-8">
                 <button
-                  onClick={() => setActiveTab("projects")}
-                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                    ${activeTab === "projects" ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
-                >
-                  Projects
-                </button>
-                <button
-                  onClick={() => setActiveTab("budgetEstimates")}
+                  onClick={() => {
+                    setActiveTab("budgetEstimates");
+                    setShowModel(false);
+                  }}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
                     ${activeTab === "budgetEstimates" ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
                 >
                   Budget Estimates
                 </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("projects");
+                    setShowModel(false);
+                  }}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                    ${activeTab === "projects" && !showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
+                >
+                  Client Projects
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("projects");
+                    setShowModel(true);
+                  }}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                    ${activeTab === "projects" && showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
+                >
+                  Our Startups
+                </button>
               </div>
 
-              {/* Project Type Controls - Only show when projects tab is active */}
-              {activeTab === "projects" && (
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={handleViewChange}
-                    disabled={isLoading}
-                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                      ${showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}
-                      ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    {isLoading ? <LoadingSpinner /> : "Our Projects"}
-                  </button>
-                  <button
-                    onClick={() => setShowModel(!showModel)}
-                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
-                        ${!showModel ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white" : "bg-white/5 text-white/60 hover:bg-white/10"}`}
-                  >
-                    Client Projects
-                  </button>
-                </div>
+              {/* Project Navigation */}
+              {activeTab === "projects" && showModel && (
+                <>
+                  {/* Desktop Navigation */}
+                  <div className="fixed left-8 top-1/2 -translate-y-1/2 z-20 hidden lg:block">
+                    <motion.div
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="relative"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 rounded-3xl blur-xl" />
+                      <div className="relative bg-black/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
+                        <div className="flex flex-col items-center">
+                          <div className="mb-6 text-center">
+                            <h3 className="text-sm font-medium text-white/70">
+                              Navigation
+                            </h3>
+                            <div className="mt-2 h-0.5 w-12 bg-gradient-to-r from-cyan-500/50 via-violet-500/50 to-fuchsia-500/50" />
+                          </div>
+
+                          {/* Navigation Buttons */}
+                          <div className="space-y-4 w-full">
+                            <motion.button
+                              onClick={() => setActiveView("seductor")}
+                              className={`w-full group`}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <div
+                                className={`p-4 rounded-xl transition-all duration-300 ${
+                                  activeView === "seductor"
+                                    ? "bg-gradient-to-r from-pink-400 via-rose-400 to-red-400"
+                                    : "bg-white/5 hover:bg-white/10"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div
+                                    className={`p-2 rounded-lg ${
+                                      activeView === "seductor"
+                                        ? "bg-white/20"
+                                        : "bg-white/5"
+                                    }`}
+                                  >
+                                    <svg
+                                      className="w-5 h-5 text-white"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                      />
+                                    </svg>
+                                  </div>
+                                  <span
+                                    className={`text-sm font-medium ${
+                                      activeView === "seductor"
+                                        ? "text-white"
+                                        : "text-white/70"
+                                    }`}
+                                  >
+                                    Our Products
+                                  </span>
+                                </div>
+                              </div>
+                            </motion.button>
+
+                            <motion.button
+                              onClick={() => setActiveView("others")}
+                              className={`w-full group`}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <div
+                                className={`p-4 rounded-xl transition-all duration-300 ${
+                                  activeView === "others"
+                                    ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                    : "bg-white/5 hover:bg-white/10"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div
+                                    className={`p-2 rounded-lg ${
+                                      activeView === "others"
+                                        ? "bg-white/20"
+                                        : "bg-white/5"
+                                    }`}
+                                  >
+                                    <svg
+                                      className="w-5 h-5 text-white"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                                      />
+                                    </svg>
+                                  </div>
+                                  <span
+                                    className={`text-sm font-medium ${
+                                      activeView === "others"
+                                        ? "text-white"
+                                        : "text-white/70"
+                                    }`}
+                                  >
+                                    Our Projects
+                                  </span>
+                                </div>
+                              </div>
+                            </motion.button>
+                          </div>
+
+                          {/* View Mode Controls */}
+                          <div className="mt-8 w-full">
+                            <div className="p-4 rounded-xl bg-white/5 space-y-3">
+                              <p className="text-xs text-white/50 text-center">
+                                View Mode
+                              </p>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => setViewMode("grid")}
+                                  className={`flex-1 p-2 rounded-lg transition-all ${
+                                    viewMode === "grid"
+                                      ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                      : "bg-white/5 hover:bg-white/10"
+                                  }`}
+                                >
+                                  <svg
+                                    className="w-4 h-4 mx-auto text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                                    />
+                                  </svg>
+                                </button>
+                                <button
+                                  onClick={() => setViewMode("list")}
+                                  className={`flex-1 p-2 rounded-lg transition-all ${
+                                    viewMode === "list"
+                                      ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                      : "bg-white/5 hover:bg-white/10"
+                                  }`}
+                                >
+                                  <svg
+                                    className="w-4 h-4 mx-auto text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                  </svg>
+                                </button>
+                                <button
+                                  onClick={() => setViewMode("card")}
+                                  className={`flex-1 p-2 rounded-lg transition-all ${
+                                    viewMode === "card"
+                                      ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                      : "bg-white/5 hover:bg-white/10"
+                                  }`}
+                                >
+                                  <svg
+                                    className="w-4 h-4 mx-auto text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Mobile Navigation */}
+                  <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-20 w-auto">
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="relative"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 rounded-full blur-xl" />
+                      <div className="relative bg-black/50 backdrop-blur-xl border border-white/10 rounded-full p-2">
+                        <div className="flex items-center gap-2">
+                          <motion.button
+                            onClick={() => setActiveView("seductor")}
+                            className={`p-3 rounded-full transition-all ${
+                              activeView === "seductor"
+                                ? "bg-gradient-to-r from-pink-400 via-rose-400 to-red-400"
+                                : "bg-white/5"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                              />
+                            </svg>
+                          </motion.button>
+
+                          <motion.button
+                            onClick={() => setActiveView("others")}
+                            className={`p-3 rounded-full transition-all ${
+                              activeView === "others"
+                                ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                : "bg-white/5"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                              />
+                            </svg>
+                          </motion.button>
+
+                          <div className="w-px h-6 bg-white/10" />
+
+                          {/* View Mode Controls for Mobile */}
+                          <motion.button
+                            onClick={() => setViewMode("grid")}
+                            className={`p-3 rounded-full transition-all ${
+                              viewMode === "grid"
+                                ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                : "bg-white/5"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                              />
+                            </svg>
+                          </motion.button>
+
+                          <motion.button
+                            onClick={() => setViewMode("list")}
+                            className={`p-3 rounded-full transition-all ${
+                              viewMode === "list"
+                                ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                : "bg-white/5"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6h16M4 12h16M4 18h16"
+                              />
+                            </svg>
+                          </motion.button>
+
+                          <motion.button
+                            onClick={() => setViewMode("card")}
+                            className={`p-3 rounded-full transition-all ${
+                              viewMode === "card"
+                                ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400"
+                                : "bg-white/5"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                              />
+                            </svg>
+                          </motion.button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </>
               )}
             </motion.div>
 
+            {/* Mobile Warning for 3D View */}
+            {activeTab === "projects" &&
+              showModel &&
+              activeView === "seductor" && (
+                <div className="md:hidden px-6">
+                  <div className="bg-black/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-center">
+                    <svg
+                      className="w-12 h-12 mx-auto text-white/70 mb-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      Desktop View Required
+                    </h3>
+                    <p className="text-gray-400">
+                      The 3D product view is optimized for desktop and tablet
+                      devices. Please switch to a larger screen for the best
+                      experience.
+                    </p>
+                  </div>
+                </div>
+              )}
+
             {/* Tab Content */}
-            {activeTab === "projects" ? (
-              <>
-                {/* 3D Model View */}
-                {showModel && (
+            {activeTab === "projects" && showModel ? (
+              <AnimatePresence mode="wait">
+                {activeView === "seductor" ? (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative rounded-2xl overflow-hidden backdrop-blur-sm border border-white/10 mb-20"
+                    key="seductor"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="md:pl-64 px-6"
                   >
-                    <div className="aspect-[16/9] relative">
-                      {modelLoading && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                          <LoadingSpinner />
+                    {/* Seductor 3D View */}
+                    <div className="hidden md:block">
+                      {seductorProject && (
+                        <div className="space-y-8">
+                          <div className="h-[80vh] relative rounded-2xl overflow-hidden border border-white/10">
+                            <ModelView projects={[seductorProject]} />
+                          </div>
+                          {/* Project Details */}
+                          <div className="max-w-4xl mx-auto text-center space-y-6">
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.2 }}
+                            >
+                              <span
+                                className={`inline-block px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r ${seductorProject.color} mb-4`}
+                              >
+                                {seductorProject.category}
+                              </span>
+                              <h2 className="text-4xl font-bold text-white mb-4">
+                                {seductorProject.title}
+                              </h2>
+                              <p className="text-lg text-gray-400">
+                                {seductorProject.description}
+                              </p>
+                            </motion.div>
+
+                            {/* Stats */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.3 }}
+                              className="grid grid-cols-3 gap-6 p-6 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10"
+                            >
+                              <div className="text-center">
+                                <p className="text-sm text-gray-400 mb-1">
+                                  Users
+                                </p>
+                                <p className="text-2xl font-bold text-cyan-400">
+                                  {seductorProject.stats.users}
+                                </p>
+                              </div>
+                              <div className="text-center">
+                                <p className="text-sm text-gray-400 mb-1">
+                                  Rating
+                                </p>
+                                <p className="text-2xl font-bold text-violet-400">
+                                  {seductorProject.stats.rating}
+                                </p>
+                              </div>
+                              <div className="text-center">
+                                <p className="text-sm text-gray-400 mb-1">
+                                  Growth
+                                </p>
+                                <p className="text-2xl font-bold text-fuchsia-400">
+                                  {seductorProject.stats.growth}
+                                </p>
+                              </div>
+                            </motion.div>
+
+                            {/* Features */}
+                            {seductorProject.specs?.features && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+                              >
+                                {seductorProject.specs.features.map(
+                                  (feature, index) => (
+                                    <div
+                                      key={index}
+                                      className="p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
+                                    >
+                                      <p className="text-sm text-white/70">
+                                        {feature}
+                                      </p>
+                                    </div>
+                                  )
+                                )}
+                              </motion.div>
+                            )}
+                          </div>
                         </div>
                       )}
-                      <ModelView
-                        projects={modelProjects}
-                        onLoad={() => setModelLoading(false)}
-                      />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="others"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="md:pl-64 px-6"
+                  >
+                    {/* Other Projects Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                      {otherProjects.map((project) => (
+                        <ProjectDisplay
+                          key={project.id}
+                          project={project}
+                          onSelect={setSelectedProject}
+                        />
+                      ))}
                     </div>
                   </motion.div>
                 )}
-
-                {/* Projects Grid Section */}
-                {!showModel && (
-                  <ErrorBoundary>
-                    <section className="py-20 relative">
-                      <div className="max-w-7xl mx-auto px-6">
-                        <ProjectGrid
-                          projects={paginatedProjects}
-                          isGridView={isGridView}
-                          onSelectProject={setSelectedProject}
-                        />
-
-                        {/* Infinite Scroll Trigger */}
-                        {hasMore && (
-                          <div ref={loadMoreRef} className="py-8 text-center">
-                            <LoadingSpinner />
-                          </div>
-                        )}
-
-                        {/* Empty State */}
-                        {filteredProjects.length === 0 && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="col-span-full text-center py-12"
-                          >
-                            <p className="text-gray-400 mb-4">
-                              No projects found matching your criteria
-                            </p>
-                            <button
-                              onClick={() => {
-                                setSelectedCategory("all");
-                                setSearchQuery("");
-                              }}
-                              className="text-violet-400 hover:text-violet-300 transition-colors"
-                            >
-                              Clear filters
-                            </button>
-                          </motion.div>
-                        )}
-                      </div>
-                    </section>
-                  </ErrorBoundary>
-                )}
-              </>
-            ) : (
+              </AnimatePresence>
+            ) : activeTab === "budgetEstimates" ? (
               <BudgetEstimates />
+            ) : (
+              // Client Projects content
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
+                {clientProjects.map((project) => (
+                  <ProjectDisplay
+                    key={project.id}
+                    project={project}
+                    onSelect={setSelectedProject}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </section>
       </main>
 
-      {/* Project Modal */}
+      {/* Project Details Modal */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal

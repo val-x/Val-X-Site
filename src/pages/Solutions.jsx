@@ -1,350 +1,934 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ComputerDesktopIcon,
-  DevicePhoneMobileIcon,
-  CloudIcon,
-  CpuChipIcon,
-  ShieldCheckIcon,
-  CircleStackIcon,
-  GlobeAltIcon,
-  BoltIcon,
-  SwatchIcon,
-  ChartBarIcon,
-  PresentationChartLineIcon,
-  ShoppingBagIcon,
+  FaGithub,
+  FaBook,
+  FaReact,
+  FaNodeJs,
+  FaDocker,
+  FaCogs,
+  FaAws,
+  FaMicrosoft,
+  FaGoogle,
+  FaMobile,
+  FaCloud,
+  FaShieldAlt,
+  FaChartBar,
+  FaPaintBrush,
+  FaShoppingCart,
+  FaRobot,
+  FaMicrochip,
+  FaDatabase,
+  FaCode,
+  FaTools,
+  FaLock,
+  FaBug,
+  FaChartLine,
+  FaBullhorn,
+  FaCreditCard,
+  FaUsers,
+  FaVideo,
+  FaComment,
+  FaFile,
+  FaBrain,
+  FaTerminal,
+  FaLink,
+  FaTicketAlt,
+  FaCalendar,
+  FaDesktop,
+  FaServer,
+  FaGlobe,
+  FaCube,
+} from "react-icons/fa";
+import {
+  SiTypescript,
+  SiMongodb,
+  SiPostgresql,
+  SiTensorflow,
+  SiKubernetes,
+  SiGoogleanalytics,
+  SiMailchimp,
+  SiHubspot,
+  SiDjango,
+  SiFastapi,
+  SiSpringboot,
+  SiElasticsearch,
+  SiHasura,
+  SiGitlab,
+  SiBitbucket,
+  SiPostman,
+  SiInsomnia,
+  SiJetbrains,
+  SiSelenium,
+  SiTestinglibrary,
+  SiK6,
+  SiSonarqube,
+  SiMixpanel,
+  SiHotjar,
+  SiQuickbooks,
+  SiAsana,
+  SiNotion,
+  SiAirtable,
+  SiNextdotjs,
+  SiSvelte,
+  SiFlutter,
+  SiKotlin,
+  SiSwift,
+  SiRust,
+  SiGo,
+  SiRedis,
+  SiMysql,
+  SiVercel,
+  SiFirebase,
+  SiSupabase,
+  SiAppwrite,
+  SiGraphql,
+  SiPrisma,
+  SiJest,
+  SiCypress,
+  SiVitest,
+  SiSquare,
+  SiSalesforce,
+  SiStrapi,
+  SiGhost,
+  SiDirectus,
+  SiNextcloud,
+  SiKeycloak,
+  SiPosthog,
+  SiApachesuperset,
+  SiMetabase,
+  SiMattermost,
+  SiJitsi,
+} from "react-icons/si";
+import { VscCode } from "react-icons/vsc";
+import { TbTestPipe, TbBrandReactNative } from "react-icons/tb";
+import { BsGearFill, BsLightningChargeFill } from "react-icons/bs";
+import {
   TrophyIcon,
   LifebuoyIcon,
   LightBulbIcon,
   ChartBarSquareIcon,
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-  FunnelIcon,
 } from "@heroicons/react/24/outline";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Technologies from "../components/Technologies";
 
-import {
-  FaAws,
-  FaMicrosoft,
-  FaGoogle,
-  FaReact,
-  FaNodeJs,
-  FaPython,
-  FaMobile,
-} from "react-icons/fa";
-
-import {
-  SiAppwrite,
-  SiSupabase,
-  SiExpress,
-  SiMongodb,
-  SiPostgresql,
-  SiNextdotjs,
-  SiCapacitor,
-  SiPrisma,
-  SiTypescript,
-  SiExpo,
-  SiFlutter,
-  SiFirebase,
-  SiAndroid,
-  SiIos,
-  SiKotlin,
-  SiSwift,
-  SiBun,
-  SiGraphql,
-} from "react-icons/si";
-
-import { useState } from "react";
-import {
-  budgetEstimates,
-  currencies,
-  sortOptions,
-} from "../data/budgetEstimates";
-import BudgetEstimates from "../components/BudgetEstimates";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const techStacks = [
-  {
-    title: "MERN Stack",
-    technologies: [
-      { icon: FaReact, name: "React" },
-      { icon: SiExpress, name: "Express.js" },
-      { icon: SiMongodb, name: "MongoDB" },
-      { icon: FaNodeJs, name: "Node.js" },
+const openSourceCategories = {
+  lowCode: {
+    title: "Development & Low Code Platforms",
+    items: [
+      {
+        name: "NocoBase",
+        description: "No-Code App Builder for creating business applications",
+        docs: "https://docs.nocobase.com/",
+        github: "https://github.com/nocobase/nocobase",
+        icon: FaCode,
+      },
+      {
+        name: "AppSmith",
+        description:
+          "Open-source framework to build admin panels and internal tools",
+        docs: "https://docs.appsmith.com/",
+        github: "https://github.com/appsmithorg/appsmith",
+        icon: FaTools,
+      },
+      {
+        name: "ToolJet",
+        description: "Low-code platform for building business applications",
+        docs: "https://docs.tooljet.com/",
+        github: "https://github.com/ToolJet/ToolJet",
+        icon: FaCogs,
+      },
+      {
+        name: "Budibase",
+        description:
+          "Low-code platform for creating internal tools and workflows",
+        docs: "https://docs.budibase.com/",
+        github: "https://github.com/Budibase/budibase",
+        icon: FaCode,
+      },
+      {
+        name: "Corteza",
+        description: "100% open-source digital work platform",
+        docs: "https://docs.cortezaproject.org/",
+        github: "https://github.com/cortezaproject/corteza",
+        icon: FaTools,
+      },
+      {
+        name: "NocoDB",
+        description: "Open Source Airtable Alternative",
+        docs: "https://docs.nocodb.com/",
+        github: "https://github.com/nocodb/nocodb",
+        icon: FaDatabase,
+      },
+      {
+        name: "APITable",
+        description: "Visual Database & Workflow Builder",
+        github: "https://github.com/apitable/apitable",
+        icon: FaDatabase,
+      },
+      {
+        name: "Baserow",
+        description: "Open source no-code database and Airtable alternative",
+        docs: "https://baserow.io/docs/",
+        github: "https://github.com/baserow/baserow",
+        icon: FaDatabase,
+      },
     ],
   },
-  {
-    title: "PERN Stack",
-    technologies: [
-      { icon: FaReact, name: "React" },
-      { icon: SiExpress, name: "Express.js" },
-      { icon: SiPostgresql, name: "PostgreSQL" },
-      { icon: FaNodeJs, name: "Node.js" },
+  backend: {
+    title: "Backend & Database",
+    items: [
+      {
+        name: "Supabase",
+        description: "Open source Firebase alternative",
+        docs: "https://supabase.com/docs",
+        github: "https://github.com/supabase/supabase",
+        icon: SiSupabase,
+      },
+      {
+        name: "Appwrite",
+        description:
+          "Secure backend server for web, mobile & Flutter developers",
+        docs: "https://appwrite.io/docs",
+        github: "https://github.com/appwrite/appwrite",
+        icon: SiAppwrite,
+      },
+      {
+        name: "Parse",
+        description: "Open source application framework",
+        docs: "https://docs.parseplatform.org/",
+        github: "https://github.com/parse-community/parse-server",
+        icon: FaCode,
+      },
+      {
+        name: "PocketBase",
+        description: "Open Source backend in 1 file",
+        docs: "https://pocketbase.io/docs/",
+        github: "https://github.com/pocketbase/pocketbase",
+        icon: FaDatabase,
+      },
+      {
+        name: "Hasura",
+        description: "Instant GraphQL on all your data",
+        docs: "https://hasura.io/docs/",
+        github: "https://github.com/hasura/graphql-engine",
+        icon: SiHasura,
+      },
+      {
+        name: "MinIO",
+        description: "High Performance Object Storage",
+        docs: "https://min.io/docs/minio/linux/index.html",
+        github: "https://github.com/minio/minio",
+        icon: FaDatabase,
+      },
+      {
+        name: "SFTPGo",
+        description: "Fully featured SFTP server",
+        docs: "https://github.com/drakkan/sftpgo/tree/main/docs",
+        github: "https://github.com/drakkan/sftpgo",
+        icon: FaCloud,
+      },
+      {
+        name: "Valkey",
+        description: "Redis Alternative",
+        github: "https://github.com/valkey/valkey",
+        icon: FaDatabase,
+      },
     ],
   },
-  {
-    title: "Next.js PWA",
-    technologies: [
-      { icon: SiNextdotjs, name: "Next.js" },
-      { icon: SiCapacitor, name: "Capacitor" },
-      { icon: SiPrisma, name: "Prisma" },
-      { icon: SiTypescript, name: "TypeScript" },
-    ],
-  },
-  {
-    title: "Cross-Platform Mobile",
-    technologies: [
-      { icon: FaMobile, name: "React Native" },
-      { icon: SiExpo, name: "Expo" },
-      { icon: SiFlutter, name: "Flutter" },
-      { icon: SiFirebase, name: "Firebase" },
-    ],
-  },
-  {
-    title: "Native Mobile",
-    technologies: [
-      { icon: SiAndroid, name: "Android" },
-      { icon: SiIos, name: "iOS" },
-      { icon: SiKotlin, name: "Kotlin" },
-      { icon: SiSwift, name: "Swift" },
-    ],
-  },
-  {
-    title: "Backend Solutions",
-    technologies: [
-      { icon: FaPython, name: "Python" },
-      { icon: FaNodeJs, name: "Node.js" },
-      { icon: SiBun, name: "Bun" },
-      { icon: SiGraphql, name: "GraphQL" },
-    ],
-  },
-  {
-    title: "Cloud Services",
-    technologies: [
-      { icon: SiAppwrite, name: "Appwrite" },
-      { icon: SiSupabase, name: "Supabase" },
-      { icon: FaAws, name: "AWS" },
-      { icon: FaMicrosoft, name: "Azure" },
-    ],
-  },
-];
-
-const services = [
-  {
-    title: "Custom Software Development",
-    description:
-      "Tailored solutions designed to meet your specific business needs and challenges.",
-    features: [
-      "Scalable Architecture",
-      "Modern Tech Stack",
-      "Agile Development",
-      "Regular Updates",
-    ],
-    icon: ComputerDesktopIcon,
-    details: [
-      "Enterprise Applications",
-      "Web Applications",
-      "API Development",
-      "Legacy System Modernization",
-    ],
-  },
-  {
-    title: "Mobile App Development",
-    description:
-      "Native and cross-platform mobile applications that deliver exceptional user experiences.",
-    features: [
-      "iOS & Android",
-      "React Native",
-      "UI/UX Design",
-      "App Store Support",
-    ],
-    icon: DevicePhoneMobileIcon,
-    details: [
-      "Native iOS Development",
-      "Native Android Development",
-      "Cross-platform Solutions",
-      "Mobile UI/UX Design",
-    ],
-  },
-  {
-    title: "Cloud Solutions",
-    description:
-      "Comprehensive cloud services to optimize your infrastructure and reduce costs.",
-    features: ["Cloud Migration", "DevOps", "24/7 Monitoring", "Security"],
-    icon: CloudIcon,
-    details: [
-      "AWS Solutions",
-      "Azure Integration",
-      "Cloud Architecture",
-      "DevOps Implementation",
-    ],
-  },
-  {
+  ai: {
     title: "AI & Machine Learning",
-    description:
-      "Intelligent solutions that automate processes and unlock valuable insights.",
-    features: [
-      "Data Analytics",
-      "Predictive Models",
-      "Process Automation",
-      "Custom AI Solutions",
-    ],
-    icon: CpuChipIcon,
-    details: [
-      "Machine Learning Models",
-      "Natural Language Processing",
-      "Computer Vision",
-      "Predictive Analytics",
-    ],
-  },
-  {
-    title: "Cybersecurity Solutions",
-    description:
-      "Comprehensive security services to protect your digital assets and infrastructure.",
-    features: [
-      "Threat Detection",
-      "Security Audits",
-      "Compliance Management",
-      "Incident Response",
-    ],
-    icon: ShieldCheckIcon,
-    details: [
-      "Penetration Testing",
-      "Security Architecture",
-      "Vulnerability Assessment",
-      "Security Training",
-    ],
-  },
-  {
-    title: "Blockchain Development",
-    description:
-      "Innovative blockchain solutions for secure and transparent business operations.",
-    features: [
-      "Smart Contracts",
-      "DeFi Solutions",
-      "NFT Platforms",
-      "Private Chains",
-    ],
-    icon: CircleStackIcon,
-    details: [
-      "Ethereum Development",
-      "Solana Integration",
-      "Web3 Applications",
-      "Token Development",
-    ],
-  },
-  {
-    title: "IoT Solutions",
-    description:
-      "Connected device solutions that bridge the physical and digital worlds.",
-    features: [
-      "Device Management",
-      "Real-time Analytics",
-      "Edge Computing",
-      "IoT Security",
-    ],
-    icon: GlobeAltIcon,
-    details: [
-      "Sensor Integration",
-      "IoT Platform Development",
-      "Industrial IoT",
-      "Smart Home Solutions",
+    items: [
+      {
+        name: "Ollama",
+        description: "Get up and running with large language models locally",
+        docs: "https://ollama.ai/docs",
+        github: "https://github.com/ollama/ollama",
+        icon: FaBrain,
+      },
+      {
+        name: "AnythingLLM",
+        description:
+          "A full-stack application for private ChatGPT-like experience",
+        github: "https://github.com/Mintplex-Labs/anything-llm",
+        icon: FaRobot,
+      },
+      {
+        name: "ComfyUI",
+        description: "A powerful and modular stable diffusion GUI",
+        github: "https://github.com/comfyanonymous/ComfyUI",
+        icon: FaPaintBrush,
+      },
+      {
+        name: "Dify",
+        description: "Open Source AI API and LLMOps platform",
+        docs: "https://docs.dify.ai/",
+        github: "https://github.com/langgenius/dify",
+        icon: FaBrain,
+      },
+      {
+        name: "FlowiseAI",
+        description: "Drag & drop UI to build LLM apps",
+        docs: "https://flowiseai.com/",
+        github: "https://github.com/FlowiseAI/Flowise",
+        icon: FaRobot,
+      },
+      {
+        name: "LobeChat",
+        description: "Open source ChatGPT/LLM UI framework",
+        github: "https://github.com/lobehub/lobe-chat",
+        icon: FaComment,
+      },
+      {
+        name: "Typebot",
+        description: "Conversational Forms & Chatbot Builder",
+        docs: "https://docs.typebot.io/",
+        github: "https://github.com/baptisteArno/typebot.io",
+        icon: FaRobot,
+      },
+      {
+        name: "LanguageTool",
+        description: "Style and Grammar Checker",
+        docs: "https://dev.languagetool.org/",
+        github: "https://github.com/languagetool-org/languagetool",
+        icon: FaCode,
+      },
     ],
   },
-  {
-    title: "Business Automation",
-    description:
-      "Streamline operations and boost productivity with intelligent automation solutions.",
-    features: [
-      "Workflow Automation",
-      "Document Processing",
-      "Business Intelligence",
-      "Integration Services",
-    ],
-    icon: BoltIcon,
-    details: [
-      "RPA Implementation",
-      "Process Optimization",
-      "Custom Workflows",
-      "Data Integration",
-    ],
-  },
-  {
-    title: "UI/UX Design",
-    description:
-      "Create exceptional digital experiences that delight users and drive engagement.",
-    features: [
-      "User Research",
-      "Wireframing",
-      "Prototyping",
-      "Usability Testing",
-    ],
-    icon: SwatchIcon,
-    details: [
-      "Interface Design",
-      "Design Systems",
-      "Mobile UX",
-      "Accessibility",
-    ],
-  },
-  {
-    title: "Digital Marketing & SEO",
-    description:
-      "Boost your online presence and reach your target audience effectively.",
-    features: [
-      "SEO Optimization",
-      "Content Strategy",
-      "Analytics",
-      "Performance Tracking",
-    ],
-    icon: ChartBarIcon,
-    details: [
-      "Technical SEO",
-      "Content Marketing",
-      "Search Analytics",
-      "Conversion Optimization",
-    ],
-  },
-  {
-    title: "Data Analytics",
-    description:
-      "Transform raw data into actionable insights for informed decision-making.",
-    features: [
-      "Big Data Processing",
-      "Visualization",
-      "Predictive Analytics",
-      "Real-time Analytics",
-    ],
-    icon: PresentationChartLineIcon,
-    details: [
-      "Data Warehousing",
-      "Business Intelligence",
-      "Statistical Analysis",
-      "Custom Dashboards",
+  communication: {
+    title: "Communication & Collaboration",
+    items: [
+      {
+        name: "Mattermost",
+        description: "Open source platform for secure collaboration",
+        docs: "https://docs.mattermost.com/",
+        github: "https://github.com/mattermost/mattermost",
+        icon: SiMattermost,
+      },
+      {
+        name: "MiroTalk",
+        description: "Free WebRTC browser-based video calls",
+        github: "https://github.com/miroslavpejic85/mirotalk",
+        icon: FaVideo,
+      },
+      {
+        name: "Jitsi Meet",
+        description: "Secure, flexible video conferencing",
+        docs: "https://jitsi.github.io/handbook/",
+        github: "https://github.com/jitsi/jitsi-meet",
+        icon: SiJitsi,
+      },
+      {
+        name: "Chatwoot",
+        description: "Customer engagement platform",
+        docs: "https://www.chatwoot.com/docs/",
+        github: "https://github.com/chatwoot/chatwoot",
+        icon: FaComment,
+      },
+      {
+        name: "HumHub",
+        description: "Open Source Social Network Kit",
+        docs: "https://docs.humhub.org/",
+        github: "https://github.com/humhub/humhub",
+        icon: FaUsers,
+      },
+      {
+        name: "Chaskiq",
+        description: "Open Source Messaging Platform",
+        docs: "https://dev.chaskiq.io/",
+        github: "https://github.com/chaskiq/chaskiq",
+        icon: FaComment,
+      },
+      {
+        name: "Papercups",
+        description: "Open Source Customer Service Platform",
+        github: "https://github.com/papercups-io/papercups",
+        icon: FaComment,
+      },
+      {
+        name: "Discourse",
+        description: "Modern Discussion Platform",
+        docs: "https://meta.discourse.org/",
+        github: "https://github.com/discourse/discourse",
+        icon: FaUsers,
+      },
     ],
   },
-  {
-    title: "E-commerce Solutions",
-    description:
-      "Build and optimize digital commerce platforms for maximum revenue.",
-    features: [
-      "Platform Development",
-      "Payment Integration",
-      "Inventory Management",
-      "Mobile Commerce",
-    ],
-    icon: ShoppingBagIcon,
-    details: [
-      "Custom E-commerce",
-      "Marketplace Solutions",
-      "Shopping Cart Systems",
-      "Order Management",
+  cms: {
+    title: "Content Management",
+    items: [
+      {
+        name: "Strapi",
+        description: "Open source Node.js Headless CMS",
+        docs: "https://docs.strapi.io/",
+        github: "https://github.com/strapi/strapi",
+        icon: SiStrapi,
+      },
+      {
+        name: "Ghost",
+        description: "Professional publishing platform",
+        docs: "https://ghost.org/docs/",
+        github: "https://github.com/TryGhost/Ghost",
+        icon: SiGhost,
+      },
+      {
+        name: "Directus",
+        description: "Open Data Platform for any database",
+        docs: "https://docs.directus.io/",
+        github: "https://github.com/directus/directus",
+        icon: SiDirectus,
+      },
+      {
+        name: "Bookstack",
+        description: "Self-Hosted Documentation Platform",
+        docs: "https://www.bookstackapp.com/docs/",
+        github: "https://github.com/BookStackApp/BookStack",
+        icon: FaBook,
+      },
+      {
+        name: "Outline",
+        description: "Team Knowledge Base & Wiki",
+        docs: "https://www.getoutline.com/developers",
+        github: "https://github.com/outline/outline",
+        icon: FaFile,
+      },
+      {
+        name: "Flarum",
+        description: "Modern Forum Software",
+        docs: "https://docs.flarum.org/",
+        github: "https://github.com/flarum/framework",
+        icon: FaUsers,
+      },
+      {
+        name: "Lemmy",
+        description: "Federated Social Platform",
+        docs: "https://join-lemmy.org/docs/",
+        github: "https://github.com/LemmyNet/lemmy",
+        icon: FaUsers,
+      },
+      {
+        name: "Misskey",
+        description: "Decentralized Social Media Platform",
+        docs: "https://misskey-hub.net/docs/",
+        github: "https://github.com/misskey-dev/misskey",
+        icon: FaUsers,
+      },
     ],
   },
-];
+  documents: {
+    title: "Document Management",
+    items: [
+      {
+        name: "NextCloud",
+        description: "Safe home for all your data",
+        docs: "https://docs.nextcloud.com/",
+        github: "https://github.com/nextcloud/server",
+        icon: SiNextcloud,
+      },
+      {
+        name: "Paperless-ngx",
+        description: "Document management system",
+        docs: "https://docs.paperless-ngx.com/",
+        github: "https://github.com/paperless-ngx/paperless-ngx",
+        icon: FaFile,
+      },
+      {
+        name: "Pydio Cells",
+        description: "Modern File Sharing Platform",
+        docs: "https://pydio.com/en/docs/",
+        github: "https://github.com/pydio/cells",
+        icon: FaFile,
+      },
+      {
+        name: "Documenso",
+        description: "Open Source DocuSign Alternative",
+        docs: "https://documenso.com/docs",
+        github: "https://github.com/documenso/documenso",
+        icon: FaFile,
+      },
+      {
+        name: "StirlingPDF",
+        description: "Powerful PDF Processing Tools",
+        github: "https://github.com/Stirling-Tools/Stirling-PDF",
+        icon: FaFile,
+      },
+      {
+        name: "Linkwarden",
+        description: "Self-hosted Bookmark Manager",
+        docs: "https://docs.linkwarden.app/",
+        github: "https://github.com/linkwarden/linkwarden",
+        icon: FaFile,
+      },
+      {
+        name: "DocuSeal",
+        description: "Open Source Document Signing",
+        github: "https://github.com/docuseal/docuseal",
+        icon: FaFile,
+      },
+      {
+        name: "Tolgee",
+        description: "Open Source Translation Platform",
+        docs: "https://tolgee.io/docs",
+        github: "https://github.com/tolgee/tolgee-platform",
+        icon: FaFile,
+      },
+    ],
+  },
+  auth: {
+    title: "Authentication & Identity",
+    items: [
+      {
+        name: "Keycloak",
+        description: "Open Source Identity and Access Management",
+        docs: "https://www.keycloak.org/documentation",
+        github: "https://github.com/keycloak/keycloak",
+        icon: SiKeycloak,
+      },
+      {
+        name: "Logto",
+        description: "Auth solution for modern apps and APIs",
+        docs: "https://docs.logto.io/",
+        github: "https://github.com/logto-io/logto",
+        icon: FaLock,
+      },
+      {
+        name: "Zitadel",
+        description: "Cloud Native Identity & Access Management",
+        docs: "https://zitadel.com/docs/",
+        github: "https://github.com/zitadel/zitadel",
+        icon: FaLock,
+      },
+      {
+        name: "Infisical",
+        description: "Open Source Secret Management",
+        docs: "https://infisical.com/docs/",
+        github: "https://github.com/Infisical/infisical",
+        icon: FaLock,
+      },
+      {
+        name: "Flagsmith",
+        description: "Feature Flag & Remote Config Service",
+        docs: "https://docs.flagsmith.com/",
+        github: "https://github.com/Flagsmith/flagsmith",
+        icon: FaTools,
+      },
+    ],
+  },
+  analytics: {
+    title: "Analytics & Monitoring",
+    items: [
+      {
+        name: "PostHog",
+        description: "Open Source Product Analytics",
+        docs: "https://posthog.com/docs",
+        github: "https://github.com/PostHog/posthog",
+        icon: SiPosthog,
+      },
+      {
+        name: "Apache Superset",
+        description: "Modern data exploration and visualization",
+        docs: "https://superset.apache.org/docs/",
+        github: "https://github.com/apache/superset",
+        icon: SiApachesuperset,
+      },
+      {
+        name: "Metabase",
+        description: "Business Intelligence and Analytics",
+        docs: "https://www.metabase.com/docs/",
+        github: "https://github.com/metabase/metabase",
+        icon: SiMetabase,
+      },
+      {
+        name: "SigLens",
+        description: "Open Source Log Management",
+        github: "https://github.com/siglens/siglens",
+        icon: FaChartLine,
+      },
+      {
+        name: "Uptime Kuma",
+        description: "Self-hosted Monitoring Tool",
+        docs: "https://github.com/louislam/uptime-kuma/wiki",
+        github: "https://github.com/louislam/uptime-kuma",
+        icon: FaChartLine,
+      },
+      {
+        name: "GlitchTip",
+        description: "Open Source Error Tracking",
+        docs: "https://gitlab.com/glitchtip/glitchtip",
+        github: "https://gitlab.com/glitchtip/glitchtip",
+        icon: FaBug,
+      },
+      {
+        name: "SonarQube",
+        description: "Code Quality and Security",
+        docs: "https://docs.sonarqube.org/",
+        github: "https://github.com/SonarSource/sonarqube",
+        icon: SiSonarqube,
+      },
+      {
+        name: "Snipe-IT",
+        description: "IT Asset Management System",
+        docs: "https://snipe-it.readme.io/",
+        github: "https://github.com/snipe/snipe-it",
+        icon: FaTools,
+      },
+    ],
+  },
+  projectManagement: {
+    title: "Project & Business Management",
+    items: [
+      {
+        name: "Taiga",
+        description: "Project Management Platform",
+        docs: "https://docs.taiga.io/",
+        github: "https://github.com/taigaio/taiga",
+        icon: FaUsers,
+      },
+      {
+        name: "Plane",
+        description: "Open Source Project Planning",
+        docs: "https://docs.plane.so/",
+        github: "https://github.com/makeplane/plane",
+        icon: FaUsers,
+      },
+      {
+        name: "Twenty",
+        description: "Open Source CRM",
+        docs: "https://docs.twenty.com/",
+        github: "https://github.com/twentyhq/twenty",
+        icon: FaUsers,
+      },
+      {
+        name: "FrappeHR",
+        description: "Open Source HR & Payroll",
+        docs: "https://docs.erpnext.com/",
+        github: "https://github.com/frappe/hrms",
+        icon: FaUsers,
+      },
+      {
+        name: "Moodle",
+        description: "Learning Management System",
+        docs: "https://docs.moodle.org/",
+        github: "https://github.com/moodle/moodle",
+        icon: FaUsers,
+      },
+      {
+        name: "Wger",
+        description: "Workout & Fitness Manager",
+        docs: "https://wger.readthedocs.io/",
+        github: "https://github.com/wger-project/wger",
+        icon: FaUsers,
+      },
+      {
+        name: "Cal.com",
+        description: "Scheduling Infrastructure",
+        docs: "https://docs.cal.com/",
+        github: "https://github.com/calcom/cal.com",
+        icon: FaUsers,
+      },
+      {
+        name: "Rallly",
+        description: "Self-hosted Meeting Scheduler",
+        github: "https://github.com/lukevella/rallly",
+        icon: FaUsers,
+      },
+    ],
+  },
+  businessTools: {
+    title: "Business Tools",
+    items: [
+      {
+        name: "Invoice Ninja",
+        description: "Invoicing & Billing Platform",
+        docs: "https://invoiceninja.github.io/",
+        github: "https://github.com/invoiceninja/invoiceninja",
+        icon: FaCreditCard,
+      },
+      {
+        name: "Crater",
+        description: "Open Source Billing Solution",
+        docs: "https://docs.craterapp.com/",
+        github: "https://github.com/crater-invoice/crater",
+        icon: FaCreditCard,
+      },
+      {
+        name: "Bigcapital",
+        description: "Accounting & Invoicing System",
+        github: "https://github.com/bigcapitalhq/bigcapital",
+        icon: FaCreditCard,
+      },
+      {
+        name: "BTCPay Server",
+        description: "Self-hosted Bitcoin Payment Processor",
+        docs: "https://docs.btcpayserver.org/",
+        github: "https://github.com/btcpayserver/btcpayserver",
+        icon: FaCreditCard,
+      },
+      {
+        name: "Lago",
+        description: "Open Source Metering & Usage Based Billing",
+        docs: "https://docs.getlago.com/",
+        github: "https://github.com/getlago/lago",
+        icon: FaCreditCard,
+      },
+      {
+        name: "Mautic",
+        description: "Open Source Marketing Automation",
+        docs: "https://docs.mautic.org/",
+        github: "https://github.com/mautic/mautic",
+        icon: FaBullhorn,
+      },
+      {
+        name: "Listmonk",
+        description: "Self-hosted Newsletter & Mailing List Manager",
+        docs: "https://listmonk.app/docs/",
+        github: "https://github.com/knadh/listmonk",
+        icon: FaBullhorn,
+      },
+      {
+        name: "Formbricks",
+        description: "Open Source Survey Infrastructure",
+        docs: "https://formbricks.com/docs",
+        github: "https://github.com/formbricks/formbricks",
+        icon: FaTools,
+      },
+    ],
+  },
+  automation: {
+    title: "Automation & Integration",
+    items: [
+      {
+        name: "n8n",
+        description: "Workflow Automation Platform",
+        docs: "https://docs.n8n.io/",
+        github: "https://github.com/n8n-io/n8n",
+        icon: FaCogs,
+      },
+      {
+        name: "Automatisch",
+        description: "Business Automation Platform",
+        docs: "https://automatisch.io/docs",
+        github: "https://github.com/automatisch/automatisch",
+        icon: FaCogs,
+      },
+      {
+        name: "Huginn",
+        description: "Create agents that monitor and act on your behalf",
+        github: "https://github.com/huginn/huginn",
+        icon: FaRobot,
+      },
+      {
+        name: "Browserless",
+        description: "Web Scraping & Automation Service",
+        docs: "https://docs.browserless.io/",
+        github: "https://github.com/browserless/chrome",
+        icon: FaCode,
+      },
+      {
+        name: "Apache Guacamole",
+        description: "Clientless Remote Desktop Gateway",
+        docs: "https://guacamole.apache.org/doc/gug/",
+        github: "https://github.com/apache/guacamole-server",
+        icon: FaTerminal,
+      },
+      {
+        name: "Shlink",
+        description: "Self-hosted URL Shortener",
+        docs: "https://shlink.io/documentation/",
+        github: "https://github.com/shlinkio/shlink",
+        icon: FaLink,
+      },
+      {
+        name: "GoRules",
+        description: "Business Rules Engine",
+        github: "https://github.com/gorules/zen",
+        icon: FaCogs,
+      },
+      {
+        name: "QuickChart",
+        description: "Chart Image & QR Code Generator",
+        docs: "https://quickchart.io/documentation/",
+        github: "https://github.com/typpo/quickchart",
+        icon: FaChartBar,
+      },
+    ],
+  },
+  events: {
+    title: "Event Management",
+    items: [
+      {
+        name: "Pretix",
+        description: "Ticket Sales Platform",
+        docs: "https://docs.pretix.eu/",
+        github: "https://github.com/pretix/pretix",
+        icon: FaTicketAlt,
+      },
+      {
+        name: "Hi.Events",
+        description: "Event Management & Ticketing",
+        github: "https://github.com/hi-events",
+        icon: FaCalendar,
+      },
+      {
+        name: "Attendize",
+        description: "Ticket Selling Platform",
+        github: "https://github.com/Attendize/Attendize",
+        icon: FaTicketAlt,
+      },
+    ],
+  },
+};
+
+const categories = {
+  technologies: {
+    title: "Technologies",
+    icon: FaReact,
+    description: "Our complete technology toolkit",
+    component: Technologies,
+  },
+  techStacks: {
+    title: "Tech Stacks",
+    icon: FaDatabase,
+    description: "Modern development stacks and frameworks",
+    items: [
+      {
+        name: "MERN Stack",
+        description: "MongoDB, Express.js, React, Node.js development",
+        icon: FaReact,
+        docs: "https://www.mongodb.com/mern-stack",
+        github: "https://github.com/topics/mern-stack",
+      },
+      {
+        name: "PERN Stack",
+        description: "PostgreSQL, Express.js, React, Node.js development",
+        icon: SiPostgresql,
+        docs: "https://node-postgres.com/",
+        github: "https://github.com/topics/pern-stack",
+      },
+      {
+        name: "Next.js PWA",
+        description: "Progressive Web Apps with Next.js and Capacitor",
+        icon: FaMobile,
+        docs: "https://nextjs.org/docs",
+        github: "https://github.com/vercel/next.js",
+      },
+      {
+        name: "Cross-Platform Mobile",
+        description: "React Native and Flutter development",
+        icon: SiFlutter,
+        docs: "https://flutter.dev/docs",
+        github: "https://github.com/flutter/flutter",
+      },
+    ],
+  },
+  development: {
+    title: "Development Solutions",
+    icon: BsLightningChargeFill,
+    description: "Comprehensive development services",
+    items: [
+      {
+        name: "Native Mobile Apps",
+        description: "iOS (Swift) and Android (Kotlin) development",
+        icon: FaMobile,
+        docs: "https://developer.apple.com/documentation/",
+        github: "https://github.com/topics/ios-swift",
+      },
+      {
+        name: "Backend Solutions",
+        description: "Scalable and secure backend architecture",
+        icon: FaNodeJs,
+        docs: "https://nodejs.org/docs/latest/",
+        github: "https://github.com/nodejs/node",
+      },
+      {
+        name: "Cloud Services",
+        description: "AWS, Azure, and Google Cloud solutions",
+        icon: FaCloud,
+        docs: "https://aws.amazon.com/documentation/",
+        github: "https://github.com/aws",
+      },
+      {
+        name: "Custom Software",
+        description: "Tailored software solutions for businesses",
+        icon: BsGearFill,
+        docs: "#",
+        github: "#",
+      },
+    ],
+  },
+  innovation: {
+    title: "Innovation & AI",
+    icon: FaRobot,
+    description: "Cutting-edge technology solutions",
+    items: [
+      {
+        name: "AI & Machine Learning",
+        description: "TensorFlow and PyTorch solutions",
+        icon: SiTensorflow,
+        docs: "https://www.tensorflow.org/docs",
+        github: "https://github.com/tensorflow/tensorflow",
+      },
+      {
+        name: "Blockchain Development",
+        description: "Smart contracts and DApp development",
+        icon: FaCube,
+        docs: "https://ethereum.org/developers",
+        github: "https://github.com/ethereum",
+      },
+      {
+        name: "IoT Solutions",
+        description: "Connected device solutions and platforms",
+        icon: FaMicrochip,
+        docs: "https://aws.amazon.com/iot/",
+        github: "https://github.com/topics/iot",
+      },
+      {
+        name: "Cybersecurity",
+        description: "Advanced security implementations",
+        icon: FaShieldAlt,
+        docs: "https://owasp.org/",
+        github: "https://github.com/OWASP",
+      },
+    ],
+  },
+  business: {
+    title: "Business Solutions",
+    icon: FaChartBar,
+    description: "Digital business solutions",
+    items: [
+      {
+        name: "UI/UX Design",
+        description: "User-centered design solutions",
+        icon: FaPaintBrush,
+        docs: "https://www.figma.com/community",
+        github: "#",
+      },
+      {
+        name: "Digital Marketing & SEO",
+        description: "AI-powered marketing solutions",
+        icon: SiGoogleanalytics,
+        docs: "https://developers.google.com/analytics",
+        github: "#",
+      },
+      {
+        name: "E-commerce Solutions",
+        description: "Custom e-commerce platforms",
+        icon: FaShoppingCart,
+        docs: "#",
+        github: "#",
+      },
+      {
+        name: "Data Analytics",
+        description: "Business intelligence and analytics",
+        icon: FaChartBar,
+        docs: "#",
+        github: "#",
+      },
+    ],
+    openSource: openSourceCategories,
+  },
+};
 
 const whyChooseUs = [
   {
@@ -408,531 +992,324 @@ const partners = [
   },
 ];
 
-const BudgetSearch = ({
-  searchQuery,
-  setSearchQuery,
-  selectedCurrency,
-  setSelectedCurrency,
-  sortBy,
-  setSortBy,
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
-}) => {
-  return (
-    <div className="mb-8 space-y-4">
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search services..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white placeholder-gray-400"
-            />
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <select
-            value={selectedCurrency}
-            onChange={(e) => setSelectedCurrency(e.target.value)}
-            className="px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white"
-          >
-            {currencies.map((currency) => (
-              <option key={currency.code} value={currency.code}>
-                {currency.name} ({currency.symbol})
-              </option>
-            ))}
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-xl focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white"
-          >
-            {sortOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-4 items-center">
-        <div className="flex items-center gap-2">
-          <FunnelIcon className="w-5 h-5 text-gray-400" />
-          <span className="text-gray-400">Price Range:</span>
-        </div>
-        <div className="flex gap-4 items-center">
-          <input
-            type="number"
-            placeholder="Min"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            className="w-32 px-4 py-2 bg-gray-800/50 border border-gray-700/50 rounded-xl focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white placeholder-gray-400"
-          />
-          <span className="text-gray-400">to</span>
-          <input
-            type="number"
-            placeholder="Max"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-32 px-4 py-2 bg-gray-800/50 border border-gray-700/50 rounded-xl focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white placeholder-gray-400"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const BudgetCategory = ({
-  category,
-  items,
-  selectedCurrency,
-  searchQuery,
-  minPrice,
-  maxPrice,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const filteredItems = items.filter((item) => {
-    const matchesSearch = item.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const estimates = item.estimates.map((est) => {
-      const price =
-        selectedCurrency === "USD"
-          ? parseFloat(est.usd.replace("$", "").replace(",", "").split("-")[0])
-          : parseFloat(
-              est.price.replace("₹", "").replace(",", "").split("-")[0]
-            );
-      return price;
-    });
-
-    const minEstimate = Math.min(...estimates);
-    const maxEstimate = Math.max(...estimates);
-
-    const matchesPrice =
-      (!minPrice || maxEstimate >= minPrice) &&
-      (!maxPrice || minEstimate <= maxPrice);
-
-    return matchesSearch && matchesPrice;
-  });
-
-  if (filteredItems.length === 0) return null;
-
-  return (
-    <div className="mb-12">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-6 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl hover:from-blue-600/30 hover:to-purple-600/30 transition-all duration-300 border border-gray-700/50 hover:border-blue-500/50"
-      >
-        <h3 className="text-2xl font-bold text-white">{category}</h3>
-        <ChevronDownIcon
-          className={`w-8 h-8 text-blue-400 transform transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-
-      {isOpen && (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredItems.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-800/30 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
-            >
-              <div className="p-6 bg-gradient-to-b from-blue-600/10 to-transparent">
-                <h4 className="text-xl font-bold text-blue-400 mb-4">
-                  {item.title}
-                </h4>
-                <div className="space-y-4">
-                  {item.estimates.map((estimate, i) => (
-                    <div
-                      key={i}
-                      className="p-4 bg-gray-900/50 rounded-xl hover:bg-gray-900/70 transition-all duration-300"
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-gray-200 font-medium">
-                          {estimate.level}
-                        </span>
-                        <span className="text-blue-400 font-bold">
-                          {estimate.price}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-gray-400 text-sm">
-                          {estimate.usd}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const ServiceIcon = ({ icon: Icon }) => (
-  <Icon className="w-12 h-12 text-blue-400" />
-);
-
 const Solutions = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-  const [sortBy, setSortBy] = useState("price-asc");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-
-  useGSAP(() => {
-    // Batch all animations together for better performance
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power2.out",
-        duration: 0.5,
-      },
-    });
-
-    // Create reusable ScrollTrigger settings
-    const scrollConfig = {
-      start: "top bottom",
-      end: "bottom top",
-      toggleActions: "play none none reverse",
-    };
-
-    // Use will-change to optimize GPU acceleration
-    gsap.set(
-      [".service-overview-card", ".why-choose-item", ".service-detail"],
-      {
-        willChange: "transform, opacity",
-      }
-    );
-
-    // Batch similar animations together
-    ScrollTrigger.batch(".service-overview-card", {
-      trigger: ".services-overview",
-      start: "top 80%",
-      end: "bottom 20%",
-      onEnter: (elements) => {
-        gsap.fromTo(
-          elements,
-          {
-            y: 20,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.15,
-            duration: 0.8,
-            delay: 0.2,
-            overwrite: true,
-          }
-        );
-      },
-      onEnterBack: (elements) => {
-        gsap.fromTo(
-          elements,
-          {
-            y: -20,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.15,
-            duration: 0.8,
-            overwrite: true,
-          }
-        );
-      },
-      once: true,
-    });
-
-    ScrollTrigger.batch(".why-choose-item", {
-      trigger: ".why-choose-section",
-      start: "top 80%",
-      end: "bottom 20%",
-      onEnter: (elements) => {
-        gsap.fromTo(
-          elements,
-          {
-            y: 20,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.15,
-            duration: 0.8,
-            delay: 0.2,
-            overwrite: true,
-          }
-        );
-      },
-      onEnterBack: (elements) => {
-        gsap.fromTo(
-          elements,
-          {
-            y: -20,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            stagger: 0.15,
-            duration: 0.8,
-            overwrite: true,
-          }
-        );
-      },
-      once: true,
-    });
-
-    ScrollTrigger.batch(".service-detail", {
-      ...scrollConfig,
-      onEnter: (elements) => {
-        gsap.from(elements, {
-          y: 30,
-          opacity: 0,
-          stagger: 0.3,
-          clearProps: "willChange",
-        });
-      },
-      onEnterBack: (elements) => {
-        gsap.from(elements, {
-          y: -30,
-          opacity: 0,
-          stagger: 0.3,
-          clearProps: "willChange",
-        });
-      },
-    });
-
-    // Cleanup function
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      tl.kill();
-    };
-  }, []);
+  const [activeCategory, setActiveCategory] = useState(
+    Object.keys(categories)[0]
+  );
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="min-h-screen bg-black">
       <Navbar />
 
       <main className="pt-24">
-        {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-b from-black to-gray-900">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-                Our Solutions
+        <section className="relative py-20 overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-conic from-cyan-500/30 via-violet-500/30 to-fuchsia-500/30 blur-[100px] animate-spin-slow" />
+            <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-conic from-fuchsia-500/30 via-cyan-500/30 to-violet-500/30 blur-[100px] animate-spin-slow-reverse" />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-6">
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-3xl mx-auto mb-16"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold mb-6">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400">
+                  Solutions
+                </span>
               </h1>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Comprehensive digital solutions tailored for modern businesses
+              <p className="text-xl text-gray-400 mb-8">
+                Comprehensive technology solutions for modern businesses
               </p>
-            </div>
-          </div>
-        </section>
+            </motion.div>
 
-        {/* Why Choose Us Section */}
-        <section className="py-20 bg-gradient-to-b from-gray-900 via-gray-900 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Why Choose Us
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Partner with us for innovative solutions that drive your
-                business forward
-              </p>
+            {/* Category Tabs */}
+            <div className="mb-12 overflow-x-auto">
+              <div className="flex justify-center gap-4">
+                {Object.entries(categories).map(([key, category]) => (
+                  <motion.button
+                    key={key}
+                    onClick={() => setActiveCategory(key)}
+                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2
+                      ${
+                        activeCategory === key
+                          ? "bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 text-white"
+                          : "bg-white/5 text-white/60 hover:bg-white/10"
+                      }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <category.icon className="w-5 h-5" />
+                    {category.title}
+                  </motion.button>
+                ))}
+              </div>
             </div>
 
-            <div className="why-choose-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {whyChooseUs.map((item, index) => (
-                <div
-                  key={index}
-                  className="why-choose-item group p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-xl border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
-                >
-                  <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                    <item.icon className="w-12 h-12 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm">{item.description}</p>
+            {/* Content */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl font-bold text-white mb-4">
+                    {categories[activeCategory].title}
+                  </h2>
+                  <p className="text-gray-400">
+                    {categories[activeCategory].description}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* Technologies Section */}
-        <section className="py-20 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Technologies We Master
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Our expertise spans across modern technology stacks
-              </p>
-            </div>
+                {activeCategory === "technologies" ? (
+                  <Technologies />
+                ) : activeCategory === "business" ? (
+                  <div className="space-y-16">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {categories[activeCategory].items.map((item, index) => (
+                        <motion.div
+                          key={item.name}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="group relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 hover:border-purple-500/50 transition-all duration-300"
+                        >
+                          <div className="flex items-center gap-4 mb-4">
+                            <item.icon className="w-8 h-8 text-cyan-400" />
+                            <div>
+                              <h3 className="text-xl font-bold text-white">
+                                {item.name}
+                              </h3>
+                              <p className="text-sm text-gray-400">
+                                {item.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex gap-4">
+                            {item.docs && item.docs !== "#" && (
+                              <a
+                                href={item.docs}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-cyan-400 transition-all duration-300"
+                              >
+                                <FaBook className="w-4 h-4" />
+                                <span>Documentation</span>
+                              </a>
+                            )}
+                            {item.github && item.github !== "#" && (
+                              <a
+                                href={item.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-violet-400 transition-all duration-300"
+                              >
+                                <FaGithub className="w-4 h-4" />
+                                <span>Source Code</span>
+                              </a>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {techStacks.map((stack, index) => (
-                <div
-                  key={index}
-                  className="service-overview-card bg-gray-800/30 backdrop-blur-sm rounded-xl p-8 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
-                >
-                  <h3 className="text-xl font-bold text-white mb-6 text-center">
-                    {stack.title}
-                  </h3>
-                  <div className="grid grid-cols-2 gap-6">
-                    {stack.technologies.map((tech, techIndex) => (
-                      <div
-                        key={techIndex}
-                        className="flex flex-col items-center group"
+                    {/* Open Source Solutions Section */}
+                    <div className="mt-16">
+                      <h2 className="text-3xl font-bold text-white mb-8">
+                        Open Source Applications
+                      </h2>
+
+                      {Object.entries(openSourceCategories).map(
+                        ([key, category]) => (
+                          <div key={key} className="mb-12">
+                            <h3 className="text-2xl font-bold text-white mb-6">
+                              {category.title}
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {category.items.map((item) => (
+                                <motion.div
+                                  key={item.name}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  className="group relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-6 hover:border-purple-500/50 transition-all duration-300"
+                                >
+                                  <div className="flex items-center gap-4 mb-4">
+                                    <item.icon className="w-8 h-8 text-cyan-400" />
+                                    <div>
+                                      <h4 className="text-lg font-bold text-white">
+                                        {item.name}
+                                      </h4>
+                                      <p className="text-sm text-gray-400">
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex gap-4">
+                                    {item.docs && (
+                                      <a
+                                        href={item.docs}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-cyan-400 transition-all duration-300"
+                                      >
+                                        <FaBook className="w-4 h-4" />
+                                        <span>Documentation</span>
+                                      </a>
+                                    )}
+                                    {item.github && (
+                                      <a
+                                        href={item.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-violet-400 transition-all duration-300"
+                                      >
+                                        <FaGithub className="w-4 h-4" />
+                                        <span>Source Code</span>
+                                      </a>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {categories[activeCategory].items.map((item, index) => (
+                      <motion.div
+                        key={item.name}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="group relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 hover:border-purple-500/50 transition-all duration-300"
                       >
-                        <tech.icon className="w-10 h-10 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
-                        <p className="mt-2 text-gray-400 text-sm text-center">
-                          {tech.name}
-                        </p>
-                      </div>
+                        <div className="flex items-center gap-4 mb-4">
+                          <item.icon className="w-8 h-8 text-cyan-400" />
+                          <div>
+                            <h3 className="text-xl font-bold text-white">
+                              {item.name}
+                            </h3>
+                            <p className="text-sm text-gray-400">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-4">
+                          {item.docs && item.docs !== "#" && (
+                            <a
+                              href={item.docs}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-cyan-400 transition-all duration-300"
+                            >
+                              <FaBook className="w-4 h-4" />
+                              <span>Documentation</span>
+                            </a>
+                          )}
+                          {item.github && item.github !== "#" && (
+                            <a
+                              href={item.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/5 hover:bg-white/10 text-violet-400 transition-all duration-300"
+                            >
+                              <FaGithub className="w-4 h-4" />
+                              <span>Source Code</span>
+                            </a>
+                          )}
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+                )}
+              </motion.div>
+            </AnimatePresence>
 
-        {/* Detailed Services */}
-        <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="details-container space-y-20">
-              {services.map((service, index) => (
-                <div
-                  key={index}
-                  className={`service-detail flex flex-col ${
-                    index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                  } gap-12 items-center`}
-                >
-                  <div className="flex-1">
-                    <div className="text-3xl mb-4">
-                      <ServiceIcon icon={service.icon} />
-                    </div>
-                    <h3 className="text-3xl font-bold text-white mb-4">
-                      {service.title}
+            {/* Why Choose Us Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mt-32"
+            >
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-white mb-4">
+                  Why Choose Us
+                </h2>
+                <p className="text-xl text-gray-400">
+                  Your trusted partner in digital transformation
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {whyChooseUs.map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                  >
+                    <item.icon className="w-12 h-12 text-cyan-400 mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {item.title}
                     </h3>
-                    <p className="text-xl text-gray-400 mb-8">
-                      {service.description}
+                    <p className="text-gray-400 text-sm">{item.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Partners Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-32"
+            >
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-white mb-4">
+                  Our Partners
+                </h2>
+                <p className="text-xl text-gray-400">
+                  Collaborating with industry leaders
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {partners.map((partner, index) => (
+                  <motion.a
+                    key={partner.name}
+                    href={partner.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 transition-all duration-300"
+                  >
+                    <partner.icon className="w-12 h-12 text-cyan-400 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {partner.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {partner.description}
                     </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {service.details.map((detail, i) => (
-                        <li key={i} className="flex items-center text-gray-100">
-                          <svg
-                            className="w-5 h-5 text-blue-400 mr-3"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex-1 relative">
-                    <div className="absolute -inset-4 bg-blue-500/20 rounded-xl blur-xl"></div>
-                    <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-8">
-                      <h4 className="text-xl font-bold text-white mb-4">
-                        Key Features
-                      </h4>
-                      <ul className="space-y-4">
-                        {service.features.map((feature, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start text-gray-100"
-                          >
-                            <svg
-                              className="w-5 h-5 text-blue-400 mr-3 mt-1"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
           </div>
-        </section>
-
-        {/* Partners Section */}
-        <section className="py-20 bg-gradient-to-b from-black to-gray-900">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Our Technology Partners
-              </h2>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                We collaborate with industry leaders to deliver exceptional
-                solutions
-              </p>
-            </div>
-
-            <div className="services-overview grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
-              {partners.map((partner, index) => (
-                <a
-                  href={partner.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={index}
-                  className="service-overview-card group bg-gray-800/30 backdrop-blur-sm rounded-xl p-8 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
-                >
-                  <div className="h-16 mb-6 flex items-center justify-center">
-                    <partner.icon className="w-12 h-12 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-3 text-center">
-                    {partner.name}
-                  </h3>
-                  <p className="text-gray-400 text-sm text-center">
-                    {partner.description}
-                  </p>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Budget Estimates Section */}
-        <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
-          <BudgetEstimates />
         </section>
       </main>
 

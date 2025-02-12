@@ -71,7 +71,10 @@ const Contact = () => {
   };
 
   return (
-    <section className="py-20 bg-black" id="contact">
+    <section
+      className="py-20 bg-gradient-to-b from-gray-900 to-black"
+      id="contact"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16">
           {/* Contact Form */}
@@ -93,7 +96,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white 
-                    placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                    placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
                   placeholder="Your name"
                 />
               </div>
@@ -108,7 +111,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white 
-                    placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                    placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
                   placeholder="your@email.com"
                 />
               </div>
@@ -123,21 +126,17 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl text-white 
-                    placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                    placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-colors"
                   placeholder="Tell us about your startup idea..."
                 />
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl 
+                className="w-full py-3 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 text-white rounded-xl 
                   font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed
                   relative overflow-hidden"
               >
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 
-                  opacity-0 group-hover:opacity-100 transition-opacity"
-                />
                 <span className="relative">
                   {isLoading ? (
                     <div
@@ -159,38 +158,47 @@ const Contact = () => {
             </h2>
             <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold text-gray-100 mb-4">
-                  Office Location
-                </h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <img
+                    src="/assets/images/logo.png"
+                    alt="VAL-X Logo"
+                    className="w-12 h-12 object-contain"
+                  />
+                  <h3 className="text-lg font-semibold text-gray-100">
+                    Company Name
+                  </h3>
+                </div>
                 <p className="text-gray-400">
-                  Veda  
-                  <br />
-                  Mavoor, Kozhikode
-                  <br />
-                  Kerala, India
+                  VAL-X INTERNATIONAL TECHNOLOGIES PRIVATE LIMITED
                 </p>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-100 mb-4">
-                  Contact Details
-                </h3>
-                <p className="text-gray-400">
-                  Email: cto@val-x.com
-                  <br />
-                  Phone: +91 8078447125
-                </p>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 blur-3xl" />
+                <div className="relative">
+                  <h3 className="text-lg font-semibold text-gray-100 mb-4">
+                    Office Location
+                  </h3>
+                  <p className="text-gray-400">
+                    Veda
+                    <br />
+                    673661 Mavoor, Kozhikode
+                    <br />
+                    Kerala, India
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-100 mb-4">
-                  Office Hours
-                </h3>
-                <p className="text-gray-400">
-                  Monday - Friday: 9:00 AM - 9:00 PM
-                  <br />
-                  Saturday: By appointment only
-                  <br />
-                  Sunday: Closed
-                </p>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-violet-500/20 to-fuchsia-500/20 blur-3xl" />
+                <div className="relative">
+                  <h3 className="text-lg font-semibold text-gray-100 mb-4">
+                    Contact Details
+                  </h3>
+                  <p className="text-gray-400">
+                    Email: cto@val-x.com
+                    <br />
+                    Phone: +91 8078447125
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Stats from "../components/Stats";
 import Features from "../components/Features";
-import Technologies from "../components/Technologies";
 import Process from "../components/Process";
 import Achievements from "../components/Achievements";
 import Testimonials from "../components/Testimonials";
@@ -19,7 +18,6 @@ const Home = () => {
     <>
       <Navbar />
       <Hero />
-      <Technologies />
       {/* <Stats stats={stats} /> */}
       {/* <Features /> */}
       <Process />

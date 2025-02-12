@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "../contexts/ModalContext";
+import { SiOpenai } from "react-icons/si";
+import { TbBuildingCommunity } from "react-icons/tb";
+import { RiLightbulbFlashLine } from "react-icons/ri";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,33 +22,19 @@ const Navbar = () => {
     {
       label: "Chat",
       path: "https://chat.val-x.com",
-      icon: `
-        <g>
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z" opacity="0.2"/>
-          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 11h-8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1zm0-4h-8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1zm-4 8h-4c-.55 0-1-.45-1-1s.45-1 1-1h4c.55 0 1 .45 1 1s-.45 1-1 1z"/>
-        </g>`,
+      icon: SiOpenai,
       bgColor: "from-cyan-400 to-cyan-600",
     },
     {
       label: "Community",
-      // path: "/blog",
       path: "https://scale.val-x.com",
-      icon: `
-        <g>
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity="0.2"/>
-          <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V18c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-1.5c0-2.33-4.67-3.5-7-3.5z"/>
-        </g>`,
+      icon: TbBuildingCommunity,
       bgColor: "from-violet-400 to-violet-600",
     },
     {
       label: "Learn",
       path: "/learn-with-us",
-      icon: `
-        <g>
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity="0.2"/>
-          <path d="M12 3L4 9v12h16V9l-8-6zm6 16h-3v-6H9v6H6v-9l6-4.5 6 4.5v9z"/>
-          <path d="M14 14.5V17h-4v-2.5c0-1.1.9-2 2-2s2 .9 2 2z"/>
-        </g>`,
+      icon: RiLightbulbFlashLine,
       bgColor: "from-fuchsia-400 to-fuchsia-600",
     },
   ];
@@ -277,10 +266,8 @@ const Navbar = () => {
                                 />
 
                                 {/* Icon with Floating Animation */}
-                                <motion.svg
-                                  className="relative w-8 h-8 text-white z-20"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
+                                <motion.div
+                                  className="relative text-white z-20"
                                   animate={{
                                     y: [0, -2, 0],
                                     scale: [1, 1.05, 1],
@@ -290,8 +277,9 @@ const Navbar = () => {
                                     repeat: Infinity,
                                     ease: "easeInOut",
                                   }}
-                                  dangerouslySetInnerHTML={{ __html: app.icon }}
-                                />
+                                >
+                                  {app.icon && <app.icon size={32} />}
+                                </motion.div>
 
                                 {/* Enhanced Glow Effect */}
                                 <motion.div
@@ -431,10 +419,8 @@ const Navbar = () => {
                             <div className="absolute inset-[1px] rounded-lg bg-gradient-to-br from-black/90 to-black/50 z-10" />
 
                             {/* Icon */}
-                            <motion.svg
-                              className="relative w-7 h-7 text-white z-20"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
+                            <motion.div
+                              className="relative text-white z-20"
                               animate={{
                                 y: [0, -2, 0],
                                 scale: [1, 1.05, 1],
@@ -444,8 +430,9 @@ const Navbar = () => {
                                 repeat: Infinity,
                                 ease: "easeInOut",
                               }}
-                              dangerouslySetInnerHTML={{ __html: app.icon }}
-                            />
+                            >
+                              {app.icon && <app.icon size={28} />}
+                            </motion.div>
 
                             {/* Glow Effect */}
                             <motion.div
