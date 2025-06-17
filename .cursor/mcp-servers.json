@@ -1,0 +1,30 @@
+{
+  "servers": [
+    {
+      "name": "supabase",
+      "type": "supabase",
+      "config": {
+        "projectId": "Val-X-Site",
+        "localEndpoint": "http://127.0.0.1:54321",
+        "studioEndpoint": "http://127.0.0.1:54323",
+        "dbEndpoint": "http://localhost:54322",
+        "apiKey": "${env:VITE_API_KEY}",
+        "dbPassword": "${env:SUPABASE_DB_PASSWORD}",
+        "jwtSecret": "${env:SUPABASE_JWT_SECRET}",
+        "anon": {
+          "role": "anon",
+          "apiKey": "${env:VITE_API_KEY}"
+        },
+        "service_role": {
+          "role": "service_role",
+          "apiKey": "${env:SUPABASE_SERVICE_ROLE_KEY}"
+        }
+      },
+      "features": ["auth", "storage", "database", "functions"]
+    }
+  ],
+  "settings": {
+    "defaultServer": "supabase",
+    "autoConnect": true
+  }
+}

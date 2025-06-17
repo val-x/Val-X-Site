@@ -1,0 +1,13 @@
+{
+  "npm.packageManager": "bun",
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.quoteStyle": "double",
+  "editor.defaultFormatter": "vscode.typescript-language-features",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.js": "javascript"
+  }
+}

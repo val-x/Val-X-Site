@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Supabase: Start",
+      "type": "shell",
+      "command": "npx supabase start",
+      "problemMatcher": []
+    },
+    {
+      "label": "Supabase: Stop",
+      "type": "shell",
+      "command": "npx supabase stop",
+      "problemMatcher": []
+    },
+    {
+      "label": "Supabase: Generate Types",
+      "type": "shell",
+      "command": "npx supabase gen types typescript --local > src/types/supabase.ts",
+      "problemMatcher": []
+    },
+    {
+      "label": "Supabase: Open Studio",
+      "type": "shell",
+      "command": "npx supabase studio",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Start Frontend",
+      "type": "shell",
+      "command": "bun run dev",
+      "problemMatcher": []
+    }
+  ]
+}

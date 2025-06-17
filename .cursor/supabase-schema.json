@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "tables": {
+    "contact_submissions": {
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "primaryKey": true
+        },
+        "name": {
+          "type": "text",
+          "nullable": false
+        },
+        "email": {
+          "type": "text",
+          "nullable": false
+        },
+        "message": {
+          "type": "text",
+          "nullable": false
+        },
+        "created_at": {
+          "type": "timestamp with time zone",
+          "defaultValue": "now()"
+        }
+      },
+      "rls": {
+        "policies": [
+          {
+            "name": "admin_access",
+            "definition": "auth.uid() IN (SELECT id FROM admin_users)",
+            "check": null,
+            "operation": "ALL"
+          }
+        ]
+      }
+    },
+    "users": {
+      "columns": {
+        "id": {
+          "type": "uuid",
+          "primaryKey": true,
+          "references": "auth.users.id"
+        },
+        "email": {
+          "type": "text",
+          "nullable": false
+        },
+        "created_at": {
+          "type": "timestamp with time zone",
+          "defaultValue": "now()"
+        },
+        "updated_at": {
+          "type": "timestamp with time zone",
+          "defaultValue": "now()"
+        }
+      }
+    }
+  }
+}

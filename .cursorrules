@@ -1,0 +1,92 @@
+# Val-X-Site Project Rules
+
+## JavaScript/React Rules
+
+- Maintain backward compatibility in all code changes
+
+## Styling Rules
+
+- Use Tailwind CSS for component styling
+- Follow utility-first approach for component styles
+- Extract repeated utility combinations into custom classes
+- Maintain consistent spacing variables
+- Use design tokens for colors, spacing, and typography
+- Ensure responsive design across all components
+- Follow mobile-first design approach
+- Use CSS variables for theming when needed
+- Ensure dark mode compatibility for all components
+
+## Git Flow
+
+- Only commit and push code that passes all tests and builds successfully
+- Follow Git Flow branching model:
+  - `main`: production-ready code
+  - `develop`: integration branch for features
+  - `feature/*`: branch for new features
+  - `hotfix/*`: branch for urgent fixes
+  - `release/*`: branch for release preparation
+- Branch naming: `feature/feature-name`, `hotfix/issue-name`
+- Commit message format: `[type]: Short description (max 50 chars)`
+- Commit types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- Create pull requests for all feature branches
+- Squash commits when merging feature branches
+- Delete branches after successful merge
+- Tag all releases with semantic version numbers
+
+## Package Management
+
+- Use Bun as the package manager
+- Use `bun` commands for package operations (install, add, remove)
+- Use `bunx` for executing one-off commands
+- Do not use npm or yarn commands
+
+## Code Quality
+
+- Use double quotes for strings
+- Use 2-space indentation
+- Format on save
+- Follow existing patterns when adding new components
+- Check existing components for style conventions
+
+## File Structure
+
+- Keep related components in appropriate subfolders
+- Follow existing naming conventions
+
+## Commits
+
+- Write descriptive commit messages
+- Include issue/feature references when relevant
+
+## Supabase
+
+- Use environment variables for sensitive information
+- Follow RLS policies for database access
+- Use typed queries with generated types
+- Handle errors consistently with try/catch blocks
+- Use RLS instead of manual authorization checks when possible
+- Create helper functions for common database operations
+- Use transactions for operations that modify multiple tables
+
+## Next.js with TypeScript
+
+- Use `.tsx` extension for files containing JSX
+- Use `.ts` extension for utility files without JSX
+- Implement proper type definitions for all props
+- Use Next.js App Router for new features
+- Leverage server components where possible
+- Apply proper error boundaries around client components
+- Use strong typing for API requests and responses
+- Follow Next.js recommended patterns for data fetching
+
+## SEO
+
+- Every page must have a unique title and meta description
+- Use dynamic metadata based on page content
+- Implement structured data where appropriate (JSON-LD)
+- Ensure all images have alt text
+- Use proper heading hierarchy (h1, h2, h3)
+- Implement canonical URLs for duplicate content
+- Create dynamic sitemaps for content
+- Use descriptive, SEO-friendly URLs
+- Implement Open Graph and Twitter card metadata for social sharing

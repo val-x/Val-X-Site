@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "tailwindcss-intellisense",
+    "vscode-eslint",
+    "prettier-vscode",
+    "vscode-language-babel"
+  ]
+}
