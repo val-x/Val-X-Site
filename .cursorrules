@@ -19,7 +19,7 @@
 ## Git Flow
 
 - Only commit and push code that passes all tests and builds successfully
-- Follow Git Flow branching model:
+- Follow Git Flow branching model (for that we can use git flow cli tools) :
   - `main`: production-ready code
   - `develop`: integration branch for features
   - `feature/*`: branch for new features
