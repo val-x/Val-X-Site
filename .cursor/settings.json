@@ -9,5 +9,12 @@
   "files.associations": {
     "*.jsx": "javascriptreact",
     "*.js": "javascript"
-  }
+  },
+  "git.flow.enabled": true,
+  "git.flow.defaultBranchName.main": "main",
+  "git.flow.defaultBranchName.develop": "develop",
+  "git.flow.defaultBranchName.feature": "feature/",
+  "git.flow.defaultBranchName.release": "release/",
+  "git.flow.defaultBranchName.hotfix": "hotfix/",
+  "git.defaultBranch": "main"
 }
