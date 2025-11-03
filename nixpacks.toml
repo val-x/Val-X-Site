@@ -3,16 +3,15 @@ providers = ["node"]
 [variables]
 NODE_ENV = "production"
 NIXPACKS_NODE_VERSION = "20"
-PATH = "$HOME/.bun/bin:$PATH"
 
 [phases.setup]
-nixPkgs = ["nodejs_20", "curl", "bash", "coreutils"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["curl -fsSL https://bun.sh/install | bash", "export PATH=\"$HOME/.bun/bin:$PATH\" && bun install --production=false"]
+cmds = ["npm install"]
 
 [phases.build]
-cmds = ["export PATH=\"$HOME/.bun/bin:$PATH\" && bun run build"]
+cmds = ["npm run build"]
 
 [start]
 cmd = "node start-server.js"
